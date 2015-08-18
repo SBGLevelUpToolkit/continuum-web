@@ -20,6 +20,7 @@
     "lodash": "^3.9.3"
   },
   "devDependencies": {
+    "angular-local-storage": "^0.2.2",
     "babel-core": "^5.8.19",
     "compression": "^1.5.1",
     "es6-module-loader": "^0.17.3",

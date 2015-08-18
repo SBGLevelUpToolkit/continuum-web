@@ -1,5 +1,5 @@
 {
-  "maxparams" : 3,
+  "maxparams" : 6,
   "maxcomplexity" : 5,
   "maxstatements" : 40,
   "maxdepth" : 2,

@@ -31,9 +31,9 @@ describe('login  Directive', function() {
             //pwd.val("moofoo");
             //var mySpy = spyOn(element.isolateScope().ctrl, 'login');
             //element.isolateScope().ctrl.login({});
-            var smallButton = cElement.find("md-button")[0];
+            var smallButton = cElement.find('md-button')[0];
             smallButton.click();
-            expect(element.isolateScope().ctrl.brett).toEqual("uptfon")
+            expect(element.isolateScope().ctrl.brett).toEqual('');
             //expect(mySpy).toHaveBeenCalled();
         }));
     });

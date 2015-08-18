@@ -11,7 +11,8 @@ angular.module('Continuum', [
     'ui.router',
     'ngMaterial',
     'Continuum.services',
-    'Continuum.components'
+    'Continuum.components',
+    'LocalStorageModule'
 ])
     .config(function($stateProvider,
                      $urlRouterProvider,
@@ -35,7 +36,7 @@ angular.module('Continuum', [
             .state('login', {
                 url:'/login',
                 template: '<cn-login></cn-login>'
-            })
+            });
     });
 
 angular.element(document).ready(function() {
