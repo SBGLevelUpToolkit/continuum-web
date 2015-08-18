@@ -1,0 +1,18 @@
+{
+  "preset": "google",
+  "maximumLineLength": 140,
+  "validateLineBreaks": null,
+  "requireCamelCaseOrUpperCaseIdentifiers": null,
+  "validateIndentation": null,
+  "disallowSpacesInsideObjectBrackets": null,
+  "disallowSpacesInsideArrayBrackets": null,
+  "disallowSpacesInsideParentheses": null,
+  "requireSpacesInsideObjectBrackets": "all",
+  "requireSpacesInsideArrayBrackets": "allButNested",
+  "requireSpaceAfterBinaryOperators": true,
+  "requireCapitalizedConstructors": true,
+  "validateParameterSeparator": ", ",
+  "disallowMultipleVarDecl": null,
+  "esnext": true,
+  "requireLineFeedAtFileEnd": null
+}

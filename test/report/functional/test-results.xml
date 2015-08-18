@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+ <testsuite name="Dashboard" timestamp="2015-08-14T13:45:10" hostname="localhost" time="1.515" errors="0" tests="2" skipped="0" disabled="0" failures="0">
+  <testcase classname="Dashboard" name="should have the correct username in the header" time="0.258" />
+  <testcase classname="Dashboard" name="should display 3 tiles" time="0.056" />
+ </testsuite>
+</testsuites>

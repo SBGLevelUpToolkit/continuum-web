@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Continuum</title>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    <link href="stylesheets/bundle.css" rel="stylesheet">
+    <link href="stylesheets/index.css" rel="stylesheet">
+    <! -- ~~START -->
+    <script src="../node_modules/systemjs/dist/system.src.js"></script>
+    <script>
+        System.config({
+            baseURL: '/'
+        });
+        System.import('source/app.js');
+    </script>
+    <script src='../config.js'></script>
+    <!-- ~~END -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body layout="row">
+
+<div id="content" ui-view layout="column" layout-fill></div>
+</body>
+</html>
