@@ -1,7 +1,7 @@
 import angular from 'angular';
 import environment from '../config/environment';
 
-var app = angular.module('hostName', []);
+var app = angular.module('cn.hostName', []);
 app.provider('hostName', function() {
     var hostName;
 

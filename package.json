@@ -78,7 +78,7 @@
     "serve:dist": "npm run startMockServer & meemoo 'dist' --compress --open",
     "startMockServer": "cd ../mocks && node startMockServer",
     "stopMockServer": "cd ../mocks && node stopMockServer",
-    "replaceEnv": "replace \"~~ENVIRONMENT.*(?=')\" '~~ENVIRONMENT.LOCAL' source/app.js",
+    "replaceEnv": "replace \"~~ENVIRONMENT.*(?=')\" '~~ENVIRONMENT.DEV' source/app.js",
     "replaceSrc": "replace \"<! -- ~~START[.\\s\\S]*~~END -->\" \"<script src=\"build.js\"></script>\" dist/index.html",
     "serve": "meemoo --livereload --open --base source"
   },

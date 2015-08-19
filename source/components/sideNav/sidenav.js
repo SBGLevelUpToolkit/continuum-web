@@ -1,6 +1,6 @@
 import template from './sideNav.html!text';
 
-var app = angular.module('cnSideNav', [])
+var app = angular.module('cn.sideNav', [])
     .directive('cnSideNav', function() {
     return {
         restrict: 'E',

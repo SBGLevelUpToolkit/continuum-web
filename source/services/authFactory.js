@@ -1,12 +1,13 @@
 import angular from 'angular';
 import 'angular-resource';
 import 'angular-local-storage';
+import './hostNameProvider';
 
-var app = angular.module('auth', [ 'ngResource', 'hostName' ]);
+var app = angular.module('cn.auth', [ 'cn.hostName', 'LocalStorageModule' ]);
 app.factory('authService', [
-    '$http', '$q', 'localStorageService', function($http, $q, localStorageService) {
+    '$http', '$q', 'localStorageService', 'hostName', function($http, $q, localStorageService, hostName, authInterceptorService) {
 
-        var serviceBase = 'http://continuumwebapi.azurewebsites.net/';
+        var serviceBase = hostName + '/';
         var authServiceFactory = {};
 
         var _authentication = {
@@ -33,17 +34,17 @@ app.factory('authService', [
             $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
                 .success(function(response) {
 
-                localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
+                    localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
 
-                _authentication.isAuth = true;
-                _authentication.userName = loginData.userName;
+                    _authentication.isAuth = true;
+                    _authentication.userName = loginData.userName;
 
-                deferred.resolve(response);
+                    deferred.resolve(response);
 
-            }).error(function(err, status) {
-                _logOut();
-                deferred.reject(err);
-            });
+                }).error(function(err, status) {
+                    _logOut();
+                    deferred.reject(err);
+                });
 
             return deferred.promise;
 
@@ -65,7 +66,6 @@ app.factory('authService', [
                 _authentication.isAuth = true;
                 _authentication.userName = authData.userName;
             }
-
         };
 
         authServiceFactory.saveRegistration = _saveRegistration;

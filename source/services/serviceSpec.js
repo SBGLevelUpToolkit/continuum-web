@@ -5,7 +5,7 @@ describe('hostnameProvider', function() {
 
     var provider;
 
-    beforeEach(angular.mock.module('hostName', function(hostNameProvider) {
+    beforeEach(angular.mock.module('cn.hostName', function(hostNameProvider) {
         provider = hostNameProvider;
     }));
 

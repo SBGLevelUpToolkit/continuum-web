@@ -16,8 +16,8 @@ System.config({
         "angular-resource": "node_modules/angular-resource/angular-resource.js",
         "jquery": "node_modules/jquery/dist/jquery.js",
         "lodash": "node_modules/lodash/index.js",
-        "angular-ui-router": "node_modules/angular-ui-router/release/angular-ui-router.min.js",
-        "angular-local-storage": "node_modules/angular-local-storage/dist/angular-local-storage.min.js"
+        "angular-ui-router": "node_modules/angular-ui-router/release/angular-ui-router.js",
+        "angular-local-storage": "node_modules/angular-local-storage/dist/angular-local-storage.js"
     },
     "defaultJSExtensions": true,
     "meta": {

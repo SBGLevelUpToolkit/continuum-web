@@ -1,4 +1,4 @@
-<form id="loginForm" name="loginForm"  novalidate>
+<form id="loginForm" name="loginForm" novalidate>
     <div layout="row" flex layout-align="center center">
         <div class="layout-content small" flex layout="column" layout-fill>
             <md-content layout-padding>
@@ -8,27 +8,28 @@
                 <form name="userForm">
                     <md-input-container>
                         <label>Email</label>
-                        <input type="email" id="email" name="uMail" ng-model="ctrl.user.userName" required>
+                        <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
 
-                        <div ng-show="loginForm.$submitted || loginForm.uMail.$touched">
-                            <div ng-show="loginForm.uMail.$error.required">Required</div>
+                        <div ng-show="loginForm.$submitted || loginForm.userName.$touched">
+                            <div ng-show="loginForm.userName.$error.required">Required</div>
                         </div>
                     </md-input-container>
                     <md-input-container>
                         <label>Password</label>
-                        <input id="password" name="uPassword" ng-model="ctrl.user.password" required>
+                        <input id="password" name="password" ng-model="ctrl.user.password" required>
 
-                        <div ng-show="loginForm.$submitted || loginForm.uPassword.$touched">
-                            <div ng-show="loginForm.uPassword.$error.required">Required</div>
+                        <div ng-show="loginForm.$submitted || loginForm.password.$touched">
+                            <div ng-show="loginForm.password.$error.required">Required</div>
                         </div>
                     </md-input-container>
                     <section layout="row" layout-align="center center">
-                        <md-button class="md-raised" ng-click="ctrl.checkUser(ctrl.user)">Login</md-button>
+                        <md-button class="md-raised" ng-click="loginForm.$valid && ctrl.checkUser(ctrl.user)">Login</md-button>
                     </section>
                 </form>
             </md-content>
         </div>
     </div>
 </form>
-<pre>form = {{ctrl.user | json}}</pre>
-<pre>master = {{ctrl.master | json}}</pre>
+<div class="link" layout="row" layout-align="center center">
+    <md-button class="md-primary" ui-sref="register">Register</md-button>
+</div>

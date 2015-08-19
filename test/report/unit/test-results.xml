@@ -1,22 +1,16 @@
 <?xml version="1.0"?>
 <testsuites>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-17T13:44:22" id="0" hostname="Bretts-MacBook-Pro.local">
+  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-19T11:32:47" id="0" hostname="Bretts-MacBook-Pro.local">
     <properties>
       <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"/>
     </properties>
   </testsuite>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-17T13:44:24" id="0" hostname="Bretts-MacBook-Pro.local" tests="2" errors="0" failures="1" time="0.232">
+  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-19T11:32:48" id="0" hostname="Bretts-MacBook-Pro.local" tests="2" errors="0" failures="0" time="0.093">
     <properties>
       <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"/>
     </properties>
-    <testcase name="should return the correct host name" time="0.043" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).hostnameProvider"/>
-    <testcase name="should navigate to home if authorization is successful" time="0.189" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).login  Directive template">
-      <failure type="">Expected spy login to have been called.
-    at Object.&lt;anonymous&gt; (/Users/brettupton/Development/Continuum/continuum/source/components/login/loginSpec.js!transpiled:41:39)
-    at Object.invoke (/Users/brettupton/Development/Continuum/continuum/node_modules/angular/angular.js:4450:17)
-    at Object.workFn (/Users/brettupton/Development/Continuum/continuum/node_modules/angular-mocks/angular-mocks.js:2404:20)
-</failure>
-    </testcase>
+    <testcase name="should return the correct host name" time="0.015" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).hostnameProvider"/>
+    <testcase name="should not call login when input is invalid" time="0.078" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).login Directive template"/>
     <system-out><![CDATA[
 ]]></system-out>
     <system-err/>

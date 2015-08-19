@@ -24,7 +24,8 @@ module.exports = function(config) {
                 "jspm_packages/**/*.js",
                 'node_modules/plugin-text/text.js',
                 'node_modules/jquery/dist/jquery.js',
-                'node_modules/angular*/**/*.js',
+                'node_modules/angular*/**/*.min.js',
+                'node_modules/angular-mocks/angular-mocks.js',
                 'test/unit/*.js',
                 'source/**/*'
             ],

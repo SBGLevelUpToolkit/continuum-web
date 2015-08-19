@@ -1,6 +1,6 @@
 import template from './header.html!text';
 
-var app = angular.module('cnHeader', [])
+var app = angular.module('cn.header', [])
     .directive('cnHeader', function() {
         return {
             restrict: 'E',

@@ -1,12 +1,15 @@
 import angular from 'angular';
-import './loginFactory';
-import './authFactory';
+import './authInterceptorService';
 import './hostNameProvider';
 
-var app = angular.module('Continuum.services', [
-    'auth',
-    'logins',
-    'hostName'
+import './authFactory';
+import './teamFactory';
+
+var app = angular.module('cn.services', [
+    'cn.authInterceptor',
+    'cn.hostName',
+    'cn.auth',
+    'cn.team',
 ]);
 
 export default app;

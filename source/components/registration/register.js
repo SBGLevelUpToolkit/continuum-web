@@ -1,9 +1,9 @@
-import template from './login.html!text';
+import template from './register.html!text';
 import 'angular-ui-router';
 import '../../services/authFactory';
 
-var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
-    .directive('cnLogin', function() {
+var app = angular.module('cn.registration', [ 'cn.auth', 'ui.router' ])
+    .directive('cnRegister', function() {
         return {
             scope: {},
             restrict: 'E',
@@ -16,8 +16,8 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
                 //    userName: "alice@example.com",
                 //    password: "Password1!"
                 //};
-                this.checkUser = function(loginData) {
-                    authService.login(loginData).then(function(response) {
+                this.register = function(data) {
+                    authService.register(data).then(function(response) {
                             $state.go('home');
                         },
                         function(err) {

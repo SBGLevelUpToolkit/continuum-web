@@ -10,33 +10,43 @@ import './services/index';
 angular.module('Continuum', [
     'ui.router',
     'ngMaterial',
-    'Continuum.services',
-    'Continuum.components',
-    'LocalStorageModule'
+    'cn.services',
+    'cn.components'
 ])
     .config(function($stateProvider,
                      $urlRouterProvider,
                      $compileProvider,
+                     $httpProvider,
                      $mdThemingProvider,
                      hostNameProvider) {
         //$compileProvider.debugInfoEnabled(false);
+        $httpProvider.interceptors.push('authInterceptorService');
+
         $mdThemingProvider.theme('default')
             .primaryPalette('indigo')
             .accentPalette('blue');
 
-        hostNameProvider.setHost('~~ENVIRONMENT.LOCAL');
+        hostNameProvider.setHost('~~ENVIRONMENT.DEV');
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
 
         $stateProvider
             .state('home', {
                 url:'/',
-                templateUrl: 'components/container/container.html'
+                template: '<cn-container></cn-container>'
             })
             .state('login', {
                 url:'/login',
                 template: '<cn-login></cn-login>'
-            });
+            })
+            .state('register', {
+                url:'/register',
+                template: '<cn-register></cn-register>'
+            })
+            .state('teamSelection', {
+            url:'/teamSelection',
+            template: '<cn-register></cn-register>'
+        });
     });
 
 angular.element(document).ready(function() {
