@@ -1,35 +1,49 @@
-<form id="loginForm" name="loginForm" novalidate>
-    <div layout="row" flex layout-align="center center">
-        <div class="layout-content small" flex layout="column" layout-fill>
-            <md-content layout-padding>
-                <section layout="row" layout-align="center center">
-                    <h3 class="md-headline">Welcome to Continuum</h3>
-                </section>
-                <form name="userForm">
+<div layout="column" flex layout-align="center center">
+    <img src="images/logo.png" style="max-width:300px; max-height:300px;"/>
+
+    <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
+        <md-content  class="form-box md-default-theme" flex="40">
+            <div layout="row" layout-align="center center">
+                <div class="line" flex></div>
+                <div class="text">SIGN IN</div>
+                <div class="line" flex></div>
+            </div>
+            <section>
+                <form id="form" name="form" novalidate>
                     <md-input-container>
                         <label>Email</label>
                         <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
-
-                        <div ng-show="loginForm.$submitted || loginForm.userName.$touched">
-                            <div ng-show="loginForm.userName.$error.required">Required</div>
+                        <div ng-messages="form.userName.$error.required">
+                            <!--<div ng-show="form.$submitted || form.userName.$touched">-->
+                                <div ng-message="required">This is required.</div>
+                            <!--</div>-->
                         </div>
                     </md-input-container>
                     <md-input-container>
                         <label>Password</label>
                         <input id="password" name="password" ng-model="ctrl.user.password" required>
-
-                        <div ng-show="loginForm.$submitted || loginForm.password.$touched">
-                            <div ng-show="loginForm.password.$error.required">Required</div>
+                        <div ng-messages="form.password.$error.required">
+                            <!--<div ng-show="form.$submitted || form.password.$touched">-->
+                                <div ng-message="required">This is required.</div>
+                            <!--</div>-->
                         </div>
                     </md-input-container>
-                    <section layout="row" layout-align="center center">
-                        <md-button class="md-raised" ng-click="loginForm.$valid && ctrl.checkUser(ctrl.user)">Login</md-button>
-                    </section>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-raised" ng-click="form.$valid && ctrl.checkUser(ctrl.user)" style="font-weight: bold">SIGN IN</md-button>
+                    </div>
                 </form>
-            </md-content>
-        </div>
+            </section>
+            <section layout layout-align="center">
+                <div class="link" ui-sref="forgotPassword">Forgot Password?</div>
+            </section>
+            <div class="verticalSpacer" layout>
+                <div class="line" flex></div>
+            </div>
+            <section layout>
+                <div flex="75">Don't have an account?</div>
+                <div class="link" flex="25" ui-sref="register">Sign Up</div>
+            </section>
+        </md-content>
     </div>
-</form>
-<div class="link" layout="row" layout-align="center center">
-    <md-button class="md-primary" ui-sref="register">Register</md-button>
 </div>
+

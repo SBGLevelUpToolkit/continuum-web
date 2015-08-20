@@ -32,20 +32,20 @@ angular.module('Continuum', [
 
         $stateProvider
             .state('home', {
-                url:'/',
+                url:'/home',
                 template: '<cn-container></cn-container>'
             })
             .state('login', {
                 url:'/login',
-                template: '<cn-login></cn-login>'
+                template: '<cn-login flex layout></cn-login>'
             })
             .state('register', {
                 url:'/register',
-                template: '<cn-register></cn-register>'
+                template: '<cn-register flex layout></cn-register>'
             })
             .state('teamSelection', {
             url:'/teamSelection',
-            template: '<cn-register></cn-register>'
+            template: '<cn-select-teamr></cn-select-teamr>'
         });
     });
 

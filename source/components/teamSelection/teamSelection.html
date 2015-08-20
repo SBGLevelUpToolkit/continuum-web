@@ -1,0 +1,49 @@
+<div layout="row" flex layout-align="center center">
+    <div class="layout-content small" flex layout="column" layout-fill>
+        <md-content layout-padding>
+            <section layout="row" layout-align="center center">
+                <h3 class="md-headline">Welcome to Continuum</h3>
+            </section>
+            <form id="form" name="form" novalidate>
+                <md-autocomplete
+                        ng-disabled="ctrl.isDisabled"
+                        md-no-cache="ctrl.noCache"
+                        md-selected-item="ctrl.selectedItem"
+                        md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                        md-search-text="ctrl.searchText"
+                        md-selected-item-change="ctrl.selectedItemChange(item)"
+                        md-items="item in ctrl.querySearch(ctrl.searchText)"
+                        md-item-text="item.name"
+                        md-min-length="0"
+                        placeholder="Select a team"
+                        md-menu-class="autocomplete-custom-template">
+                    <md-item-template>
+          <span class="item-title">
+            <md-icon md-svg-icon="img/icons/octicon-repo.svg"></md-icon>
+            <span> {{item.name}} </span>
+          </span>
+          <span class="item-metadata">
+            <span class="item-metastat">
+              <strong>{{item.watchers}}</strong> watchers
+            </span>
+            <span class="item-metastat">
+              <strong>{{item.forks}}</strong> forks
+            </span>
+          </span>
+                    </md-item-template>
+                </md-autocomplete>
+                <md-input-container>
+                    <label>Password</label>
+                    <input id="password" name="password" ng-model="ctrl.user.password" required>
+
+                    <div ng-show="form.$submitted || form.password.$touched">
+                        <div ng-show="form.password.$error.required">Required</div>
+                    </div>
+                </md-input-container>
+                <section layout="row" layout-align="center center">
+                    <md-button class="md-raised" ng-click="form.$valid && ctrl.checkUser(ctrl.user)">Login</md-button>
+                </section>
+            </form>
+        </md-content>
+    </div>
+</div>
