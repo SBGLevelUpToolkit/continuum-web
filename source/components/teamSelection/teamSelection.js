@@ -13,10 +13,10 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router' ])
             bindToController: true,
             controller: /*@ngInject*/function controller($scope, $http, $state, authService) {
                 this.teamService.createTeam({ 'Name': 'Team Awesome', 'TeamLeadName': 'Brett', 'AvatarUrl': null });
-var self = this;
-                teamService.getTeams().then(function(response) {
-                self.teams = response;
-                });
+                var self = this;
+                //teamService.getTeams().then(function(response) {
+                //    self.teams = response;
+                //});
 
                 this.register = function(data) {
                     authService.register(data).then(function(response) {

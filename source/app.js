@@ -33,7 +33,11 @@ angular.module('Continuum', [
         $stateProvider
             .state('home', {
                 url:'/home',
-                template: '<cn-container></cn-container>'
+                template: '<cn-container flex layout="column"></cn-container>'
+            })
+            .state('home.goals', {
+                url:'/goals',
+                template: '<cn-goals flex layout></cn-goals>'
             })
             .state('login', {
                 url:'/login',
@@ -45,7 +49,7 @@ angular.module('Continuum', [
             })
             .state('teamSelection', {
             url:'/teamSelection',
-            template: '<cn-select-teamr></cn-select-teamr>'
+            template: '<cn-select-team></cn-select-team>'
         });
     });
 

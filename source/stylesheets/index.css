@@ -32,12 +32,19 @@ a, a:hover, a:focus {
     color: #023044;
 }
 
-.form-box {
+.form-panel, .feature-panel {
     padding: 35px 40px 30px 40px;
     border-radius: 5px;
     max-width: 400px;
-    background: rgba(255, 255, 255, .5);
     color: #ffffff;
+}
+
+.form-panel {
+    background: rgba(255, 255, 255, .5);
+}
+
+.feature-panel {
+    background-color: rgba(2,48,68,.9);
 }
 
 .verticalSpacer {
@@ -71,8 +78,8 @@ cn-header md-toolbar .md-icon-button .fa-2x {
     vertical-align: middle;
 }
 
-cn-header md-toolbar .fa-2x {
-    color: #1966DA;
+cn-header md-toolbar img {
+    max-height: 80px;
 }
 
 cn-header md-toolbar span {
@@ -83,10 +90,9 @@ cn-header md-toolbar span {
 
 cn-header md-toolbar .logo-img {
     background-image: url("../images/logo.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 45px;
-    width: 45px;
+    background-size: cover;
+    height: 120px;
+    width: 120px;
 }
 
 cn-header md-toolbar .md-primary span {
@@ -109,4 +115,8 @@ cn-header md-toolbar .md-primary span.sign-out {
     color: #008fbe !important;
     border-radius: 2px !important;
     background-color: rgba(255, 255, 255, .5) !important;
+}
+
+.md-button.md-primary {
+    color: #ffffff !important
 }

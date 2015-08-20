@@ -1,24 +1,17 @@
-<md-toolbar>
-    <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" ng-click="toggleSidenav()">
-            <i class="fa fa-bars fa-2x"></i>
+<md-toolbar class="md-tall" layout="row" layout-align="space-between center">
+    <div class="logo-img"></div>
+    <div>
+        <md-button class="md-primary" ui-sref="assessment">
+            <img src="images/menu_assessments_icon.png"/>
+            <div>Assessment</div>
         </md-button>
-        <span>Menu</span>
-        <div flex></div>
-        <div class="logo-img"></div>
-        <div flex layout="row" layout-align="end center">
-            <md-button class="md-primary">
-                <span id="headerName">Jane Doe</span>
-            </md-button>
-            <md-button class="md-icon-button">
-                <i class="fa fa-envelope fa-2x"></i>
-            </md-button>
-            <md-button class="md-icon-button">
-                <i class="fa fa-phone fa-2x"></i>
-            </md-button>
-            <md-button class="md-primary">
-                <span class="sign-out">Sign out</span>
-            </md-button>
-        </div>
+        <md-button class="md-primary" ui-sref="home.goals">
+            <img src="images/menu_goals_icon.png"/>
+            <div>Goals</div>
+        </md-button>
+        <md-button class="md-primary" ui-sref="profile">
+            <img src="images/menu_traveller_male_avatar_icon.png"/>
+            <div>Team Name</div>
+        </md-button>
     </div>
 </md-toolbar>
