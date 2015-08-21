@@ -12,18 +12,17 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             bindToController: true,
             controller: /*@ngInject*/function controller($scope, $http, $state, authService) {
                 this.master = {};
-                //this.user = {
-                //    userName: "alice@example.com",
-                //    password: "Password1!"
-                //};
-                this.checkUser = function(loginData) {
+                this.user = {
+                    userName: "alice@example.com",
+                    password: "Password1!"
+                };
+                this.login = function(loginData) {
+                    console.log("DFGDFG");
                     authService.login(loginData).then(function(response) {
                             $state.go('home');
                         },
-                        function(err) {
-                            if (err) {
-                                $scope.message = err.error_description;
-                            }
+                        (err) => {
+                            this.formInvalid = true;
                         });
                 };
             }

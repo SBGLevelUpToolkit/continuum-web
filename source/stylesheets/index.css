@@ -14,6 +14,10 @@ body {
     background-color: #00a3cb;
 }
 
+.container {
+    max-width: 1280px;
+}
+
 .layout-content {
     max-width: 864px;
     margin: 16px;
@@ -28,23 +32,28 @@ a, a:hover, a:focus {
     color: #555;
 }
 
+.errorMessage {
+    color: #ff0000;
+}
+
 .link {
     color: #023044;
 }
 
-.form-panel, .feature-panel {
+.form-panel {
     padding: 35px 40px 30px 40px;
     border-radius: 5px;
-    max-width: 400px;
     color: #ffffff;
-}
-
-.form-panel {
     background: rgba(255, 255, 255, .5);
+    max-width: 400px;
 }
 
 .feature-panel {
-    background-color: rgba(2,48,68,.9);
+    padding: 35px 20px 30px 20px;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: rgba(2, 48, 68, .9);
+    max-width: 1024px;
 }
 
 .verticalSpacer {
@@ -68,6 +77,15 @@ section {
 .text {
     padding-left: 10px;
     padding-right: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.dimension-icon img {
+    max-width: 120px;
 }
 
 cn-header md-toolbar {

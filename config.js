@@ -14,10 +14,12 @@ System.config({
         "angular-aria": "node_modules/angular-aria/angular-aria.js",
         "angular-material": "node_modules/angular-material/angular-material.js",
         "angular-resource": "node_modules/angular-resource/angular-resource.js",
+        "angular-messages": "node_modules/angular-messages/angular-messages.js",
         "jquery": "node_modules/jquery/dist/jquery.js",
         "lodash": "node_modules/lodash/index.js",
         "angular-ui-router": "node_modules/angular-ui-router/release/angular-ui-router.js",
-        "angular-local-storage": "node_modules/angular-local-storage/dist/angular-local-storage.js"
+        "angular-local-storage": "node_modules/angular-local-storage/dist/angular-local-storage.js",
+        "angular-ui": "source/scripts/ui-bootstrap-tpls-0.13.3.js"
     },
     "defaultJSExtensions": true,
     "meta": {

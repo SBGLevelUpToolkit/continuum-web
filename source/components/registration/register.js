@@ -16,10 +16,8 @@ var app = angular.module('cn.registration', [ 'cn.auth', 'ui.router' ])
                     authService.register(data).then(function(response) {
                             $state.go('teamSelection');
                         },
-                        function(err) {
-                            if (err) {
-                                $scope.message = err.error_description;
-                            }
+                        (err) => {
+                            this.formInvalid = true;
                         });
                 };
             }

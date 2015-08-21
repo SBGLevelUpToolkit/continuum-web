@@ -3,18 +3,18 @@ import 'angular-resource';
 import 'angular-local-storage';
 import './hostNameProvider';
 
-var app = angular.module('cn.teamFactory', [ 'cn.hostName' ]);
-app.factory('teamService', [
+var app = angular.module('cn.assessmentFactory', [ 'cn.hostName' ]);
+app.factory('assessmentService', [
     '$http', '$q', 'hostName', function($http, $q, hostName) {
 
         var serviceBase = hostName + '/';
-        var teamServiceFactory = {};
+        var assessmentServiceFactory = {};
 
-        var _getTeams = function() {
+        var _getAssessment = function() {
 
             var deferred = $q.defer();
 
-            $http.get(serviceBase + 'api/team').success(function(response) {
+            $http.get(serviceBase + 'api/assessment').success(function(response) {
                 deferred.resolve(response);
             }).error(function(err, status) {
                 deferred.reject(err);
@@ -23,11 +23,11 @@ app.factory('teamService', [
             return deferred.promise;
         };
 
-        var _createTeam = function(team) {
+        var _createAssessment = function(team) {
 
             var deferred = $q.defer();
 
-            $http.put(serviceBase + 'api/team', team).success(function(response) {
+            $http.put(serviceBase + 'api/assessment', team).success(function(response) {
                 deferred.resolve(response);
             }).error(function(err, status) {
                 deferred.reject(err);
@@ -36,11 +36,11 @@ app.factory('teamService', [
             return deferred.promise;
         };
 
-        var _updateTeam = function(team) {
+        var _updateAssessment = function(team) {
 
             var deferred = $q.defer();
 
-            $http.post(serviceBase + 'api/team', team)
+            $http.post(serviceBase + 'api/assessment', team)
                 .success(function(response) {
 
                     deferred.resolve(response);
@@ -53,11 +53,11 @@ app.factory('teamService', [
 
         };
 
-        var _deleteTeam = function(team) {
+        var _deleteAssessment = function(team) {
 
             var deferred = $q.defer();
 
-            $http.delete(serviceBase + 'api/team', team)
+            $http.delete(serviceBase + 'api/assessment', team)
                 .success(function(response) {
 
                     deferred.resolve(response);
@@ -70,12 +70,12 @@ app.factory('teamService', [
 
         };
 
-        teamServiceFactory.getTeams = _getTeams;
-        teamServiceFactory.createTeam = _createTeam;
-        teamServiceFactory.updateTeam = _updateTeam;
-        teamServiceFactory.deleteTeam = _deleteTeam;
+        assessmentServiceFactory.getAssessment = _getAssessment;
+        assessmentServiceFactory.createAssessment = _createAssessment;
+        assessmentServiceFactory.updateAssessment = _updateAssessment;
+        assessmentServiceFactory.deleteAssessment = _deleteAssessment;
 
-        return teamServiceFactory;
+        return assessmentServiceFactory;
     }
 ]);
 

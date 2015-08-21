@@ -2,27 +2,36 @@
     <div class="layout-content small" flex layout="column" layout-fill>
         <md-content layout-padding class="form-panel">
             <section layout="row" layout-align="center center">
-                <div class="line"></div><div class="text">SIGN IN</div><div class="line"></div>
+                <div class="line"></div>
+                <div class="text">SIGN IN</div>
+                <div class="line"></div>
             </section>
             <form id="form" name="form" novalidate>
                 <md-input-container>
                     <label>Email</label>
                     <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
 
-                    <div ng-show="form.$submitted || form.userName.$touched">
-                        <div ng-show="form.userName.$error.required">Required</div>
+                    <div ng-messages="form.userName.$error">
+                        <div ng-show="form.$submitted || form.userName.$touched">
+                            <div ng-message="required">This is required.</div>
+                        </div>
                     </div>
                 </md-input-container>
                 <md-input-container>
                     <label>Password</label>
                     <input id="password" name="password" ng-model="ctrl.user.password" required>
 
-                    <div ng-show="form.$submitted || form.password.$touched">
-                        <div ng-show="form.password.$error.required">Required</div>
+                    <div ng-messages="form.password.$error">
+                        <div ng-show="form.$submitted || form.password.$touched">
+                            <div ng-message="required">This is required.</div>
+                        </div>
                     </div>
                 </md-input-container>
+
+                <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
+
                 <section layout="row" layout-align="center center">
-                    <md-button class="md-raised" ng-click="form.$valid && ctrl.checkUser(ctrl.user)">Login</md-button>
+                    <md-button class="md-raised" ng-click="form.$valid && ctrl.register(ctrl.user)">Login</md-button>
                 </section>
             </form>
         </md-content>
