@@ -1,7 +1,7 @@
 import 'angular-mocks';
-import './login';
+import './register';
 
-describe('Login Directive', function() {
+describe('Register Directive', function() {
 
     var scope,
         elm,
@@ -9,14 +9,14 @@ describe('Login Directive', function() {
         passPromise;
 
     beforeEach(function() {
-        angular.mock.module('cn.login');
+        angular.mock.module('cn.register');
     });
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
         var compile = _$compile_;
         scope = _$rootScope_.$new();
 
-        elm = angular.element('<cn-login></cn-login>');
+        elm = angular.element('<cn-register></cn-register>');
         compile(elm)(scope);
         scope.$digest();
         ctrl = elm.isolateScope().ctrl;
@@ -28,7 +28,7 @@ describe('Login Directive', function() {
 
     beforeEach(inject(function(_authService_, $q) {
         var authService = _authService_;
-        spyOn(authService, "login").and.callFake(function() {
+        spyOn(authService, "saveRegistration").and.callFake(function() {
             return (passPromise) ? $q.when() : $q.reject();
         });
     }));
@@ -51,14 +51,14 @@ describe('Login Directive', function() {
         expect(password.val()).toBe('kensentme');
     });
 
-    it('should not call login when userName is invalid', inject(function() {
+    it('should not call register when userName is invalid', inject(function() {
         scope.$apply(function() {
             ctrl.user = {
                 password: "kensentme!"
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
+        var mySpy = spyOn(elm.isolateScope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
@@ -68,20 +68,20 @@ describe('Login Directive', function() {
         expect(mySpy).not.toHaveBeenCalled();
     }));
 
-    it('should not call login when password is invalid', inject(function() {
+    it('should not call register when password is invalid', inject(function() {
         scope.$apply(function() {
             ctrl.user = {
                 userName: "br@ders.co.za"
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
+        var mySpy = spyOn(elm.isolateScope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
     }));
 
-    it('should call home state when authorization is successful', inject(function(authService, $state) {
+    it('should call teamSelection state when registration is successful', inject(function(authService, $state) {
         passPromise = true;
 
         var user = {
@@ -89,9 +89,9 @@ describe('Login Directive', function() {
             password: "kensentme!"
         };
 
-        ctrl.login(user);
+        ctrl.register(user);
         scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('home');
+        expect($state.go).toHaveBeenCalledWith('teamSelection');
     }));
 
     it('should set an invalid property when authorization is unsuccessful', inject(function(authService, $state) {
@@ -102,7 +102,7 @@ describe('Login Directive', function() {
             password: "kensentme!"
         };
 
-        ctrl.login(user);
+        ctrl.register(user);
         scope.$digest();
         expect($state.go).not.toHaveBeenCalled();
         expect(ctrl.formInvalid).toBe(true);

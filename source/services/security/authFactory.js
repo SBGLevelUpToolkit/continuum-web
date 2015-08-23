@@ -1,7 +1,7 @@
 import angular from 'angular';
 import 'angular-resource';
 import 'angular-local-storage';
-import './hostNameProvider';
+import '../hostNameProvider';
 
 var app = angular.module('cn.auth', [ 'cn.hostName', 'LocalStorageModule' ]);
 app.factory('authService', [
@@ -51,7 +51,6 @@ app.factory('authService', [
         };
 
         var _logOut = function() {
-
             localStorageService.remove('authorizationData');
 
             _authentication.isAuth = false;

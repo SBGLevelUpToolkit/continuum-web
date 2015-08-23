@@ -5,7 +5,7 @@ import './container/container';
 import './header/header';
 import './sideNav/sideNav';
 import './login/login';
-import './registration/register';
+import './register/register';
 import './goals/goals';
 import './teamSelection/teamSelection';
 import './assessment/assessment';
@@ -15,7 +15,7 @@ var app = angular.module('cn.components', [
     'cn.header',
     'cn.sideNav',
     'cn.login',
-    'cn.registration',
+    'cn.register',
     'cn.goals',
     'cn.teamSelection',
     'cn.assessment'

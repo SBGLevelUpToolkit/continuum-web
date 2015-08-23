@@ -1,16 +1,37 @@
 <?xml version="1.0"?>
 <testsuites>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-19T11:32:47" id="0" hostname="Bretts-MacBook-Pro.local">
+  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-23T19:02:17" id="0" hostname="Bretts-MacBook-Pro.local">
     <properties>
-      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"/>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"/>
     </properties>
   </testsuite>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-19T11:32:48" id="0" hostname="Bretts-MacBook-Pro.local" tests="2" errors="0" failures="0" time="0.093">
+  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-23T19:02:18" id="0" hostname="Bretts-MacBook-Pro.local" tests="23" errors="0" failures="0" time="2.073">
     <properties>
-      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36"/>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"/>
     </properties>
-    <testcase name="should return the correct host name" time="0.015" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).hostnameProvider"/>
-    <testcase name="should not call login when input is invalid" time="0.078" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).login Directive template"/>
+    <testcase name="should get all dimensions" time="0.072" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Assessment Directive"/>
+    <testcase name="should bind the content" time="0.037" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
+    <testcase name="should not call login when userName is invalid" time="0.029" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
+    <testcase name="should not call login when password is invalid" time="0.017" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
+    <testcase name="should call home state when authorization is successful" time="0.019" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
+    <testcase name="should set an invalid property when authorization is unsuccessful" time="0.018" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
+    <testcase name="should bind the content" time="0.016" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
+    <testcase name="should not call register when userName is invalid" time="0.013" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
+    <testcase name="should not call register when password is invalid" time="0.017" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
+    <testcase name="should call teamSelection state when registration is successful" time="0.015" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
+    <testcase name="should set an invalid property when authorization is unsuccessful" time="0.012" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
+    <testcase name="should set the content-type header" time="0.004" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory Login"/>
+    <testcase name="should store auth data when login is successful" time="0.004" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory Login"/>
+    <testcase name="should remove stored auth data when login is unsuccessful" time="0.003" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory Login"/>
+    <testcase name="should remove stored auth data when login is unsuccessful" time="0.002" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory SaveRegistration"/>
+    <testcase name="should call the register web service" time="1.786" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory SaveRegistration"/>
+    <testcase name="should remove stored auth data when login is unsuccessful" time="0.002" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthFactory Logout"/>
+    <testcase name="should intercept web service calls" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthInterceptor"/>
+    <testcase name="should add authorization headers to the request" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthInterceptor"/>
+    <testcase name="should redirect to login when authorization is unsuccessful" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthInterceptor"/>
+    <testcase name="should return an error when the web service response returns an error" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Security Services AuthInterceptor"/>
+    <testcase name="should return the correct host name" time="0.002" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Factory Hostname Provider"/>
+    <testcase name="should create a factory" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Factory CreateFactory"/>
     <system-out><![CDATA[
 ]]></system-out>
     <system-err/>

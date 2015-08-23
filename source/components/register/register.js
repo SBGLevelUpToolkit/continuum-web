@@ -1,8 +1,8 @@
 import template from './register.html!text';
 import 'angular-ui-router';
-import '../../services/authFactory';
+import '../../services/security/authFactory';
 
-var app = angular.module('cn.registration', [ 'cn.auth', 'ui.router' ])
+var app = angular.module('cn.register', [ 'cn.auth', 'ui.router' ])
     .directive('cnRegister', function() {
         return {
             scope: {},
@@ -10,10 +10,10 @@ var app = angular.module('cn.registration', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($scope, $http, $state, authService) {
+            controller: /*@ngInject*/function controller($scope, $state, authService) {
                 this.master = {};
                 this.register = function(data) {
-                    authService.register(data).then(function(response) {
+                    authService.saveRegistration(data).then(function(response) {
                             $state.go('teamSelection');
                         },
                         (err) => {

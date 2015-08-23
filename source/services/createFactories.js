@@ -5,3 +5,4 @@ createResourceFactory('dimension');
 createResourceFactory('capability');
 createResourceFactory('assessment');
 createResourceFactory('team');
+createResourceFactory('goal');

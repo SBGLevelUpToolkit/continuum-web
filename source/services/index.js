@@ -1,10 +1,7 @@
 import angular from 'angular';
-import './authInterceptorService';
+import './security/authInterceptorService';
 import './hostNameProvider';
-
-import './authFactory';
-//import './teamFactory';
-//import './assessmentFactory';
+import './security/authFactory';
 import './createFactories'
 
 var app = angular.module('cn.services', [

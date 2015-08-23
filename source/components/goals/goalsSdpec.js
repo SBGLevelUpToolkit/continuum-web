@@ -1,5 +1,5 @@
 import 'angular-mocks';
-import './login';
+import './goals';
 
 describe('login Directive', function() {
 

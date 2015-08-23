@@ -1,4 +1,3 @@
-import 'angular';
 import 'angular-mocks';
 
 describe('directives', function() {
