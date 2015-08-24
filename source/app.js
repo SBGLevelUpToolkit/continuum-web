@@ -22,7 +22,6 @@ angular.module('Continuum', [
                      $mdThemingProvider,
                      hostNameProvider) {
         //$compileProvider.debugInfoEnabled(false);
-        $httpProvider.interceptors.push('authInterceptorService');
 
         $mdThemingProvider.theme('default')
             .primaryPalette('indigo')

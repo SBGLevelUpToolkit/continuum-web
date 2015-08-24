@@ -8,7 +8,6 @@ app.factory('authInterceptorService', [
         var authInterceptorServiceFactory = {};
 
         var _request = function(config) {
-
                 config.headers = config.headers || {};
 
                 var authData = localStorageService.get('authorizationData');
@@ -31,6 +30,9 @@ app.factory('authInterceptorService', [
 
         return authInterceptorServiceFactory;
     }
-]);
+])
+    .config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
+    }]);;
 
 export default app;
