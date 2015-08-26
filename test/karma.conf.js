@@ -63,7 +63,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
         //reporters: [ 'spec', 'junit', 'coverage' ],
-        reporters: [ 'spec', 'junit' ],
+        reporters: [ 'spec' ],
 
         coverageReporter: {
             type: 'html',
@@ -87,6 +87,6 @@ module.exports = function(config) {
 
         captureTimeout: 30000,
 
-        singleRun: false
+        singleRun: true
     });
 };

@@ -20,7 +20,7 @@ describe('Factory', function() {
 
     describe('CreateFactory', function() {
         it('should create a factory', inject(function() {
-            createResourceFactory('broders');
+            //createResourceFactory('broders');
 
         }));
     });
