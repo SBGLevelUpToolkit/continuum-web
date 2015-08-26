@@ -1,15 +1,8 @@
-<md-content flex layout-padding class="feature-panel">
-    <section flex>
-        <form id="form" name="form" novalidate>
-            <div layout="row" layout-fill layout-align="end center">
-
-                    <div class="dimension-icon" flex ng-repeat="dimension in ctrl.dimensions">
-                        <div><img ng-src="images/{{dimension.ImageName}}"></div>
-                    </div>
-
-                <!--<md-button class="md-raised" ng-click="form.$valid && ctrl.checkUser(ctrl.user)" style="font-weight: bold">SUBMIT ASSESSMENT-->
-                <!--</md-button>-->
-            </div>
-        </form>
-    </section>
-</md-content>
+<form id="form" name="form" novalidate flex layout>
+    <div flex>Capabilities</div>
+    <div class="overlap" layout layout-fill layout-align="center end">
+        <div class="dimension-icon" flex ng-repeat="dimension in ctrl.dimensions">
+            <div><img ng-src="images/{{dimension.ImageName}}"></div>
+        </div>
+    </div>
+</form>

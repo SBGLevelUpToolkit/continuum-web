@@ -50,7 +50,7 @@ angular.module('Continuum', [
             })
             .state('home.assessment', {
                 url: '/assessment',
-                template: '<cn-assessment flex layout style="height: 600px;"></cn-assessment>'
+                template: '<cn-assessment flex layout class="feature-panel"></cn-assessment>'
             })
             .state('teamSelection', {
                 url: '/teamSelection',

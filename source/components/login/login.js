@@ -12,10 +12,10 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             bindToController: true,
             controller: /*@ngInject*/function controller($scope, $state, authService) {
                 this.master = {};
-                //this.user = {
-                //    userName: "alice@example.com",
-                //    password: "Password1!"
-                //};
+                this.user = {
+                    userName: "alice@example.com",
+                    password: "Password1!"
+                };
                 this.login = function(data) {
                     return authService.login(data).then(function(response) {
                             $state.go('home');
