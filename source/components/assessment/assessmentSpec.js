@@ -1,47 +1,47 @@
 import 'angular-mocks';
 import './assessment';
-import '../../services/createFactories'
+import '../../services/createFactories';
 
 describe('Assessment Directive', function() {
 
     var scope,
         elm,
         ctrl,
-        passPromise;
+        compile;
 
     var dimensions = [
         {
-            "Id": 1,
-            "Capabilities": null,
-            "Name": "Strategy Alignment",
-            "DisplayOrder": 0,
-            "ImageName": "icon_strategy_alignment_small.png"
+            'Id': 1,
+            'Capabilities': null,
+            'Name': 'Strategy Alignment',
+            'DisplayOrder': 0,
+            'ImageName': 'icon_strategy_alignment_small.png'
         },
         {
-            "Id": 2,
-            "Capabilities": null,
-            "Name": "Planning and Requirements",
-            "DisplayOrder": 0,
-            "ImageName": "icon_planning_requirements_small.png"
+            'Id': 2,
+            'Capabilities': null,
+            'Name': 'Planning and Requirements',
+            'DisplayOrder': 0,
+            'ImageName': 'icon_planning_requirements_small.png'
         }
     ];
 
     var capabilities = [
         {
-            "Description": "Any alignment to Strategy is coincidental or opportunistic",
-            "Level": 1,
-            "Predecessors": null,
-            "DisplayOrder": 0,
-            "Id": 254,
-            "RequiredCapabilities": []
+            'Description': 'Any alignment to Strategy is coincidental or opportunistic',
+            'Level': 1,
+            'Predecessors': null,
+            'DisplayOrder': 0,
+            'Id': 254,
+            'RequiredCapabilities': []
         },
         {
-            "Description": "Upfront engagement with stakeholders to ensure Business and Technical Alignment",
-            "Level": 2,
-            "Predecessors": null,
-            "DisplayOrder": 0,
-            "Id": 255,
-            "RequiredCapabilities": [ 254 ]
+            'Description': 'Upfront engagement with stakeholders to ensure Business and Technical Alignment',
+            'Level': 2,
+            'Predecessors': null,
+            'DisplayOrder': 0,
+            'Id': 255,
+            'RequiredCapabilities': [ 254 ]
         }
     ];
 
@@ -53,7 +53,7 @@ describe('Assessment Directive', function() {
     });
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
-        var compile = _$compile_;
+        compile = _$compile_;
         scope = _$rootScope_.$new();
 
     }));
@@ -62,8 +62,7 @@ describe('Assessment Directive', function() {
         spyOn($state, 'go');
     }));
 
-    it('should get all dimensions', inject(function(_$compile_, $httpBackend, dimensionService) {
-        var compile = _$compile_;
+    it('should get all dimensions', inject(function($httpBackend, dimensionService) {
         $httpBackend.expectGET('undefined/api/dimension').respond(200, dimensions);
         elm = angular.element('<cn-assessment></cn-assessment>');
         compile(elm)(scope);

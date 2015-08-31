@@ -1,5 +1,5 @@
 import angular from 'angular';
-import createResourceFactory from './factoryUtil'
+import createResourceFactory from './factoryUtil';
 
 createResourceFactory('dimension');
 createResourceFactory('capability');

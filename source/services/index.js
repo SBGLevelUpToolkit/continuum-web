@@ -2,7 +2,7 @@ import angular from 'angular';
 import './security/authInterceptorService';
 import './hostNameProvider';
 import './security/authFactory';
-import './createFactories'
+import './createFactories';
 
 var app = angular.module('cn.services', [
     'cn.authInterceptor',

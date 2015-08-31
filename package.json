@@ -76,7 +76,7 @@
     "build:dist": "node build && npm run annotate && npm run uglify",
     "postbuild:dist": "npm run copy:html && npm run copy:fonts && npm run copy:css && npm run copy:images && npm run replaceSrc",
     "preserve:dev": "npm run replaceEnv && npm-css source/stylesheets/vendor.css > source/stylesheets/bundle.css",
-    "serve:dev": "npm run startMockServer & meemoo --livereload --open --base source",
+    "serve:dev": "npm run startMockServer & meemoo --open --base source",
     "serve:dist": "npm run startMockServer & meemoo 'dist' --compress --open",
     "startMockServer": "cd ../mocks && node startMockServer",
     "stopMockServer": "cd ../mocks && node stopMockServer",

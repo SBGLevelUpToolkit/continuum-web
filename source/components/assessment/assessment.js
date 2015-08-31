@@ -12,7 +12,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
             bindToController: true,
             controller: /*@ngInject*/function controller($resource, $scope, $http, $state, dimensionService) {
                 this.dimensions = dimensionService.query();
-                //dimensionService.get({ dimension: 1 });
+                this.fullDimension = dimensionService.get({ dimension: 1 });
             }
         };
     });

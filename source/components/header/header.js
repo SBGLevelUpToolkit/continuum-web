@@ -1,13 +1,17 @@
 import template from './header.html!text';
+import '../../services/security/authFactory';
 
-var app = angular.module('cn.header', [])
+var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
     .directive('cnHeader', function() {
         return {
             restrict: 'E',
             template: template,
-            controller: /*@ngInject*/ function($scope, $element, $mdSidenav) {
-                $scope.toggleSidenav = function() {
-                    $mdSidenav('cn-sidenav-left').toggle();
+            controllerAs: 'ctrl',
+            bindToController: true,
+            controller: /*@ngInject*/ function(authService, $state) {
+                this.signOut = function() {
+                    authService.logOut();
+                    $state.go('login');
                 };
             }
         };

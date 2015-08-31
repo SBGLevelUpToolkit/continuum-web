@@ -8,7 +8,11 @@ export default function createResourceFactory(resource) {
             var serviceBase = hostName + '/api/';
             var fullPath = serviceBase + resource + '/';
 
-            return $resource(fullPath + ':' + resource, { resource: "@" + resource });
+            return $resource(fullPath + ':' + resource, { resource:'@' + resource }, {
+                update: {
+                    method: 'PUT'
+                }
+            });
         }
     ]);
-};
+}

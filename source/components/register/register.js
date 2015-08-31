@@ -5,7 +5,6 @@ import '../../services/security/authFactory';
 var app = angular.module('cn.register', [ 'cn.auth', 'ui.router' ])
     .directive('cnRegister', function() {
         return {
-            scope: {},
             restrict: 'E',
             template: template,
             controllerAs: 'ctrl',

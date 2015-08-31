@@ -9,6 +9,7 @@ import './register/register';
 import './goals/goals';
 import './teamSelection/teamSelection';
 import './assessment/assessment';
+import './forgotPassword/forgotPassword';
 
 var app = angular.module('cn.components', [
     'cn.container',
@@ -18,7 +19,8 @@ var app = angular.module('cn.components', [
     'cn.register',
     'cn.goals',
     'cn.teamSelection',
-    'cn.assessment'
+    'cn.assessment',
+    'cn.forgotPassword'
 ]);
 
 export default app;

@@ -28,7 +28,7 @@ describe('Register Directive', function() {
 
     beforeEach(inject(function(_authService_, $q) {
         var authService = _authService_;
-        spyOn(authService, "saveRegistration").and.callFake(function() {
+        spyOn(authService, 'saveRegistration').and.callFake(function() {
             return (passPromise) ? $q.when() : $q.reject();
         });
     }));
@@ -42,8 +42,8 @@ describe('Register Directive', function() {
 
         scope.$apply(function() {
             ctrl.user = {
-                userName: "br@ders.co.za",
-                password: "kensentme"
+                userName: 'br@ders.co.za',
+                password: 'kensentme'
             };
         });
 
@@ -54,7 +54,7 @@ describe('Register Directive', function() {
     it('should not call register when userName is invalid', inject(function() {
         scope.$apply(function() {
             ctrl.user = {
-                password: "kensentme!"
+                password: 'kensentme!'
             };
         });
 
@@ -63,7 +63,7 @@ describe('Register Directive', function() {
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
 
-        ctrl.user.userName = "brders.co.za";
+        ctrl.user.userName = 'brders.co.za';
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
     }));
@@ -71,7 +71,7 @@ describe('Register Directive', function() {
     it('should not call register when password is invalid', inject(function() {
         scope.$apply(function() {
             ctrl.user = {
-                userName: "br@ders.co.za"
+                userName: 'br@ders.co.za'
             };
         });
 
@@ -85,8 +85,8 @@ describe('Register Directive', function() {
         passPromise = true;
 
         var user = {
-            userName: "br@ders.co.za",
-            password: "kensentme!"
+            userName: 'br@ders.co.za',
+            password: 'kensentme!'
         };
 
         ctrl.register(user);
@@ -98,8 +98,8 @@ describe('Register Directive', function() {
         passPromise = false;
 
         var user = {
-            userName: "br@ders.co.za",
-            password: "kensentme!"
+            userName: 'br@ders.co.za',
+            password: 'kensentme!'
         };
 
         ctrl.register(user);

@@ -1,6 +1,6 @@
 import 'angular-mocks';
 import './hostNameProvider';
-import createResourceFactory from './factoryUtil'
+import createResourceFactory from './factoryUtil';
 
 describe('Factory', function() {
 

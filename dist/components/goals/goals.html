@@ -1,47 +1,72 @@
-<div layout="row" flex layout-align="center center">
+<div md-theme="continuumDark" layout="column" flex layout-align="start center">
+    <!--<img src="images/logo.png" style="max-width:300px; max-height:300px;"/>-->
+
     <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
-        <md-content  class="feature-panel md-default-theme" flex="40">
-            <div layout="row" layout-align="center center">
+        <md-content class="feature-panel" flex="40" style="position: relative;">
+            <img ng-show="ctrl.loading" src="images/loading.gif" style="position: absolute; left: 95px; top: 65px"/>
+
+            <div layout layout-align="center center">
                 <div class="line" flex></div>
-                <div class="text">SIGN IN</div>
-                <div class="line" flex></div>
-            </div>
-            <section>
-                <form id="form" name="form" novalidate>
-                    <md-input-container>
-                        <label>Email</label>
-                        <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
-                        <div ng-messages="form.userName.$error.required">
-                            <!--<div ng-show="form.$submitted || form.userName.$touched">-->
-                                <div ng-message="required">This is required.</div>
-                            <!--</div>-->
-                        </div>
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Password</label>
-                        <input id="password" name="password" ng-model="ctrl.user.password" required>
-                        <div ng-messages="form.password.$error.required">
-                            <!--<div ng-show="form.$submitted || form.password.$touched">-->
-                                <div ng-message="required">This is required.</div>
-                            <!--</div>-->
-                        </div>
-                    </md-input-container>
-                    <div layout="row" layout-align="center center">
-                        <md-button class="md-raised" ng-click="form.$valid && ctrl.checkUser(ctrl.user)" style="font-weight: bold">SIGN IN</md-button>
-                    </div>
-                </form>
-            </section>
-            <section layout layout-align="center">
-                <div class="link" ui-sref="forgotPassword">Forgot Password?</div>
-            </section>
-            <div class="verticalSpacer" layout>
+                <div class="text">GOALS</div>
                 <div class="line" flex></div>
             </div>
-            <section layout>
-                <div flex="75">Don't have an account?</div>
-                <div class="link" flex="25" ui-sref="register">Sign Up</div>
-            </section>
+            <div layout flex layout-align="center center" class="top-spacer">
+                View and create goals for your team
+            </div>
+            <div class="top-spacer"></div>
+            <table width="100%">
+                <tr>
+                    <th>Dimension</th>
+                    <th>Capability</th>
+                    <th>Notes</th>
+                    <th>DueDate</th>
+                    <th>Completed</th>
+                </tr>
+                <tr ng-repeat="goal in ctrl.goals">
+                    <td>{{goal.Dimension}}</td>
+                    <td>{{goal.Capability}}</td>
+                    <td>{{goal.Notes}}</td>
+                    <td>{{goal.DueDate}}</td>
+                    <td>{{goal.Completed}}</td>
+                </tr>
+            </table>
+            <div class="top-spacer"></div>
+            <form id="form" name="form" novalidate>
+                <md-autocomplete class="form-field"
+                                 ng-disabled="ctrl.isDisabled"
+                                 md-no-cache="ctrl.noCache"
+                                 md-selected-item="ctrl.selectedItem"
+                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                 md-search-text="ctrl.searchText"
+                                 md-selected-item-change="ctrl.selectedItemChange(item)"
+                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                 md-item-text="item.Name"
+                                 md-min-length="0"
+                                 placeholder="Select a goal"
+                                 md-menu-class="autocomplete-custom-template">
+                    <md-item-template>
+                        <span class="item-title">
+                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                              Team Lead: <strong>{{item.TeamLeadName}}</strong>
+                            </span>
+                        </span>
+                    </md-item-template>
+                    <md-not-found>
+                        No matches found for "{{ctrl.searchText}}".
+                    </md-not-found>
+                </md-autocomplete>
+
+                <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
+                <div class="top-spacer"></div>
+                <div layout="row" layout-align="center center">
+                    <md-button class="md-raised" ng-click="form.$valid && ctrl.submitTeam(ctrl.selectedItem, ctrl.searchText)"
+                               style="font-weight: bold">CREATE GOAL
+                    </md-button>
+                </div>
+            </form>
         </md-content>
     </div>
 </div>
-

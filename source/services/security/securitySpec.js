@@ -1,7 +1,7 @@
 import 'angular-mocks';
 import './authFactory';
 import './authInterceptorService';
-import '../../services/createFactories'
+import '../../services/createFactories';
 
 describe('Security', function() {
 
@@ -24,7 +24,7 @@ describe('Security', function() {
             authService = _authService_;
             localStorageService = _localStorageService_;
             authInterceptorService = _authInterceptorService_;
-        })
+        });
 
         localStorageService.remove('authorizationData');
     });
@@ -34,15 +34,15 @@ describe('Security', function() {
     describe('AuthFactory', function() {
 
         var user = {
-            userName: "br@ders.co.za",
-            password: "kensentme"
+            userName: 'br@ders.co.za',
+            password: 'kensentme'
         };
 
         describe('Login', function() {
 
             it('should set the content-type header', inject(function($httpBackend) {
                 $httpBackend.expectPOST('undefined/token', undefined, function(headers) {
-                    return headers[ 'Content-Type' ] == 'application/x-www-form-urlencoded';
+                    return headers[ 'Content-Type' ] === 'application/x-www-form-urlencoded';
                 }).respond(201, '');
 
                 authService.login(user);
@@ -136,7 +136,7 @@ describe('Security', function() {
                     return headers[ 'Authorization' ] === token;
                 }).
                     respond(function() {
-                        return "";
+                        return '';
                     });
 
                 $http({ method: 'GET', url: '/test', data: {}, headers: {} });
