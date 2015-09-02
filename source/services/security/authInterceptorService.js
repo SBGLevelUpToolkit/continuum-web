@@ -8,11 +8,13 @@ app.factory('authInterceptorService', [
         var authInterceptorServiceFactory = {};
 
         var _request = function(config) {
-            config.headers = config.headers || {};
+            if (config.url.indexOf('token') === -1) {
+                config.headers = config.headers || {};
 
-            var authData = localStorageService.get('authorizationData');
-            if (authData) {
-                config.headers.Authorization = 'Bearer ' + authData.token;
+                var authData = localStorageService.get('authorizationData');
+                if (authData) {
+                    config.headers.Authorization = 'Bearer ' + authData.token;
+                }
             }
 
             return config;
@@ -31,10 +33,10 @@ app.factory('authInterceptorService', [
         return authInterceptorServiceFactory;
     }
 ])
-    .config([
-        '$httpProvider', function($httpProvider) {
-            $httpProvider.interceptors.push('authInterceptorService');
-        }
-    ]);
+    //.config([
+    //    '$httpProvider', function($httpProvider) {
+    //        $httpProvider.interceptors.push('authInterceptorService');
+    //    }
+    //]);
 
 export default app;

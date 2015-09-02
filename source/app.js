@@ -35,9 +35,9 @@ angular.module('Continuum', [
             '800': 'F6921E',
             '900': '555', //select text
             'A100': 'rgba(255, 255, 255, .5)', //background
-            'A200': 'FFFFFF',
-            'A400': 'FFFFFF',
-            'A700': 'FFFFFF'
+            'A200': 'CB001D',
+            'A400': 'CB001D',
+            'A700': 'CB001D'
         });
 
         $mdThemingProvider.definePalette('continuum', continuumMap);
@@ -64,7 +64,7 @@ angular.module('Continuum', [
         $urlRouterProvider.otherwise('/login');
 
         $stateProvider
-            .state('login', {
+        .state('login', {
                 url: '/login',
                 template: '<cn-login flex layout></cn-login>'
             })

@@ -7,7 +7,11 @@ describe('Login Directive', function() {
         elm,
         ctrl,
         passPromise,
-        authService;
+        authService,
+        validUser = {
+            userName: 'br@ders.co.za',
+            password: 'kensentme!'
+        };
 
     beforeEach(function() {
         angular.mock.module('cn.login');
@@ -20,7 +24,7 @@ describe('Login Directive', function() {
         elm = angular.element('<cn-login></cn-login>');
         compile(elm)(scope);
         scope.$digest();
-        ctrl = elm.isolateScope().ctrl;
+        ctrl = elm.scope().ctrl;
     }));
 
     beforeEach(inject(function($state) {
@@ -59,7 +63,7 @@ describe('Login Directive', function() {
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
+        var mySpy = spyOn(elm.scope().ctrl, 'login');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
@@ -76,7 +80,7 @@ describe('Login Directive', function() {
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
+        var mySpy = spyOn(elm.scope().ctrl, 'login');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
@@ -84,13 +88,10 @@ describe('Login Directive', function() {
 
     it('should pass a valid object to login', inject(function() {
         scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme!'
-            };
+            ctrl.user = validUser;
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
+        var mySpy = spyOn(elm.scope().ctrl, 'login');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).toHaveBeenCalled();
@@ -98,26 +99,14 @@ describe('Login Directive', function() {
 
     it('should call home state when authorization is successful', inject(function($state) {
         passPromise = true;
-
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
-
-        ctrl.login(user);
+        ctrl.login(validUser);
         scope.$digest();
         expect($state.go).toHaveBeenCalledWith('home');
     }));
 
     it('should set an invalid property when authorization is unsuccessful', inject(function($state) {
         passPromise = false;
-
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
-
-        ctrl.login(user);
+        ctrl.login(validUser);
         scope.$digest();
         expect($state.go).not.toHaveBeenCalled();
         expect(ctrl.formInvalid).toBe(true);

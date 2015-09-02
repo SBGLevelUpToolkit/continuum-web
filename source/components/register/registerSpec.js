@@ -1,12 +1,17 @@
 import 'angular-mocks';
 import './register';
 
-describe('Register Directive', function() {
+fdescribe('Register Directive', function() {
 
     var scope,
         elm,
         ctrl,
-        passPromise;
+        passPromise,
+        authService,
+        validUser = {
+            userName: 'br@ders.co.za',
+            password: 'kensentme!'
+        };
 
     beforeEach(function() {
         angular.mock.module('cn.register');
@@ -19,7 +24,7 @@ describe('Register Directive', function() {
         elm = angular.element('<cn-register></cn-register>');
         compile(elm)(scope);
         scope.$digest();
-        ctrl = elm.isolateScope().ctrl;
+        ctrl = elm.scope().ctrl;
     }));
 
     beforeEach(inject(function($state) {
@@ -27,7 +32,7 @@ describe('Register Directive', function() {
     }));
 
     beforeEach(inject(function(_authService_, $q) {
-        var authService = _authService_;
+        authService = _authService_;
         spyOn(authService, 'saveRegistration').and.callFake(function() {
             return (passPromise) ? $q.when() : $q.reject();
         });
@@ -51,14 +56,14 @@ describe('Register Directive', function() {
         expect(password.val()).toBe('kensentme');
     });
 
-    it('should not call register when userName is invalid', inject(function() {
+    it('should not call register when userName is invalid', function() {
         scope.$apply(function() {
             ctrl.user = {
                 password: 'kensentme!'
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'register');
+        var mySpy = spyOn(elm.scope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
@@ -66,35 +71,74 @@ describe('Register Directive', function() {
         ctrl.user.userName = 'brders.co.za';
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should not call register when password is invalid', inject(function() {
+    it('should not call register when password is invalid', function() {
         scope.$apply(function() {
             ctrl.user = {
                 userName: 'br@ders.co.za'
             };
         });
 
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'register');
+        var mySpy = spyOn(elm.scope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call teamSelection state when registration is successful', inject(function(authService, $state) {
-        passPromise = true;
+    describe('When registration is successful', function() {
 
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
+        let loginPassPromise;
 
-        ctrl.register(user);
-        scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('teamSelection');
-    }));
+        beforeEach(inject(function($q) {
+            spyOn(authService, 'login').and.callFake(function() {
+                return (loginPassPromise) ? $q.when() : $q.reject();
+            });
+        }));
 
-    it('should set an invalid property when authorization is unsuccessful', inject(function(authService, $state) {
+        it('should call login', function() {
+            passPromise = true;
+
+            var user = {
+                userName: 'br@ders.co.za',
+                password: 'kensentme!'
+            };
+
+            ctrl.register(user);
+            scope.$digest();
+            expect(authService.login).toHaveBeenCalled();
+        });
+
+        it('should call teamSelection state when login is successful', inject(function($state) {
+            passPromise = true;
+            loginPassPromise = true;
+
+            var user = {
+                userName: 'br@ders.co.za',
+                password: 'kensentme!'
+            };
+
+            ctrl.register(user);
+            scope.$digest();
+            expect($state.go).toHaveBeenCalledWith('teamSelection');
+        }));
+
+        it('should set an invalid property when login is unsuccessful', inject(function($state) {
+            loginPassPromise = false;
+
+            var user = {
+                userName: 'br@ders.co.za',
+                password: 'kensentme!'
+            };
+
+            ctrl.register(user);
+            scope.$digest();
+            expect($state.go).not.toHaveBeenCalled();
+            expect(ctrl.formInvalid).toBe(true);
+        }));
+    });
+
+    it('should set an invalid property when registration is unsuccessful', inject(function($state) {
         passPromise = false;
 
         var user = {

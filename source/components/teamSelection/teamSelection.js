@@ -9,40 +9,44 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, teamService, $log) {
-                this.teams = teamService.query();
-                this.submitTeam = function(item, text) {
-                    if (item) {
-                        teamService.save(item, function(response) {
-                                $state.go('login');
-                                console.log('TEAM SAVE SUCCESS');
+            controller: /*@ngInject*/function controller($state, teamService) {
+                this.teams = teamService.query((response) => {
+                        this.loading = false;
+                        $state.go('home');
+                    },
+                    (err) => {
+                        this.loading = false;
+                        this.formInvalid = true;
+                    });
+                this.submitTeam = (item) => {
+                    this.loading = true;
+                    if (typeof item === 'object') {
+                        teamService.save(item, (response) => {
+                                this.loading = false;
+                                $state.go('home');
                             },
                             (err) => {
-                                console.log('TEAM SAVE ERROR: ' + err);
+                                this.loading = false;
                                 this.formInvalid = true;
                             });
                     } else {
-                        teamService.update({ Name: text }, function(response) {
-                                $state.go('login');
-                                console.log('TEAM UPDATE SUCCESS');
+                        teamService.update({ Name: item }, (response) => {
+                                this.loading = false;
+                                $state.go('home');
                             },
-                            (err) => {
-                                console.log('TEAM UPDATE ERROR: ' + err);
+                            (response) => {
+                                this.loading = false;
                                 this.formInvalid = true;
                             });
                     }
                 };
 
+                this.searchTextChange = (text) => {
+                    this.selectedItem = text;
+                };
+
                 this.querySearch = (query) => {
                     return query ? this.teams.filter(this.createFilterFor(query)) : this.teams;
-                };
-
-                this.searchTextChange = function(text) {
-                    $log.info('Text changed to ' + text);
-                };
-
-                this.selectedItemChange = function(item) {
-                    $log.info('Item changed to ' + JSON.stringify(item));
                 };
 
                 this.createFilterFor = function(query) {

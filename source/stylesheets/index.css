@@ -193,3 +193,24 @@ cn-header md-toolbar img {
     height: 0px;
     width: 18px;
 }
+
+/*.btn1 {*/
+/*color : rgb(49, 46, 46);*/
+/*background-color: rgba(255, 222, 255, 0.4);*/
+/*border-radius: 10px 0 0 10px;*/
+/*font-size: 16px;*/
+/*}*/
+.btn1:not([disabled]):hover {
+    background-color: rgba(107, 103, 91, 0.1);
+    color: #555;
+}
+
+.btn1:not([disabled]):focus {
+    background-color: rgb(1, 57, 80);
+    color: #FFFFFF;
+}
+
+.btn1[disabled] {
+    color: rgb(187, 187, 187);
+    background-color: rgba(230, 230, 229, 0.1);
+}

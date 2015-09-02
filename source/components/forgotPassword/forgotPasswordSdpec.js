@@ -1,20 +1,55 @@
 import 'angular-mocks';
-import './login';
+import './forgotPassword';
 
-describe('Login Directive', function() {
+describe('ForgotPassword Directive', function() {
 
     var scope,
+        compile,
         elm,
         ctrl,
         passPromise,
-        authService;
+        authService,
+        $httpBackend;
+    
+    var teams = [
+        {
+            'Name': 'CSF',
+            'TeamLeadName': 'Brett Upton',
+            'AvatarUrl': 'images/ll.png',
+            'Id': 1
+        },
+        {
+            'Name': 'CSF2',
+            'TeamLeadName': 'Greg McIntyre',
+            'AvatarUrl': 'images/ll.png',
+            'Id': 1
+        },
+        {
+            'Name': 'CSF3',
+            'TeamLeadName': 'Louis Meiring',
+            'AvatarUrl': 'images/ll.png',
+            'Id': 1
+        },
+        {
+            'Name': 'Platform',
+            'TeamLeadName': 'Stuart Brande',
+            'AvatarUrl': 'images/ll.png',
+            'Id': 2
+        },
+        {
+            'Name': 'Payments',
+            'TeamLeadName': 'Nick McKenzie',
+            'AvatarUrl': 'images/ll.png',
+            'Id': 3
+        }
+    ];
 
     beforeEach(function() {
         angular.mock.module('cn.login');
     });
 
     beforeEach(inject(function(_$compile_, _$rootScope_) {
-        var compile = _$compile_;
+        compile = _$compile_;
         scope = _$rootScope_.$new();
 
         elm = angular.element('<cn-login></cn-login>');
@@ -33,6 +68,18 @@ describe('Login Directive', function() {
             return (passPromise) ? $q.when() : $q.reject();
         });
     }));
+
+    describe('When the directive compiles', function() {
+
+        beforeEach(inject(function(_$httpBackend_) {
+            $httpBackend = _$httpBackend_;
+        }));
+
+        it('should get all teams', inject(function() {
+            $httpBackend.expectGET('undefined/api/team').respond(200, teams);
+            expect(ctrl.teams.length).toEqual(4);
+        }));
+    });
 
     it('should bind the content', function() {
         var userName = elm.find('#userName'),

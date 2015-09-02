@@ -17,22 +17,23 @@ module.exports = function(config) {
 
             // File patterns for your application code, dependencies, and test suites
             files: [
-                "node_modules/babel-core/browser.js",
-                "node_modules/systemjs/dist/system.src.js",
-                "node_modules/systemjs/dist/system-polyfills.js",
-                "node_modules/es6-module-loader/dist/es6-module-loader.js",
-                "jspm_packages/**/*.js",
+                'node_modules/babel-core/browser.js',
+                'node_modules/systemjs/dist/system.src.js',
+                'node_modules/systemjs/dist/system-polyfills.js',
+                'node_modules/es6-module-loader/dist/es6-module-loader.js',
+                'jspm_packages/**/*.js',
                 'node_modules/plugin-text/text.js',
                 'node_modules/jquery/dist/jquery.js',
-                "node_modules/angular/angular.js",
-                "node_modules/angular-animate/angular-animate.js",
-                "node_modules/angular-aria/angular-aria.js",
-                "node_modules/angular-material/angular-material.js",
-                "node_modules/angular-resource/angular-resource.js",
-                "node_modules/angular-messages/angular-messages.js",
+                'node_modules/angular/angular.js',
+                'node_modules/angular-animate/angular-animate.js',
+                'node_modules/angular-aria/angular-aria.js',
+                'node_modules/angular-material/angular-material.js',
+                'node_modules/angular-resource/angular-resource.js',
+                'node_modules/angular-messages/angular-messages.js',
                 'node_modules/angular-mocks/angular-mocks.js',
-                "node_modules/angular-ui-router/release/angular-ui-router.js",
-                "node_modules/angular-local-storage/dist/angular-local-storage.js",
+                'node_modules/angular-ui-router/release/angular-ui-router.js',
+                'node_modules/angular-local-storage/dist/angular-local-storage.js',
+                'node_modules/lodash/index.js',
                 'test/unit/*.js',
                 'source/**/*'
             ],
@@ -41,16 +42,16 @@ module.exports = function(config) {
             // Good for adding test libraries and mock modules
             config: {
                 paths: {
-                    "babel": "node_modules/babel-core/browser.js",
-                    "systemjs": "node_modules/systemjs/dist/system.src.js",
-                    "system-polyfills": "node_modules/systemjs/dist/system-polyfills.js",
-                    "es6-module-loader": "node_modules/es6-module-loader/dist/es6-module-loader.js",
+                    'babel': 'node_modules/babel-core/browser.js',
+                    'systemjs': 'node_modules/systemjs/dist/system.src.js',
+                    'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
+                    'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js',
                     'angular-mocks': 'node_modules/angular-mocks/angular-mocks.js'
                 },
                 meta: {
-                    "angular-mocks": {
+                    'angular-mocks': {
                         deps: [
-                            "angular"
+                            'angular'
                         ]
                     }
                 }
