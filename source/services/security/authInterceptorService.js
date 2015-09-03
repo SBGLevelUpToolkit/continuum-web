@@ -33,10 +33,10 @@ app.factory('authInterceptorService', [
         return authInterceptorServiceFactory;
     }
 ])
-    //.config([
-    //    '$httpProvider', function($httpProvider) {
-    //        $httpProvider.interceptors.push('authInterceptorService');
-    //    }
-    //]);
+    .config([
+        '$httpProvider', function($httpProvider) {
+            $httpProvider.interceptors.push('authInterceptorService');
+        }
+    ]);
 
 export default app;

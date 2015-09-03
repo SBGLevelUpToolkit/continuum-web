@@ -1,13 +1,14 @@
 import 'angular-mocks';
 import './register';
 
-fdescribe('Register Directive', function() {
+describe('Register Directive', function() {
 
     var scope,
         elm,
         ctrl,
         passPromise,
         authService,
+        $httpBackend,
         validUser = {
             userName: 'br@ders.co.za',
             password: 'kensentme!'
@@ -17,9 +18,10 @@ fdescribe('Register Directive', function() {
         angular.mock.module('cn.register');
     });
 
-    beforeEach(inject(function(_$compile_, _$rootScope_) {
+    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
         var compile = _$compile_;
         scope = _$rootScope_.$new();
+        $httpBackend = _$httpBackend_;
 
         elm = angular.element('<cn-register></cn-register>');
         compile(elm)(scope);
@@ -151,4 +153,9 @@ fdescribe('Register Directive', function() {
         expect($state.go).not.toHaveBeenCalled();
         expect(ctrl.formInvalid).toBe(true);
     }));
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });

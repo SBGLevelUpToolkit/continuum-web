@@ -78,17 +78,6 @@ describe('Security', function() {
 
         describe('SaveRegistration', function() {
 
-            it('should remove stored auth data when login is unsuccessful', function() {
-                setAuthData();
-
-                authService.saveRegistration();
-
-                var authData = localStorageService.get('authorizationData');
-                expect(authData).toBeNull();
-                expect(authService.authentication.isAuth).toEqual(false);
-                expect(authService.authentication.userName).toEqual('');
-            });
-
             it('should call the register web service', inject(function($httpBackend) {
                 $httpBackend.expectPOST('undefined/api/account/register').respond(200, '');
                 authService.saveRegistration();
@@ -144,13 +133,13 @@ describe('Security', function() {
             }));
 
             it('should not place a token in the http request headers if no token is set', function() {
-                var config = authInterceptorService.request({ headers: {} });
+                var config = authInterceptorService.request({ url: 'fake', headers: {} });
                 expect(config.headers[ 'Authorization' ]).toBe(undefined);
             });
 
             it('should place a token in the http request headers after a token is set', function() {
                 setAuthData();
-                var config = authInterceptorService.request({ headers: {} });
+                var config = authInterceptorService.request({ url: 'fake', headers: {} });
                 expect(config.headers[ 'Authorization' ]).toBe(token);
             });
         });

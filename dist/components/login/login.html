@@ -13,7 +13,7 @@
             <form name="ctrl.form" novalidate>
                 <md-input-container>
                     <label>Email</label>
-                    <input type="email" name="userName" ng-model="ctrl.user.userName" required>
+                    <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
 
                     <div ng-messages="ctrl.form.userName.$error">
                         <div ng-show="ctrl.form.$submitted || ctrl.form.userName.$touched">
@@ -24,7 +24,7 @@
                 </md-input-container>
                 <md-input-container>
                     <label>Password</label>
-                    <input id="password" name="password" ng-model="ctrl.user.password" required>
+                    <input type="password" id="password" name="password" ng-model="ctrl.user.password" required>
 
                     <div ng-messages="ctrl.form.password.$error">
                         <div ng-show="ctrl.form.$submitted || ctrl.form.password.$touched">

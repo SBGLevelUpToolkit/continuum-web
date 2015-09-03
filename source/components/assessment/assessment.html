@@ -4,7 +4,7 @@
             <md-button ng-disabled="ctrl.currentLevel === ctrl.minLevel" ng-click="ctrl.getPreviousLevel()">Prev</md-button>
             <md-button ng-disabled="ctrl.currentLevel === ctrl.maxLevel" ng-click="ctrl.getNextLevel()">Next</md-button>
             <div ng-repeat="capability in ctrl.capabilitiesAtSelectedLevel">
-                <md-checkbox ng-click="ctrl.saveRating(capability)" aria-label="Checkbox 1">
+                <md-checkbox ng-click="ctrl.saveRating(capability)" aria-label="Rating checkbox">
                 </md-checkbox>
                 {{capability.Description}}
             </div>

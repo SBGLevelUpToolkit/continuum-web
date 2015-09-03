@@ -147,4 +147,9 @@ describe('TeamSelection Directive', function() {
             expect(ctrl.formInvalid).toBe(true);
         });
     });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });

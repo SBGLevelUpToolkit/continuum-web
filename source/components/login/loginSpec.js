@@ -7,6 +7,7 @@ describe('Login Directive', function() {
         elm,
         ctrl,
         passPromise,
+        $httpBackend,
         authService,
         validUser = {
             userName: 'br@ders.co.za',
@@ -17,9 +18,10 @@ describe('Login Directive', function() {
         angular.mock.module('cn.login');
     });
 
-    beforeEach(inject(function(_$compile_, _$rootScope_) {
+    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
         var compile = _$compile_;
         scope = _$rootScope_.$new();
+        $httpBackend = _$httpBackend_;
 
         elm = angular.element('<cn-login></cn-login>');
         compile(elm)(scope);
@@ -111,4 +113,9 @@ describe('Login Directive', function() {
         expect($state.go).not.toHaveBeenCalled();
         expect(ctrl.formInvalid).toBe(true);
     }));
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });

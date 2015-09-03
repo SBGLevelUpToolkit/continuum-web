@@ -1,5 +1,6 @@
 import 'angular-mocks';
 import './assessment';
+import 'lodash';
 import '../../services/createFactories';
 
 describe('Assessment Directive', function() {
@@ -8,21 +9,29 @@ describe('Assessment Directive', function() {
         elm,
         ctrl,
         compile,
-        $httpBackend;
+        $httpBackend,
+        dimensionService;
 
     var dimensions = [
         {
             'Id': 1,
             'Capabilities': null,
             'Name': 'Strategy Alignment',
-            'DisplayOrder': 0,
+            'DisplayOrder': 3,
             'ImageName': 'icon_strategy_alignment_small.png'
         },
         {
             'Id': 2,
             'Capabilities': null,
             'Name': 'Planning and Requirements',
-            'DisplayOrder': 0,
+            'DisplayOrder': 1,
+            'ImageName': 'icon_planning_requirements_small.png'
+        },
+        {
+            'Id': 3,
+            'Capabilities': null,
+            'Name': 'Number 2',
+            'DisplayOrder': 2,
             'ImageName': 'icon_planning_requirements_small.png'
         }
     ];
@@ -59,7 +68,7 @@ describe('Assessment Directive', function() {
                 'Id': 257,
                 'RequiredCapabilities': [ 254 ]
             }, {
-                'Description': 'Occasional engagement with stakeholders throughout delivery cycle to review business and technical alignment',
+                'Description': 'Occasional engagement with stakeholders throughout delivery cycle to review alignment',
                 'Level': 3,
                 'Predecessors': null,
                 'DisplayOrder': 0,
@@ -115,7 +124,7 @@ describe('Assessment Directive', function() {
                 'Id': 265,
                 'RequiredCapabilities': [ 262 ]
             }, {
-                'Description': 'Team independently innovates by creating new features or optimisations in support of or extending the strategy.',
+                'Description': 'Team independently innovates by creating new features or optimisations in support of the strategy.',
                 'Level': 5,
                 'Predecessors': null,
                 'DisplayOrder': 0,
@@ -135,46 +144,129 @@ describe('Assessment Directive', function() {
         angular.mock.module('cn.capabilityFactory');
     });
 
+    beforeEach(inject(function(_dimensionService_) {
+        dimensionService = _dimensionService_;
+        spyOn(dimensionService, 'query').and.callFake(function(successCb) {
+            successCb(dimensions);
+        });
+    }));
+
     beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
         compile = _$compile_;
         scope = _$rootScope_.$new();
         $httpBackend = _$httpBackend_;
-        $httpBackend.expectGET('undefined/api/dimension').respond(200, dimensions);
-        $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
+        elm = angular.element('<cn-assessment></cn-assessment>');
     }));
 
     describe('When the directive compiles', function() {
 
-        it('it should get all dimensions', function() {
-            elm = angular.element('<cn-assessment></cn-assessment>');
+        beforeEach(function() {
+            spyOn(dimensionService, 'get').and.stub();
             compile(elm)(scope);
             scope.$digest();
-            $httpBackend.flush();
             ctrl = elm.isolateScope().ctrl;
-            expect(ctrl.dimensions.length).toEqual(2);
         });
 
-        //it('it should sort the dimensions by displayOrder', function() {
-        //
-        //});
-        //
-        //it('it should select the first dimension as default', function() {
-        //    elm = angular.element('<cn-assessment></cn-assessment>');
-        //    compile(elm)(scope);
-        //    scope.$digest();
-        //    $httpBackend.flush();
-        //    ctrl = elm.isolateScope().ctrl;
-        //    expect(ctrl.dimensions.length).toEqual(2);
-        //});
-        //
-        //it('it should get all capabilities for the default dimension', function() {
-        //    elm = angular.element('<cn-assessment></cn-assessment>');
-        //    compile(elm)(scope);
-        //    scope.$digest();
-        //    $httpBackend.flush();
-        //    ctrl = elm.isolateScope().ctrl;
-        //    expect(ctrl.dimensions.length).toEqual(2);
-        //});
+        it('it should get all dimensions', function() {
+            expect(ctrl.dimensions.length).toEqual(3);
+        });
+
+        it('it should sort the dimensions by displayOrder', function() {
+            var orderedDimensions = _.pluck(ctrl.dimensions, 'DisplayOrder');
+            expect(orderedDimensions).toEqual([ 1, 2, 3 ]);
+        });
     });
 
+    describe('When the dimensions are sorted', function() {
+
+        it('it should select the first dimension as default', function() {
+            $httpBackend.expectGET('undefined/api/dimension/2').respond(200);
+            compile(elm)(scope);
+            scope.$digest();
+            ctrl = elm.isolateScope().ctrl;
+            $httpBackend.flush();
+        });
+
+        describe('When the first dimension is selected as default', function() {
+            beforeEach(function() {
+                $httpBackend.expectGET('undefined/api/dimension/2').respond(200, capabilities);
+                compile(elm)(scope);
+                scope.$digest();
+                ctrl = elm.isolateScope().ctrl;
+                $httpBackend.flush();
+            });
+
+            it('it should get all capabilities for the default dimension', function() {
+
+                expect(ctrl.fullDimension.Capabilities.length).toEqual(13);
+            });
+
+            it('it should find the minimum level for all the capabilities', function() {
+                expect(ctrl.minLevel).toEqual(1);
+            });
+
+            it('it should find the maximum level for all the capabilities', function() {
+                expect(ctrl.maxLevel).toEqual(5);
+            });
+
+            it('it should filter all capabilities to the minimum level', function() {
+                expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
+                expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
+            });
+
+            describe('When the level changes', function() {
+                it('it should filter all capabilities to the changed level', function() {
+                    ctrl.getNextLevel();
+                    scope.$digest();
+                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(2);
+                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(3);
+                    ctrl.getNextLevel();
+                    scope.$digest();
+                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(3);
+                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(2);
+                    ctrl.getPreviousLevel();
+                    scope.$digest();
+                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(2);
+                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(3);
+                    ctrl.getPreviousLevel();
+                    scope.$digest();
+                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
+                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
+                });
+            });
+
+            describe('When a rating is selected', function() {
+                it('it should call the save function', function() {
+                    spyOn(ctrl, 'saveRating');
+                    var checkboxes = elm.find('md-checkbox');
+                    checkboxes[ 0 ].click();
+                    expect(ctrl.saveRating).toHaveBeenCalled();
+                });
+
+                it('it should set the correct rating state', inject(function(_assessmentService_) {
+                    var assessmentService = _assessmentService_;
+                    spyOn(assessmentService, 'save').and.stub();
+                    var checkboxes = elm.find('md-checkbox');
+                    checkboxes[ 0 ].click();
+                    expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(true);
+                    checkboxes[ 0 ].click();
+                    expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(false);
+                }));
+
+                // Should we leave integration tests here?
+                it('it should set the correct rating object', inject(function(_assessmentService_) {
+                    $httpBackend.expect('POST', 'undefined/api/assessment',
+                        { 'AssessmentId': 1, 'CapabilityId': 254, 'CapabilityAchieved': true }).respond(200);
+                    var checkboxes = elm.find('md-checkbox');
+                    checkboxes[ 0 ].click();
+                    $httpBackend.flush();
+                }));
+            });
+        });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 });

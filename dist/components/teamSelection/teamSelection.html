@@ -1,31 +1,34 @@
 <div layout="column" flex layout-align="start center">
     <img src="images/logo.png" style="max-width:300px; max-height:300px;"/>
+
     <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
-        <md-content class="form-panel flex="40" style="position: relative;">
-            <img ng-show="ctrl.loading" src="images/loading.gif" style="position: absolute; left: 95px; top: 65px"/>
-            <div layout="row" layout-align="center center">
-                <div class="line" flex></div>
-                <div class="text">SELECT TEAM</div>
-                <div class="line" flex></div>
-            </div>
-            <div class="top-spacer">
-                Select your team from the list or create a new team
-            </div>
+        <md-content class="form-panel flex=" 40
+        " style="position: relative;">
+        <img ng-show="ctrl.loading" src="images/loading.gif" style="position: absolute; left: 95px; top: 65px"/>
+
+        <div layout="row" layout-align="center center">
+            <div class="line" flex></div>
+            <div class="text">SELECT TEAM</div>
+            <div class="line" flex></div>
+        </div>
+        <div class="top-spacer">
+            Select your team from the list or create a new team
+        </div>
         <div class="top-spacer"></div>
-            <form id="form" name="form" novalidate>
-                <md-autocomplete class="form-field"
-                                 ng-disabled="ctrl.isDisabled"
-                                 md-no-cache="ctrl.noCache"
-                                 md-selected-item="ctrl.selectedItem"
-                                 md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                 md-search-text="ctrl.searchText"
-                                 md-selected-item-change="ctrl.selectedItemChange(item)"
-                                 md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                 md-item-text="item.Name"
-                                 md-min-length="0"
-                                 placeholder="Select or create a team"
-                                 md-menu-class="autocomplete-custom-template">
-                    <md-item-template>
+        <form id="form" name="ctrl.form" novalidate>
+            <md-autocomplete id="team" class="form-field"
+                             md-input-name="team"
+                             ng-disabled="ctrl.isDisabled"
+                             md-no-cache="ctrl.noCache"
+                             md-selected-item="ctrl.selectedItem"
+                             md-search-text="ctrl.searchText"
+                             md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                             md-items="item in ctrl.querySearch(ctrl.searchText)"
+                             md-item-text="item.Name"
+                             md-min-length="0"
+                             placeholder="Select or create a team"
+                             md-menu-class="autocomplete-custom-template">
+                <md-item-template>
                         <span class="item-title">
                             <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
                         </span>
@@ -34,20 +37,29 @@
                               Team Lead: <strong>{{item.TeamLeadName}}</strong>
                             </span>
                         </span>
-                    </md-item-template>
-                    <md-not-found>
-                        No matches found for "{{ctrl.searchText}}".
-                    </md-not-found>
-                </md-autocomplete>
+                </md-item-template>
+                <md-not-found>
+                    No matches found for "{{ctrl.searchText}}".
+                </md-not-found>
+            </md-autocomplete>
 
-                <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
-                <div class="top-spacer"></div>
-                <div layout="row" layout-align="center center">
-                    <md-button class="md-raised" ng-click="form.$valid && ctrl.submitTeam(ctrl.selectedItem, ctrl.searchText)"
-                               style="font-weight: bold">Submit
-                    </md-button>
+            <!-- This has to remain until mdAutoComplete bugs are fixed and it displays validation errors correctly -->
+            <md-input-container>
+                <input ng-hide="true" type="password" name="autoCompleteValidation" ng-model="ctrl.selectedItem" required>
+
+                <div ng-messages="ctrl.form.autoCompleteValidation.$error">
+                    <div ng-show="ctrl.form.$submitted || ctrl.form.autoCompleteValidation.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
                 </div>
-            </form>
+            </md-input-container>
+            <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
+            <div layout="row" layout-align="center center">
+                <md-button class="md-raised" ng-click="ctrl.form.$valid && ctrl.submitTeam(ctrl.selectedItem)"
+                           style="font-weight: bold">Submit
+                </md-button>
+            </div>
+        </form>
         </md-content>
     </div>
 </div>

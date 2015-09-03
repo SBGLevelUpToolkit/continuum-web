@@ -11,18 +11,18 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($resource, $scope, $http, $state, dimensionService, assessmentService) {
+            controller: /*@ngInject*/function controller($resource, $state, dimensionService, assessmentService) {
                 let self = this;
                 this.currentLevel = 1;
                 this.selectedCapabilities = [];
                 this.capabilitiesAtSelectedLevel = [];
 
-                this.dimensions = dimensionService.query((dimensions) => {
-                    _.sortBy(dimensions, function(dimension) {
+                dimensionService.query((dimensions) => {
+                    this.dimensions = _.sortBy(dimensions, function(dimension) {
                         return dimension.DisplayOrder;
                     });
 
-                    this.fullDimension = dimensionService.get({ dimension: dimensions[ 0 ].Id },
+                    this.fullDimension = dimensionService.get({ dimension: this.dimensions[ 0 ].Id },
                         (dimension) => {
                             this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
                             this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
@@ -39,11 +39,11 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
                 };
 
                 this.saveRating = function(item) {
-                    var idx = this.selectedCapabilities.indexOf(item);
+                    var idx = this.selectedCapabilities.indexOf(item.Id);
                     if (idx > -1) {
                         this.selectedCapabilities.splice(idx, 1);
                     } else {
-                        this.selectedCapabilities.push(item);
+                        this.selectedCapabilities.push(item.Id);
                     }
 
                     let ratingInfo = {
@@ -53,10 +53,10 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
                     };
 
                     assessmentService.save(ratingInfo, function(response) {
-                            console.log('SUCCESS: ' + response);
+                            //console.log('SUCCESS: ' + response);
                         },
                         function(response) {
-                            console.log('ERROR: ' + response);
+                            //console.log('ERROR: ' + response);
                         });
                 };
 
@@ -67,7 +67,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
                 }
 
                 function capabilityIsSelected(item) {
-                    return self.selectedCapabilities.indexOf(item) > -1;
+                    return self.selectedCapabilities.indexOf(item.Id) > -1;
                 }
             }
         };

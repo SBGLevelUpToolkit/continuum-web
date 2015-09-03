@@ -1,7 +1,13 @@
 <div md-theme="continuumDark" layout="column" flex layout-align="start center">
     <md-content class="feature-panel" flex="40" style="position: relative;">
         <form id="form" name="form" novalidate flex layout="column">
-            <div ng-repeat="capability in ctrl.fullDimension.Capabilities">{{capability.Description}}</div>
+            <md-button ng-disabled="ctrl.currentLevel === ctrl.minLevel" ng-click="ctrl.getPreviousLevel()">Prev</md-button>
+            <md-button ng-disabled="ctrl.currentLevel === ctrl.maxLevel" ng-click="ctrl.getNextLevel()">Next</md-button>
+            <div ng-repeat="capability in ctrl.capabilitiesAtSelectedLevel">
+                <md-checkbox ng-click="ctrl.saveRating(capability)" aria-label="Rating checkbox">
+                </md-checkbox>
+                {{capability.Description}}
+            </div>
             <div class="overlap" layout layout-fill layout-align="center end">
                 <div class="dimension-icon" flex ng-repeat="dimension in ctrl.dimensions">
                     <div><img ng-src="images/{{dimension.ImageName}}"></div>
