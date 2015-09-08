@@ -1,9 +1,12 @@
+html, body {
+    height: 100%;
+}
+
 body {
     color: #555;
     background-color: #eaedf2;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 100%;
     font-family: 'Lato', sans-serif;
 }
 
@@ -17,6 +20,12 @@ body {
 .md-button {
     text-transform: none;
 }
+
+.dimension-icon img {
+    max-width: 120px;
+}
+
+
 
 .container {
     max-width: 1280px;
@@ -47,6 +56,9 @@ a, a:hover, a:focus {
 .link {
     cursor: pointer;
     color: #015165;
+    text-decoration: none;
+    outline: none;
+    border: 0;
 }
 
 md-toolbar.md-tall {
@@ -73,7 +85,7 @@ md-content {
     padding-right: 40px
 }
 
-.verticalSpacer {
+.vertical-spacer {
     padding: 20px 0 20px 0;
 }
 
@@ -113,19 +125,15 @@ ul {
 }
 
 .profile-button md-icon {
-    color: #0090BF;
+    color: #0090BF !important;
 }
 
 .menu-icon {
     margin-right: 55px;
 }
 
-.dimension-icon img {
-    max-width: 120px;
-}
-
-cn-header md-toolbar {
-    background-color: #0090bf;
+md-toolbar {
+    background-color: #0090bf !important;
 }
 
 /*cn-header md-toolbar .md-icon-button .fa-2x {*/

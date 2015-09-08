@@ -31,33 +31,33 @@
                 </tr>
             </table>
             <div class="top-spacer"></div>
-            <form id="form" name="ctrl.form" novalidate>
-                <div layout="column">
+            <form id="form" name="form" novalidate>
+                <div layout>
                     <md-autocomplete flex class="form-field"
                                      ng-disabled="ctrl.isDisabled"
                                      md-no-cache="ctrl.noCache"
-                                     md-selected-item="ctrl.goal.selectedDimension"
+                                     md-selected-item="ctrl.selectedDimension"
                                      md-search-text="ctrl.searchTextDimension"
-                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchTextDimension, ctrl.selectedDimension)"
+                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchText, ctrl.selectedDimension)"
                                      md-selected-item-change="ctrl.selectedItemChange(item)"
-                                     md-items="item in ctrl.querySearch(ctrl.searchTextDimension, ctrl.dimensions)"
+                                     md-items="item in ctrl.querySearch(ctrl.searchText, ctrl.dimensions)"
                                      md-item-text="item.Name"
                                      md-min-length="0"
                                      placeholder="Select a dimension"
                                      md-menu-class="autocomplete-custom-template">
                         <md-item-template>
-                            <span md-highlight-text="ctrl.searchTextDimension" md-highlight-flags="^i">{{item.Name}}</span>
+                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
                         </md-item-template>
                         <md-not-found>
-                            No matches found for "{{ctrl.searchTextDimension}}".
+                            No matches found for "{{ctrl.searchText}}".
                         </md-not-found>
                     </md-autocomplete>
                     <!-- This has to remain until mdAutoComplete bugs are fixed and it displays validation errors correctly -->
                     <md-input-container>
-                        <input ng-hide="true" type="password" name="dimensionValidation" ng-model="ctrl.goal.selectedDimension" required>
+                        <input ng-hide="true" type="password" name="autoCompleteValidation" ng-model="ctrl.selectedItem" required>
 
-                        <div ng-messages="ctrl.form.dimensionValidation.$error">
-                            <div ng-show="ctrl.form.$submitted || ctrl.form.dimensionValidation.$touched">
+                        <div ng-messages="ctrl.form.autoCompleteValidation.$error">
+                            <div ng-show="ctrl.form.$submitted || ctrl.form.autoCompleteValidation.$touched">
                                 <div ng-message="required">This is required.</div>
                             </div>
                         </div>
@@ -66,10 +66,9 @@
                     <md-autocomplete flex class="form-field"
                                      ng-disabled="ctrl.isDisabled"
                                      md-no-cache="ctrl.noCache"
-                                     md-selected-item="ctrl.goal.selectedCapability"
+                                     md-selected-item="ctrl.selectedCapability"
                                      md-search-text="ctrl.searchTextCapability"
-                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchTextCapability)"
-                                     md-items="item in ctrl.querySearch(ctrl.searchTextCapability, ctrl.fullDimension.Capabilities, 'Description')"
+                                     md-items="item in ctrl.querySearch(ctrl.searchText, ctrl.fullDimension.Capabilities)"
                                      md-item-text="item.Description"
                                      md-min-length="0"
                                      placeholder="Select a goal"
@@ -83,10 +82,10 @@
                     </md-autocomplete>
                     <!-- This has to remain until mdAutoComplete bugs are fixed and it displays validation errors correctly -->
                     <md-input-container>
-                        <input ng-hide="true" type="password" name="capabilityValidation" ng-model="ctrl.goal.selectedCapability" required>
+                        <input ng-hide="true" type="password" name="autoCompleteValidation" ng-model="ctrl.selectedItem" required>
 
-                        <div ng-messages="ctrl.form.capabilityValidation.$error">
-                            <div ng-show="ctrl.form.$submitted || ctrl.form.capabilityValidation.$touched">
+                        <div ng-messages="ctrl.form.autoCompleteValidation.$error">
+                            <div ng-show="ctrl.form.$submitted || ctrl.form.autoCompleteValidation.$touched">
                                 <div ng-message="required">This is required.</div>
                             </div>
                         </div>
@@ -94,25 +93,8 @@
 
                     <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
                     <div class="top-spacer"></div>
-                    <div layout="row" layout-align="space-between center">
-                        <md-input-container flex="50">
-                            <label>Notes</label>
-                            <textarea ng-model="ctrl.goal.notes" columns="1" md-maxlength="150"></textarea>
-                        </md-input-container>
-                        <md-input-container>
-                            <label>Date</label>
-                            <input type="date" id="date" name="date" ng-model="ctrl.goal.date" required>
-                            <div ng-messages="ctrl.form.date.$error">
-                                <div ng-show="ctrl.form.$submitted || ctrl.form.date.$touched">
-                                    <div ng-message="required">This is required.</div>
-                                    <div ng-message="date">Invalid date.</div>
-                                </div>
-                            </div>
-                        </md-input-container>
-                    </div>
-                    <div class="vertical-spacer"></div>
                     <div layout="row" layout-align="center center">
-                        <md-button class="md-raised" ng-click="form.$valid && ctrl.addGoal(ctrl.goal)"
+                        <md-button class="md-raised" ng-click="form.$valid && ctrl.submitTeam(ctrl.selectedItem, ctrl.searchText)"
                                    style="font-weight: bold">CREATE GOAL
                         </md-button>
                     </div>

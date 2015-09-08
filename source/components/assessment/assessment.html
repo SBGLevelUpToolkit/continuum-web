@@ -1,18 +1,71 @@
-<div md-theme="continuumDark" layout="column" flex layout-align="start center">
-    <md-content class="feature-panel" flex="40" style="position: relative;">
-        <form id="form" name="form" novalidate flex layout="column">
-            <md-button ng-disabled="ctrl.currentLevel === ctrl.minLevel" ng-click="ctrl.getPreviousLevel()">Prev</md-button>
-            <md-button ng-disabled="ctrl.currentLevel === ctrl.maxLevel" ng-click="ctrl.getNextLevel()">Next</md-button>
-            <div ng-repeat="capability in ctrl.capabilitiesAtSelectedLevel">
-                <md-checkbox ng-click="ctrl.saveRating(capability)" aria-label="Rating checkbox">
-                </md-checkbox>
-                {{capability.Description}}
+<div md-theme="continuumDark" flex layout="column" layout-align="center center">
+    <md-content class="feature-panel" layout="column" layout-fill layout-align="center center">
+
+        <div layout="row" style="width:100%; height: 75%">
+            <div flex="10" layout="row" layout-align="center center">
+                <md-button ng-disabled="ctrl.dimension.currentLevel === ctrl.dimension.minLevel" ng-click="ctrl.dimension.getPreviousLevel()">< Prev</md-button>
             </div>
-            <div class="overlap" layout layout-fill layout-align="center end">
-                <div class="dimension-icon" flex ng-repeat="dimension in ctrl.dimensions">
-                    <div><img ng-src="images/{{dimension.ImageName}}"></div>
+
+            <div layout="column" flex="80" style="height: 100%">
+                <div flex="30" layout-align="start center" layout="column">
+                    <div>
+                        <div class="line" flex></div>
+                        <div class="text">ASSESSMENT</div>
+                        <div class="line" flex></div>
+                    </div>
+                    <div class="vertical-spacer">
+                        Rate your teams capabilities
+                    </div>
+                    <div>Level {{ctrl.dimension.currentLevel}}</div>
+                </div>
+                <div flex="70" style="overflow: auto">
+                    <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
+                        <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
+                                     aria-label="Rating checkbox">
+                            {{capability.Description}}
+                        </md-checkbox>
+                    </div>
+
                 </div>
             </div>
-        </form>
+
+            <div flex="10" layout="row" layout-align="center center">
+                <md-button ng-disabled="ctrl.dimension.currentLevel === ctrl.dimension.maxLevel" ng-click="ctrl.dimension.getNextLevel()">Next ></md-button>
+            </div>
+
+        </div>
+        <div layout="row" style="width:100%; height: 25%">
+            <div id="dimensionList" class="overlap" flex layout layout-fill layout-align="end end">
+                <div class="dimension-icon" cn-repeat flex ng-repeat="dimension in ctrl.dimension.dimensions">
+                    <div class="link dimension"
+                         ng-mouseover="ctrl.dimension.hasFocus()"
+                         ng-mouseleave="ctrl.dimension.lostFocus()"
+                         ng-click="ctrl.dimension.selectDimension(dimension.Id)"><img
+                            ng-src="images/{{dimension.ImageName}}">
+                    </div>
+                </div>
+            </div>
+        </div>
     </md-content>
 </div>
+
+<!--<div md-theme="continuumDark" flex layout="column" layout-align="center center">-->
+<!--<md-content class="feature-panel" layout="column" layout-fill layout-align="center center">-->
+<!--<div>Header</div>-->
+<!--<div layout="row" layout-fill style="height: 100%">-->
+<!--<div flex="10" layout="row" layout-align="center center">-->
+<!--<div>Row One Left</div>-->
+<!--</div>-->
+
+<!--<div layout="column" flex="80" style="height: 100%">-->
+<!--&lt;!&ndash;<div flex="20">Row Two Heading</div>&ndash;&gt;-->
+<!--<div flex="80">Row Two Capabilities</div>-->
+<!--<div flex="20">Row Two Dimensions</div>-->
+<!--</div>-->
+
+<!--<div flex="10" layout="row" layout-align="center center">-->
+<!--<div>Row Three Right</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</md-content>-->
+<!--</div>-->

@@ -9,6 +9,7 @@ import './goals/goals';
 import './teamSelection/teamSelection';
 import './assessment/assessment';
 import './forgotPassword/forgotPassword';
+import './repeat';
 
 var app = angular.module('cn.components', [
     'cn.container',
@@ -18,7 +19,8 @@ var app = angular.module('cn.components', [
     'cn.goals',
     'cn.teamSelection',
     'cn.assessment',
-    'cn.forgotPassword'
+    'cn.forgotPassword',
+    'cn.repeat'
 ]);
 
 export default app;

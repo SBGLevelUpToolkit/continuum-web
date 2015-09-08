@@ -1,56 +1,43 @@
 import template from './assessment.html!text';
 import 'angular-resource';
 import 'angular-ui-router';
+import './dimension';
 import 'lodash';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
+var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension' ])
     .directive('cnAssessment', function() {
+
         return {
             scope: {},
             restrict: 'E',
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($resource, $state, dimensionService, assessmentService) {
-                let self = this;
-                this.currentLevel = 1;
-                this.selectedCapabilities = [];
-                this.capabilitiesAtSelectedLevel = [];
+            controller: /*@ngInject*/function controller(assessmentService, dimension) {
+                this.dimension = dimension;
 
-                dimensionService.query((dimensions) => {
-                    this.dimensions = _.sortBy(dimensions, function(dimension) {
-                        return dimension.DisplayOrder;
+                dimension.getAllDimensions();
+
+                assessmentService.query((assessment) => {
+                        this.selectedCapabilities = assessment.AssessmentItems.map((item) => {
+                            if (item.CapabilityAchieved) {
+                                return item.CapabilityId;
+                            }
+                        });
+                    },
+                    (response) => {
+                        console.log(response);
                     });
 
-                    this.fullDimension = dimensionService.get({ dimension: this.dimensions[ 0 ].Id },
-                        (dimension) => {
-                            this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
-                            this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
-                            getCapabilitiesAtLevel();
-                        });
-                });
-
-                this.getPreviousLevel = function() {
-                    getCapabilitiesAtLevel(--this.currentLevel);
-                };
-
-                this.getNextLevel = function() {
-                    getCapabilitiesAtLevel(++this.currentLevel);
-                };
-
                 this.saveRating = function(item) {
-                    var idx = this.selectedCapabilities.indexOf(item.Id);
-                    if (idx > -1) {
-                        this.selectedCapabilities.splice(idx, 1);
-                    } else {
-                        this.selectedCapabilities.push(item.Id);
-                    }
+                    setRatingSelectedState.call(this, item);
 
-                    let ratingInfo = {
-                        AssessmentId: 1,
-                        CapabilityId: item.Id,
-                        CapabilityAchieved: capabilityIsSelected(item)
-                    };
+                    let ratingInfo = [
+                        {
+                            CapabilityId: item.Id,
+                            CapabilityAchieved: this.capabilityIsSelected(item)
+                        }
+                    ];
 
                     assessmentService.save(ratingInfo, function(response) {
                             //console.log('SUCCESS: ' + response);
@@ -60,15 +47,21 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router' ])
                         });
                 };
 
-                function getCapabilitiesAtLevel() {
-                    self.capabilitiesAtSelectedLevel = _.filter(self.fullDimension.Capabilities, function(capability) {
-                        return capability.Level === self.currentLevel;
-                    });
+                this.capabilityIsSelected = function(item) {
+                    return (this.selectedCapabilities) ? this.selectedCapabilities.indexOf(item.Id) > -1 : false;
+                };
+
+                function setRatingSelectedState(item) {
+                    if (this.selectedCapabilities) {
+                        var idx = this.selectedCapabilities.indexOf(item.Id);
+                        if (idx > -1) {
+                            this.selectedCapabilities.splice(idx, 1);
+                        } else {
+                            this.selectedCapabilities.push(item.Id);
+                        }
+                    }
                 }
 
-                function capabilityIsSelected(item) {
-                    return self.selectedCapabilities.indexOf(item.Id) > -1;
-                }
             }
         };
     });
