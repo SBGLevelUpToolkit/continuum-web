@@ -4,7 +4,7 @@ import './dimension';
 import 'lodash';
 import '../../services/createFactories';
 
-fdescribe('Dimension Class', function() {
+describe('Dimension Class', function() {
 
     var $httpBackend,
         dimensionService,
@@ -170,7 +170,7 @@ fdescribe('Dimension Class', function() {
             $httpBackend.flush();
         });
 
-        it('it should get all capabilities for the default dimension', function() {
+        it('it should get all capabilities for the first dimension', function() {
             expect(dimension.fullDimension.Capabilities.length).toEqual(13);
         });
 

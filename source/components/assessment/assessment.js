@@ -2,9 +2,10 @@ import template from './assessment.html!text';
 import 'angular-resource';
 import 'angular-ui-router';
 import './dimension';
+import './repeat';
 import 'lodash';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension' ])
+var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension', 'cn.repeat' ])
     .directive('cnAssessment', function() {
 
         return {
@@ -19,11 +20,13 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                 dimension.getAllDimensions();
 
                 assessmentService.query((assessment) => {
-                        this.selectedCapabilities = assessment.AssessmentItems.map((item) => {
-                            if (item.CapabilityAchieved) {
-                                return item.CapabilityId;
-                            }
+                        this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
+                            return item.CapabilityAchieved;
+                        }).map(item => {
+                            return item.CapabilityId;
                         });
+
+                        //console.log(this.selectedCapabilities);
                     },
                     (response) => {
                         console.log(response);

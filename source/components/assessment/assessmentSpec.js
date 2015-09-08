@@ -10,7 +10,8 @@ describe('Assessment Directive', function() {
         ctrl,
         compile,
         $httpBackend,
-        dimensionService;
+        dimensionService,
+        assessmentService;
 
     var dimensions = [
         {
@@ -37,7 +38,7 @@ describe('Assessment Directive', function() {
     ];
 
     var capabilities = {
-        'Id': 1,
+        'Id': 2,
         'Capabilities': [
             {
                 'Description': 'Any alignment to Strategy is coincidental or opportunistic',
@@ -137,17 +138,60 @@ describe('Assessment Directive', function() {
         'ImageName': 'icon_strategy_alignment_small.png'
     };
 
+    var assessments = {
+        'Id': 1,
+        'Status': 'Open',
+        'AssessmentItems': [
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 254,
+                'CapabilityAchieved': false
+            },
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 255,
+                'CapabilityAchieved': false
+            },
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 256,
+                'CapabilityAchieved': false
+            },
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 257,
+                'CapabilityAchieved': true
+            },
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 293,
+                'CapabilityAchieved': true
+            },
+            {
+                'AssesmentId': 1,
+                'CapabilityId': 357,
+                'CapabilityAchieved': false
+            }
+        ],
+        'AssessmentResults': []
+    };
+
     beforeEach(function() {
         angular.mock.module('cn.assessment');
         angular.mock.module('cn.assessmentFactory');
         angular.mock.module('cn.dimensionFactory');
-        angular.mock.module('cn.capabilityFactory');
     });
 
-    beforeEach(inject(function(_dimensionService_) {
+    beforeEach(inject(function(_dimensionService_, _assessmentService_) {
         dimensionService = _dimensionService_;
+        assessmentService = _assessmentService_;
+
         spyOn(dimensionService, 'query').and.callFake(function(successCb) {
             successCb(dimensions);
+        });
+
+        spyOn(assessmentService, 'query').and.callFake(function(successCb) {
+            successCb(assessments);
         });
     }));
 
@@ -156,113 +200,62 @@ describe('Assessment Directive', function() {
         scope = _$rootScope_.$new();
         $httpBackend = _$httpBackend_;
         elm = angular.element('<cn-assessment></cn-assessment>');
+        compile(elm)(scope);
+        scope.$digest();
+        ctrl = elm.isolateScope().ctrl;
     }));
 
     describe('When the directive compiles', function() {
 
-        beforeEach(function() {
-            spyOn(dimensionService, 'get').and.stub();
-            compile(elm)(scope);
-            scope.$digest();
-            ctrl = elm.isolateScope().ctrl;
-        });
-
         it('it should get all dimensions', function() {
-            expect(ctrl.dimensions.length).toEqual(3);
+            expect(ctrl.dimension.dimensions.length).toEqual(3);
         });
 
-        it('it should sort the dimensions by displayOrder', function() {
-            var orderedDimensions = _.pluck(ctrl.dimensions, 'DisplayOrder');
-            expect(orderedDimensions).toEqual([ 1, 2, 3 ]);
+        it('it should get the saved ratings for the current assessment', function() {
+            expect(ctrl.selectedCapabilities.length).toEqual(2);
         });
     });
 
-    describe('When the dimensions are sorted', function() {
+    describe('When a rating is selected', function() {
 
-        it('it should select the first dimension as default', function() {
-            $httpBackend.expectGET('undefined/api/dimension/2').respond(200);
-            compile(elm)(scope);
-            scope.$digest();
-            ctrl = elm.isolateScope().ctrl;
+        beforeEach(function() {
+            spyOn(assessmentService, 'save').and.stub();
+            $httpBackend.expectGET('undefined/api/dimension/2').respond(200, capabilities);
+            var targetElement = elm.find('.dimension-icon').find('div')[ 0 ];
+
+            // Simulate a mouse event so the correct currentTarget is passed
+            var evt = new window.MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            });
+            targetElement.dispatchEvent(evt);
             $httpBackend.flush();
         });
 
-        describe('When the first dimension is selected as default', function() {
-            beforeEach(function() {
-                $httpBackend.expectGET('undefined/api/dimension/2').respond(200, capabilities);
-                compile(elm)(scope);
-                scope.$digest();
-                ctrl = elm.isolateScope().ctrl;
-                $httpBackend.flush();
-            });
-
-            it('it should get all capabilities for the default dimension', function() {
-
-                expect(ctrl.fullDimension.Capabilities.length).toEqual(13);
-            });
-
-            it('it should find the minimum level for all the capabilities', function() {
-                expect(ctrl.minLevel).toEqual(1);
-            });
-
-            it('it should find the maximum level for all the capabilities', function() {
-                expect(ctrl.maxLevel).toEqual(5);
-            });
-
-            it('it should filter all capabilities to the minimum level', function() {
-                expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
-                expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
-            });
-
-            describe('When the level changes', function() {
-                it('it should filter all capabilities to the changed level', function() {
-                    ctrl.getNextLevel();
-                    scope.$digest();
-                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(2);
-                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(3);
-                    ctrl.getNextLevel();
-                    scope.$digest();
-                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(3);
-                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(2);
-                    ctrl.getPreviousLevel();
-                    scope.$digest();
-                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(2);
-                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(3);
-                    ctrl.getPreviousLevel();
-                    scope.$digest();
-                    expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
-                    expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
-                });
-            });
-
-            describe('When a rating is selected', function() {
-                it('it should call the save function', function() {
-                    spyOn(ctrl, 'saveRating');
-                    var checkboxes = elm.find('md-checkbox');
-                    checkboxes[ 0 ].click();
-                    expect(ctrl.saveRating).toHaveBeenCalled();
-                });
-
-                it('it should set the correct rating state', inject(function(_assessmentService_) {
-                    var assessmentService = _assessmentService_;
-                    spyOn(assessmentService, 'save').and.stub();
-                    var checkboxes = elm.find('md-checkbox');
-                    checkboxes[ 0 ].click();
-                    expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(true);
-                    checkboxes[ 0 ].click();
-                    expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(false);
-                }));
-
-                // Should we leave integration tests here?
-                it('it should set the correct rating object', inject(function(_assessmentService_) {
-                    $httpBackend.expect('POST', 'undefined/api/assessment',
-                        { 'AssessmentId': 1, 'CapabilityId': 254, 'CapabilityAchieved': true }).respond(200);
-                    var checkboxes = elm.find('md-checkbox');
-                    checkboxes[ 0 ].click();
-                    $httpBackend.flush();
-                }));
-            });
+        it('it should call the save function', function() {
+            spyOn(ctrl, 'saveRating');
+            var checkboxes = elm.find('md-checkbox');
+            checkboxes[ 0 ].click();
+            expect(ctrl.saveRating).toHaveBeenCalled();
         });
+
+        it('it should set the correct rating state', function() {
+            var checkboxes = elm.find('md-checkbox');
+            checkboxes[ 0 ].click();
+            expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(true);
+            checkboxes[ 0 ].click();
+            expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(false);
+        });
+        //
+        //// Should we leave integration tests here?
+        //it('it should set the correct rating object', inject(function(_assessmentService_) {
+        //    $httpBackend.expect('POST', 'undefined/api/assessment',
+        //        { 'AssessmentId': 1, 'CapabilityId': 254, 'CapabilityAchieved': true }).respond(200);
+        //    var checkboxes = elm.find('md-checkbox');
+        //    checkboxes[ 0 ].click();
+        //    $httpBackend.flush();
+        //}));
     });
 
     afterEach(function() {
