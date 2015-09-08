@@ -15,17 +15,14 @@ class Dimension {
         });
     }
 
-    hasFocus() {
-        let elm = window.event.currentTarget.firstChild;
-        elm.style.position = 'relative';
-        elm.style.transition = 'all .1s ease-in-out';
-        elm.style.transform = 'scale3d(1.1, 1.1, 1)';
-    }
-
-    lostFocus() {
-        if (this._currentlyActiveDimension !== window.event.currentTarget) {
-            this._resetDimensionStyle(window.event.currentTarget);
-        }
+    getDimension(dimensionId) {
+        this.fullDimension = this.dimensionService.get({ dimension: dimensionId },
+            (dimension) => {
+                this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
+                this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
+                this.currentLevel = 1;
+                this.getCapabilitiesAtLevel(this.minLevel);
+            });
     }
 
     selectDimension(dimensionId) {
@@ -36,13 +33,7 @@ class Dimension {
         }
         this._currentlyActiveDimension = window.event.currentTarget;
 
-        this.fullDimension = this.dimensionService.get({ dimension: dimensionId },
-            (dimension) => {
-                this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
-                this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
-                this.currentLevel = 1;
-                this.getCapabilitiesAtLevel(this.minLevel);
-            });
+        this.getDimension(dimensionId);
     }
 
     getPreviousLevel() {
@@ -57,6 +48,19 @@ class Dimension {
         this.capabilitiesAtSelectedLevel = _.filter(this.fullDimension.Capabilities, function(capability) {
             return capability.Level === currentLevel;
         });
+    }
+
+    hasFocus() {
+        let elm = window.event.currentTarget.firstChild;
+        elm.style.position = 'relative';
+        elm.style.transition = 'all .1s ease-in-out';
+        elm.style.transform = 'scale3d(1.1, 1.1, 1)';
+    }
+
+    lostFocus() {
+        if (this._currentlyActiveDimension !== window.event.currentTarget) {
+            this._resetDimensionStyle(window.event.currentTarget);
+        }
     }
 
     _resetDimensionStyle(currentTarget) {
