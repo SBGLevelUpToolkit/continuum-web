@@ -65,7 +65,7 @@ describe('TeamSelection Directive', function() {
 
     describe('When the directive compiles', function() {
 
-        it('should get all teams', inject(function() {
+        it('it should get all teams', inject(function() {
             expect(ctrl.teams.length).toEqual(5);
         }));
     });
@@ -79,7 +79,7 @@ describe('TeamSelection Directive', function() {
             });
         }));
 
-        it('should call the submit function', function() {
+        it('it should call the submit function', function() {
             ctrl.selectedItem = teams[ 3 ];
             scope.$digest();
             spyOn(ctrl, 'submitTeam');
@@ -100,7 +100,7 @@ describe('TeamSelection Directive', function() {
             expect($state.go).toHaveBeenCalledWith('home');
         }));
 
-        it('or set the form to invalid after an unsuccessful response', function() {
+        it('it should set the form to invalid after an unsuccessful response', function() {
             expect(ctrl.formInvalid).not.toBeDefined();
             passPromise = false;
             ctrl.submitTeam(teams[ 3 ]);
@@ -119,7 +119,7 @@ describe('TeamSelection Directive', function() {
 
         // TODO Must simulate key entry to fire the searchTextChange event
 
-        it('should call the submit function', function() {
+        it('it should call the submit function', function() {
             ctrl.selectedItem = 'foo';
             scope.$digest();
             spyOn(ctrl, 'submitTeam');
@@ -140,7 +140,7 @@ describe('TeamSelection Directive', function() {
             expect($state.go).toHaveBeenCalledWith('home');
         }));
 
-        it('or set the form to invalid after an unsuccessful response', function() {
+        it('it should set the form to invalid after an unsuccessful response', function() {
             expect(ctrl.formInvalid).not.toBeDefined();
             passPromise = false;
             ctrl.submitTeam('foo');

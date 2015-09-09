@@ -23,6 +23,13 @@ angular.module('Continuum', [
                      hostNameProvider) {
         //$compileProvider.debugInfoEnabled(false);
 
+        //CB001D red
+        //EA39E2 magenta
+        //7D66DE violet
+        //52D9F3 turquoise
+        //46E69B green
+        //FFF55D yellow
+
         var continuumMap = $mdThemingProvider.extendPalette('blue', {
             '50': 'F0F0F0',
             '100': 'CB001D',
@@ -48,23 +55,25 @@ angular.module('Continuum', [
         var continuumDarkMap = $mdThemingProvider.extendPalette('continuum', {
             'A100': 'rgba(2, 48, 68, .9)', //background
         });
-        //CB001D red
-        //EA39E2 magenta
-        //7D66DE violet
-        //52D9F3 turquoise
-        //46E69B green
-        //FFF55D yellow
 
         $mdThemingProvider.definePalette('continuumDark', continuumDarkMap);
         $mdThemingProvider.theme('continuumDark').dark()
             .backgroundPalette('continuumDark');
+
+        var continuumDialogMap = $mdThemingProvider.extendPalette('continuum', {
+            'A100': 'rgb(255, 255, 255)', //background
+        });
+
+        $mdThemingProvider.definePalette('continuumDialog', continuumDialogMap);
+        $mdThemingProvider.theme('continuumDialog')
+            .backgroundPalette('continuumDialog');
 
         hostNameProvider.setHost('~~ENVIRONMENT.DEV');
 
         $urlRouterProvider.otherwise('/login');
 
         $stateProvider
-        .state('login', {
+            .state('login', {
                 url: '/login',
                 template: '<cn-login flex layout></cn-login>'
             })

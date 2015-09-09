@@ -136,6 +136,39 @@ md-toolbar {
     background-color: #0090bf !important;
 }
 
+.dialog {
+    width:800px;
+}
+
+/*
+fixes alignment issue when no label is present
+need to keep an eye on this issue  and reove when fixed
+https://github.com/angular/material/issues/3793
+*/
+md-checkbox {
+    padding-left: 8px;
+}
+
+md-checkbox .md-container {
+    margin-left: 5px;
+}
+
+md-checkbox .md-label {
+    margin-left: 20px;
+}
+/* end of fix */
+
+table {
+    border-spacing: 0px;
+}
+
+td, th {
+    max-width: 500px;
+    padding: 5px 7px 5px 7px;
+}
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
 /*cn-header md-toolbar .md-icon-button .fa-2x {*/
 /*vertical-align: middle;*/
 /*}*/
@@ -150,12 +183,12 @@ cn-header md-toolbar img {
 /*padding-top: 4px;*/
 /*}*/
 
-/*cn-header md-toolbar .logo-img {*/
-/*background-image: url("../images/logo.png");*/
-/*background-size: cover;*/
-/*height: 120px;*/
-/*width: 120px;*/
-/*}*/
+cn-header md-toolbar .logo-img {
+background-image: url("../images/logo.png");
+background-size: cover;
+height: 120px;
+width: 120px;
+}
 
 /*cn-header md-toolbar .md-primary span {*/
 /*color: #7F7F7F;*/

@@ -2,119 +2,213 @@ import 'angular-mocks';
 import './goals';
 import '../../services/createFactories';
 
-//describe('Goals Directive', function() {
-//
-//    var scope,
-//        elm,
-//        ctrl,
-//        compile,
-//        $httpBackend,
-//        passPromise;
-//
-//    var goals = [
-//        {
-//            'Dimension': 'Strategy',
-//            'Capability': 'Be the best I can be',
-//            'Notes': 'Use fear and terror',
-//            'DueDate': '10 Aug 2015',
-//            'Completed': false
-//        },
-//        {
-//            'Dimension': 'Testing',
-//            'Capability': 'Be the worst I can be',
-//            'Notes': 'Use fear and loathing',
-//            'DueDate': '15 Aug 2015',
-//            'Completed': false
-//        },
-//        {
-//            'Dimension': 'Teamwork',
-//            'Capability': 'Be all I can be',
-//            'Notes': 'Use group hugs',
-//            'DueDate': '20 Aug 2015',
-//            'Completed': false
-//        },
-//        {
-//            'Dimension': 'Alignment',
-//            'Capability': 'Be someone else',
-//            'Notes': 'Improve impersonation skills',
-//            'DueDate': '25 Aug 2015',
-//            'Completed': false
-//        }
-//    ];
-//
-//    beforeEach(function() {
-//        angular.mock.module('cn.goals');
-//        angular.mock.module('cn.goalFactory');
-//        angular.mock.module('cn.dimensionFactory');
-//        angular.mock.module('cn.capabilityFactory');
-//    });
-//
-//    beforeEach(inject(function(_$compile_, _$rootScope_) {
-//        compile = _$compile_;
-//        scope = _$rootScope_.$new();
-//
-//    }));
-//
-//    describe('When the directive compiles', function() {
-//
-//        beforeEach(inject(function(_$httpBackend_) {
-//            $httpBackend = _$httpBackend_;
-//        }));
-//
-//        it('should get all goals', inject(function() {
-//            $httpBackend.expectGET('undefined/api/goal').respond(200, goals);
-//            elm = angular.element('<cn-goals></cn-goals>');
-//            compile(elm)(scope);
-//            scope.$digest();
-//            $httpBackend.flush();
-//            ctrl = elm.isolateScope().ctrl;
-//            expect(ctrl.goals.length).toEqual(4);
-//        }));
-//
-//        it('should get all dimensions', inject(function() {
-//
-//        }));
-//
-//        it('should get all capabilities', inject(function() {
-//
-//        }));
-//    });
-//
-//    describe('When adding a new goal', function() {
-//        it('it should not call save if a capability has not been selected', inject(function() {
-//
-//        }));
-//
-//        it('it should not call save if a due date has not been selected', inject(function() {
-//
-//        }));
-//
-//        it('it should pass a valid goal object to be saved', inject(function() {
-//
-//        }));
-//
-//        it('should display the new goal when saving is successful', function() {
-//            passPromise = true;
-//
-//            var user = {
-//                userName: 'br@ders.co.za',
-//                password: 'kensentme!'
-//            };
-//
-//            ctrl.login(user);
-//            scope.$digest();
-//        });
-//
-//        it('should display an error message when saving is unsuccessful', function() {
-//            passPromise = true;
-//
-//            var user = {
-//                userName: 'br@ders.co.za',
-//                password: 'kensentme!'
-//            };
-//
-//            ctrl.login(user);
-//            scope.$digest();
-//        });
-//    });
-//});
+describe('Goals Directive', function() {
+
+    var scope,
+        elm,
+        ctrl,
+        compile,
+        $httpBackend,
+        passPromise,
+        dimensionService;
+
+    var goals = [
+        {
+            'Dimension': 'Strategy',
+            'Capability': 'Be the best I can be',
+            'Notes': 'Use fear and terror',
+            'DueDate': '10 Aug 2015',
+            'Completed': false
+        },
+        {
+            'Dimension': 'Testing',
+            'Capability': 'Be the worst I can be',
+            'Notes': 'Use fear and loathing',
+            'DueDate': '15 Aug 2015',
+            'Completed': false
+        },
+        {
+            'Dimension': 'Teamwork',
+            'Capability': 'Be all I can be',
+            'Notes': 'Use group hugs',
+            'DueDate': '20 Aug 2015',
+            'Completed': false
+        },
+        {
+            'Dimension': 'Alignment',
+            'Capability': 'Be someone else',
+            'Notes': 'Improve impersonation skills',
+            'DueDate': '25 Aug 2015',
+            'Completed': false
+        }
+    ];
+
+    var dimensions = [
+        {
+            'Id': 1,
+            'Capabilities': null,
+            'Name': 'Strategy Alignment',
+            'DisplayOrder': 1,
+            'ImageName': 'icon_strategy_alignment_small.png'
+        },
+        {
+            'Id': 2,
+            'Capabilities': null,
+            'Name': 'Planning and Requirements',
+            'DisplayOrder': 2,
+            'ImageName': 'icon_planning_requirements_small.png'
+        },
+        {
+            'Id': 3,
+            'Capabilities': null,
+            'Name': 'Number 2',
+            'DisplayOrder': 3,
+            'ImageName': 'icon_planning_requirements_small.png'
+        }
+    ];
+
+    var capabilities = {
+        'Id': 1,
+        'Capabilities': [
+            {
+                'Description': 'Any alignment to Strategy is coincidental or opportunistic',
+                'Level': 1,
+                'Predecessors': null,
+                'DisplayOrder': 0,
+                'Id': 254,
+                'RequiredCapabilities': []
+            }, {
+                'Description': 'Upfront engagement with stakeholders to ensure Business and Technical Alignment',
+                'Level': 2,
+                'Predecessors': null,
+                'DisplayOrder': 0,
+                'Id': 255,
+                'RequiredCapabilities': [ 254 ]
+            }, {
+                'Description': 'The product/project vision is explicitly aligned to strategy',
+                'Level': 2,
+                'Predecessors': null,
+                'DisplayOrder': 0,
+                'Id': 256,
+                'RequiredCapabilities': [ 254 ]
+            }, {
+                'Description': 'Post implementation view to confirm strategy alignment',
+                'Level': 2,
+                'Predecessors': null,
+                'DisplayOrder': 0,
+                'Id': 257,
+                'RequiredCapabilities': [ 254 ]
+            }
+        ],
+        'Name': 'Strategy Alignment',
+        'DisplayOrder': 0,
+        'ImageName': 'icon_strategy_alignment_small.png'
+    };
+
+    beforeEach(function() {
+        angular.mock.module('cn.goals');
+        angular.mock.module('cn.goalFactory');
+        angular.mock.module('cn.dimensionFactory');
+    });
+
+    beforeEach(inject(function(_dimensionService_, _$httpBackend_) {
+        dimensionService = _dimensionService_;
+        $httpBackend = _$httpBackend_;
+
+        spyOn(dimensionService, 'query').and.callFake(function(successCb) {
+            successCb(dimensions);
+        });
+    }));
+
+    beforeEach(inject(function(_$compile_, _$rootScope_) {
+        compile = _$compile_;
+        scope = _$rootScope_.$new();
+        $httpBackend.expectGET('undefined/api/goal').respond(200, goals);
+        elm = angular.element('<cn-goals></cn-goals>');
+        compile(elm)(scope);
+        scope.$digest();
+        $httpBackend.flush();
+        ctrl = elm.isolateScope().ctrl;
+    }));
+
+    describe('When the directive compiles', function() {
+
+        it('should get all goals', inject(function() {
+            expect(ctrl.goals.length).toEqual(4);
+        }));
+
+        it('should get all dimensions', function() {
+            expect(ctrl.dimensions.length).toEqual(3);
+        });
+    });
+
+    // Going to leave this out. It will be a functional test
+    // Should it be a unit test?
+    describe('When selecting a dimension', function() {
+        it('should return all capabilities for that dimension', function() {
+            $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
+            ctrl.getCapabilitiesForSelectedDimension(dimensions[ 0 ].Id);
+            $httpBackend.flush();
+            expect(ctrl.capabilities.length).toEqual(4);
+        });
+    });
+
+    //describe('When clearing a dimension', function() {
+    //    it('should not clear the capabilities array', function() {
+    //    it('should not call the capabilities service', function() {
+
+    describe('When saving a new goal', function() {
+        it('it should not call save if a capability has not been selected', function() {
+            let mySpy = spyOn(ctrl, 'addGoal');
+
+            //scope.$apply(function() {
+            //    ctrl.goal = {
+            //        selectedDimension: dimensions[ 0 ]
+            //    };
+            //});
+
+            scope.$apply(function() {
+                ctrl.goal = {
+                    selectedDimension: dimensions[ 0 ],
+                    selectedCapability: capabilities.Capabilities[ 0 ],
+                    date: new Date('2015/10/10')
+                };
+            });
+            var button = elm.find('#saveGoal');
+            button.click();
+            expect(mySpy).not.toHaveBeenCalled();
+        });
+
+        it('it should not call save if a due date has not been selected', inject(function() {
+
+        }));
+
+        it('it should pass a valid goal object to be saved', inject(function() {
+
+        }));
+
+        //it('should display the new goal when saving is successful', function() {
+        //    passPromise = true;
+        //
+        //    var user = {
+        //        userName: 'br@ders.co.za',
+        //        password: 'kensentme!'
+        //    };
+        //
+        //    ctrl.login(user);
+        //    scope.$digest();
+        //});
+        //
+        //it('should display an error message when saving is unsuccessful', function() {
+        //    passPromise = true;
+        //
+        //    var user = {
+        //        userName: 'br@ders.co.za',
+        //        password: 'kensentme!'
+        //    };
+        //
+        //    ctrl.login(user);
+        //    scope.$digest();
+        //});
+    });
+});

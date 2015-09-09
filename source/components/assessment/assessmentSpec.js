@@ -68,69 +68,6 @@ describe('Assessment Directive', function() {
                 'DisplayOrder': 0,
                 'Id': 257,
                 'RequiredCapabilities': [ 254 ]
-            }, {
-                'Description': 'Occasional engagement with stakeholders throughout delivery cycle to review alignment',
-                'Level': 3,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 258,
-                'RequiredCapabilities': [ 255, 256, 257 ]
-            }, {
-                'Description': 'Backlog items are created to deal with strategy alignment issues',
-                'Level': 3,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 259,
-                'RequiredCapabilities': []
-            }, {
-                'Description': 'Frequent engagement with Stakeholders to review Business and technical alignment',
-                'Level': 4,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 260,
-                'RequiredCapabilities': [ 258 ]
-            }, {
-                'Description': 'Team presents product to Architecture and Design teams with the intent of picking up alignment issues',
-                'Level': 4,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 261,
-                'RequiredCapabilities': [ 258 ]
-            }, {
-                'Description': 'Metrics to measure strategy elements defined and tracked',
-                'Level': 4,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 262,
-                'RequiredCapabilities': []
-            }, {
-                'Description': 'All major strategy alignment backlog items have been resolved',
-                'Level': 5,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 263,
-                'RequiredCapabilities': [ 259 ]
-            }, {
-                'Description': 'All requirements are attached to business metric',
-                'Level': 5,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 264,
-                'RequiredCapabilities': [ 262 ]
-            }, {
-                'Description': 'Metrics are tracked over time and improvements targets are set and achieved',
-                'Level': 5,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 265,
-                'RequiredCapabilities': [ 262 ]
-            }, {
-                'Description': 'Team independently innovates by creating new features or optimisations in support of the strategy.',
-                'Level': 5,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 266,
-                'RequiredCapabilities': [ 262 ]
             }
         ],
         'Name': 'Strategy Alignment',

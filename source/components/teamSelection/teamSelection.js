@@ -12,7 +12,6 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
             controller: /*@ngInject*/function controller($state, teamService) {
                 this.teams = teamService.query((response) => {
                         this.loading = false;
-                        $state.go('home');
                     },
                     (err) => {
                         this.loading = false;

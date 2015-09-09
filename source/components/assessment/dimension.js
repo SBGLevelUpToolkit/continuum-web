@@ -25,17 +25,6 @@ class Dimension {
             });
     }
 
-    selectDimension(dimensionId) {
-        if (this._currentlyActiveDimension) {
-            this._resetDimensionStyle(this._currentlyActiveDimension);
-        } else {
-            this.hasFocus();
-        }
-        this._currentlyActiveDimension = window.event.currentTarget;
-
-        this.getDimension(dimensionId);
-    }
-
     getPreviousLevel() {
         this.getCapabilitiesAtLevel(--this.currentLevel);
     }
@@ -48,6 +37,17 @@ class Dimension {
         this.capabilitiesAtSelectedLevel = _.filter(this.fullDimension.Capabilities, function(capability) {
             return capability.Level === currentLevel;
         });
+    }
+
+    selectDimension(dimensionId) {
+        if (this._currentlyActiveDimension) {
+            this._resetDimensionStyle(this._currentlyActiveDimension);
+        } else {
+            this.hasFocus();
+        }
+        this._currentlyActiveDimension = window.event.currentTarget;
+
+        this.getDimension(dimensionId);
     }
 
     hasFocus() {

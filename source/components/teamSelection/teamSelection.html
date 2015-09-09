@@ -16,7 +16,7 @@
         </div>
         <div class="top-spacer"></div>
         <form id="form" name="ctrl.form" novalidate>
-            <md-autocomplete id="team" class="form-field"
+            <md-autocomplete id="team" class="form-field" required
                              md-input-name="team"
                              ng-disabled="ctrl.isDisabled"
                              md-no-cache="ctrl.noCache"
@@ -38,6 +38,9 @@
                             </span>
                         </span>
                 </md-item-template>
+                <div ng-messages="ctrl.form.team.$error">
+                    <div ng-message="required">This field is required</div>
+                </div>
                 <md-not-found>
                     No matches found for "{{ctrl.searchText}}".
                 </md-not-found>
