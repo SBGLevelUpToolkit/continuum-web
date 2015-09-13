@@ -10,8 +10,16 @@
                 <div class="text">GOALS</div>
                 <div class="line" flex></div>
             </div>
-            <div layout flex layout-align="center center" class="top-spacer">
-                View and create goals for your team
+            <div layout flex="100" class="top-spacer">
+                <div layout flex="30" layout-align="start start" >
+                    <md-button id="saveGoal" class="md-raised" ng-click="ctrl.showCreateGoalDialog($event)"
+                               style="font-weight: bold">Add Goal
+                    </md-button>
+                </div>
+                <div flex="40" layout layout-align="center center">
+                    View and create goals for your team
+                </div>
+                <div flex="30"></div>
             </div>
             <div class="top-spacer"></div>
             <table width="100%">
@@ -21,6 +29,7 @@
                     <th>Notes</th>
                     <th>DueDate</th>
                     <th>Completed</th>
+                    <th></th>
                 </tr>
                 <tr ng-repeat="goal in ctrl.goals">
                     <td>{{goal.DimensionText}}</td>
@@ -30,16 +39,19 @@
                     <td>
                         <div layout="column" flex>
                             <div layout="column" layout-align="center center">
-                                <md-checkbox></md-checkbox>
+                                <md-checkbox ng-click="ctrl.updateGoalStatus(goal)"></md-checkbox>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <md-button class="md-icon-button" aria-label="Edit" title="Edit" ng-click="ctrl.showCreateGoalDialog($event, goal)">
+                            <md-icon class="material-icons" md-font-library="material-icons">edit</md-icon>
+                        </md-button>
+
                     </td>
                 </tr>
             </table>
             <div class="top-spacer"></div>
-            <md-button id="saveGoal" class="md-raised" ng-click="ctrl.showCreateGoalDialog()"
-                       style="font-weight: bold">CREATE GOAL
-            </md-button>
         </md-content>
     </div>
 </div>

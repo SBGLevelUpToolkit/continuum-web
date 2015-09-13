@@ -13,10 +13,10 @@
             <form id="form" name="ctrl.form" novalidate>
                 <md-input-container>
                     <label>Email</label>
-                    <input type="email" id="userName" name="userName" ng-model="ctrl.user.userName" required>
+                    <input type="email" id="userName" name="email" ng-model="ctrl.user.email" required>
 
-                    <div ng-messages="ctrl.form.userName.$error">
-                        <div ng-show="ctrl.form.$submitted || ctrl.form.userName.$touched">
+                    <div ng-messages="ctrl.form.email.$error">
+                        <div ng-show="ctrl.form.$submitted || ctrl.form.email.$touched">
                             <div ng-message="required">This is required.</div>
                         </div>
                     </div>

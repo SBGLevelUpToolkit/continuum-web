@@ -140,22 +140,40 @@ describe('Register Directive', function() {
         }));
     });
 
-    it('should set an invalid property when registration is unsuccessful', inject(function($state) {
-        passPromise = false;
+    describe('When registration is unsuccessful', function() {
+        it('it should set an invalid property for general errors', inject(function($state) {
+            passPromise = false;
 
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
+            var user = {
+                email: 'br@ders.co.za',
+                password: 'kensentme!'
+            };
 
-        ctrl.register(user);
-        scope.$digest();
-        expect($state.go).not.toHaveBeenCalled();
-        expect(ctrl.formInvalid).toBe(true);
-    }));
+            ctrl.register(user);
+            scope.$digest();
+            expect($state.go).not.toHaveBeenCalled();
+            expect(ctrl.formInvalid).toBe(true);
+        }));
 
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
+        describe('When the password does not meet the requirements', function() {
+            it('it should show specific invalid password requirements messages', inject(function($state) {
+                passPromise = false;
+
+                var user = {
+                    email: 'br@ders.co.za',
+                    password: 'kensentme!'
+                };
+
+                ctrl.register(user);
+                scope.$digest();
+                expect($state.go).not.toHaveBeenCalled();
+                expect(ctrl.formInvalid).toBe(true);
+            }));
+
+            afterEach(function() {
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
+            });
+        });
     });
 });

@@ -2,17 +2,20 @@ import 'angular-mocks';
 import 'angular-animate';
 import 'angular-aria';
 import 'angular-material';
-import './goals';
+import ctrlDialog from './createGoalDialog';
 import '../../services/createFactories';
 
-describe('Goals Directive', function() {
+fdescribe('Create Goals Dialog', function() {
 
     var scope,
         elm,
         ctrl,
-        compile,
+        $filter,
+        $mdDialog,
         $httpBackend,
-        dimensionService;
+        goalService,
+        dimensionService,
+        createDialog;
 
     var goals = [
         {
@@ -109,61 +112,88 @@ describe('Goals Directive', function() {
 
     beforeEach(function() {
         angular.mock.module('ngMaterial');
-        angular.mock.module('cn.goals');
+        //angular.mock.module('cn.createDialog');
         angular.mock.module('cn.goalFactory');
         angular.mock.module('cn.dimensionFactory');
     });
 
-    beforeEach(inject(function(_dimensionService_, _$httpBackend_) {
+    beforeEach(inject(function(_dimensionService_, _goalService_, _$httpBackend_, _$filter_, _$mdDialog_) {
         dimensionService = _dimensionService_;
+        goalService = _goalService_;
         $httpBackend = _$httpBackend_;
+        $filter = _$filter_;
+        $mdDialog = _$mdDialog_;
 
         spyOn(dimensionService, 'query').and.callFake(function(successCb) {
             successCb(dimensions);
         });
     }));
 
-    beforeEach(inject(function(_$compile_, _$rootScope_) {
-        compile = _$compile_;
-        scope = _$rootScope_.$new();
-        $httpBackend.expectGET('undefined/api/goal').respond(200, goals);
-        elm = angular.element('<cn-goals></cn-goals>');
-        compile(elm)(scope);
-        scope.$digest();
-        $httpBackend.flush();
-        ctrl = elm.isolateScope().ctrl;
-    }));
+    //beforeEach(inject(function(_$compile_, _$rootScope_) {
+    //    compile = _$compile_;
+    //    scope = _$rootScope_.$new();
+    //    $httpBackend.expectGET('undefined/api/goal').respond(200, goals);
+    //    elm = angular.element('<cn-goals></cn-goals>');
+    //    compile(elm)(scope);
+    //    scope.$digest();
+    //    $httpBackend.flush();
+    //    ctrl = elm.isolateScope().ctrl;
+    //}));
 
-    describe('When the directive compiles', function() {
-
-        it('it should get all goals', function() {
-            expect(ctrl.goals.length).toEqual(4);
-        });
-
-        it('should only show active goals', function() {
+    fdescribe('When the dialog opens', function() {
+        it('it should get all dimensions', function() {
+            var ctrl = {};
+            ctrlDialog.call(ctrl, $filter, $mdDialog, goalService, dimensionService);
+            expect(ctrl.dimensions.length).toEqual(3);
         });
     });
 
-    describe('When clicking the View Completed Goals filter ', function() {
-        it('it should display all goals if selected', function() {
-        });
-
-        it('it should only display active goals if deselected', function() {
-        });
-    });
-
-    describe('When marking a goal as complete', function() {
-        it('it should save the goal update', function() {
-        });
-
-        it('if the View Completed Goals filter is not active it should remove the goal from the view', function() {
-        });
-
-        it('if the View Completed Goals filter is active it should not remove the goal from the view', function() {
+    // Going to leave this out. It will be a functional test
+    // Should it be a unit test?
+    describe('When selecting a dimension', function() {
+        it('it should return all capabilities for that dimension', function() {
+            $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
+            ctrl.getCapabilitiesForSelectedDimension(dimensions[ 0 ].Id);
+            $httpBackend.flush();
+            expect(ctrl.capabilities.length).toEqual(4);
         });
     });
 
+    describe('When clearing a dimension', function() {
+        it('should clear the capabilities array', function() {
+
+        });
+    //    it('should not call the capabilities service', function() {
+    });
     describe('When saving a new goal', function() {
+        it('it should not call save if a capability has not been selected', function() {
+            let mySpy = spyOn(ctrl, 'addGoal');
+
+            //scope.$apply(function() {
+            //    ctrl.goal = {
+            //        selectedDimension: dimensions[ 0 ]
+            //    };
+            //});
+
+            scope.$apply(function() {
+                ctrl.goal = {
+                    selectedDimension: dimensions[ 0 ],
+                    selectedCapability: capabilities.Capabilities[ 0 ],
+                    date: new Date('2015/10/10')
+                };
+            });
+            var button = elm.find('#saveGoal');
+            button.click();
+            expect(mySpy).not.toHaveBeenCalled();
+        });
+
+        it('it should not call save if a due date has not been selected', inject(function() {
+
+        }));
+
+        it('it should pass a valid goal object to be saved', inject(function() {
+
+        }));
 
         //it('should display the new goal when saving is successful', function() {
         //    passPromise = true;
@@ -177,5 +207,16 @@ describe('Goals Directive', function() {
         //    scope.$digest();
         //});
         //
+        //it('should display an error message when saving is unsuccessful', function() {
+        //    passPromise = true;
+        //
+        //    var user = {
+        //        userName: 'br@ders.co.za',
+        //        password: 'kensentme!'
+        //    };
+        //
+        //    ctrl.login(user);
+        //    scope.$digest();
+        //});
     });
 });

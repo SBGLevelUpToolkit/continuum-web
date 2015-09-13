@@ -2,10 +2,9 @@ import template from './assessment.html!text';
 import 'angular-resource';
 import 'angular-ui-router';
 import './dimension';
-import './repeat';
 import 'lodash';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension', 'cn.repeat' ])
+var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension' ])
     .directive('cnAssessment', function() {
 
         return {
@@ -15,9 +14,40 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller(assessmentService, dimension) {
+                this.loading = true;
                 this.dimension = dimension;
 
-                dimension.getAllDimensions();
+                let dimensionsRetrieved = dimension.getAllDimensions();
+                dimensionsRetrieved.$promise.then((dimensions) => {
+                    this.selectDimension(dimensions[ 0 ]);
+                });
+
+                this.selectDimension = function(selDimension) {
+                    if (this.activeDimension) {
+                        this.activeDimension.class = 'dimension-blur';
+                    }
+
+                    this.activeDimension = selDimension;
+
+                    selDimension.class = 'pulse';
+                    let dimensionRetrieved = dimension.selectDimension(selDimension.Id);
+                    dimensionRetrieved.$promise.then((data) => {
+                        this.loading = false;
+                        this.activeDimension.class = 'dimension-focus';
+                    });
+                };
+
+                this.hasFocus = function(selDimension) {
+                    if (selDimension !== this.activeDimension) {
+                        selDimension.class = 'dimension-focus';
+                    }
+                };
+
+                this.lostFocus = function(selDimension) {
+                    if (selDimension !== this.activeDimension) {
+                        selDimension.class = 'dimension-blur';
+                    }
+                };
 
                 assessmentService.query((assessment) => {
                         this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
@@ -25,8 +55,6 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                         }).map(item => {
                             return item.CapabilityId;
                         });
-
-                        //console.log(this.selectedCapabilities);
                     },
                     (response) => {
                         console.log(response);
@@ -43,11 +71,15 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                     ];
 
                     assessmentService.save(ratingInfo, function(response) {
-                            //console.log('SUCCESS: ' + response);
+                            console.log('SUCCESS: ');
                         },
                         function(response) {
-                            //console.log('ERROR: ' + response);
+                            console.log('ERROR: ');
                         });
+                };
+
+                this.setStatusToModerated = function() {
+
                 };
 
                 this.capabilityIsSelected = function(item) {

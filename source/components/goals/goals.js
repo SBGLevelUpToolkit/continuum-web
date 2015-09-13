@@ -1,6 +1,6 @@
+import dialogController from './createGoalDialog';
 import template from './goals.html!text';
 import templateCreate from './createGoalDialog.html!text';
-import 'angular-ui-router';
 
 var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimensionFactory' ])
         .directive('cnGoals', function() {
@@ -10,14 +10,28 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                 template: template,
                 controllerAs: 'ctrl',
                 bindToController: true,
-                controller: /*@ngInject*/function controller($state, goalService, $mdDialog) {
+                controller: /*@ngInject*/function controller($state, $filter, dimensionService, goalService, $mdDialog) {
                     this.getGoals = () => {
                         this.goals = goalService.query();
                     };
 
                     this.getGoals();
 
-                    this.showCreateGoalDialog = (ev) => {
+                    this.updateGoalStatus = (Id) => {
+                        console.log('Foo : ' + Id);
+                    //    goalService.update({ item }, (response) => {
+                    //            this.loading = false;
+                    //            $state.go('home');
+                    //        },
+                    //        (response) => {
+                    //            this.loading = false;
+                    //            this.formInvalid = true;
+                    //        }
+                    //)
+                    };
+
+                    this.showCreateGoalDialog = (ev, goal) => {
+console.log('GOAL: ' + goal);
                         $mdDialog.show({
                             controller: dialogController,
                             controllerAs: 'ctrlDialog',
@@ -25,7 +39,10 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                             template: templateCreate,
                             parent: angular.element(document.body),
                             targetEvent: ev,
-                            clickOutsideToClose: true
+                            clickOutsideToClose: true,
+                            locals : {
+                                selectedGoal : goal
+                            }
                         })
                             .then(() => {
                                 this.getGoals();
@@ -35,57 +52,6 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                             });
                     };
 
-                    function dialogController($filter, $mdDialog, goalService, dimensionService) {
-
-                        this.cancel = () => {
-                            $mdDialog.cancel();
-                        };
-
-                        // TODO Add caching to the dimension class and refactor it to exclude style function
-                        dimensionService.query((dimensions) => {
-                            this.dimensions = _.sortBy(dimensions, function(dimension) {
-                                return dimension.DisplayOrder;
-                            });
-                        });
-
-                        this.getCapabilitiesForSelectedDimension = function(dimensionId) {
-                            if (dimensionId) {
-                                dimensionService.get({ dimension: dimensionId },
-                                    (dimension) => {
-                                        this.capabilities = dimension.Capabilities;
-                                    });
-                            } else {
-                                this.capabilities = [];
-                            }
-                        };
-
-                        this.addGoal = function() {
-                            var lastWeek = $filter('date')(this.goal.DueDate, 'yyyy-MM-ddTHH.mm.ss.sssZ');
-                            let goal = {
-                                CapabilityId: this.goal.selectedCapability.Id,
-                                Notes: this.goal.Notes,
-                                DueDate: this.goal.DueDate
-                            };
-
-                            goalService.save(goal);
-                            $mdDialog.hide();
-                        };
-
-                        this.searchTextChange = (text, selectedItem) => {
-                            selectedItem = text;
-                        };
-
-                        this.querySearch = (query, items, propertyName) => {
-                            return query ? items.filter(this.createFilterFor(query, items, propertyName)) : items;
-                        };
-
-                        this.createFilterFor = function(query, items, propertyName = 'Name') {
-                            var lowercaseQuery = angular.lowercase(query);
-                            return function filterFn(items) {
-                                return (items[ propertyName ].toLowerCase().indexOf(lowercaseQuery) === 0);
-                            };
-                        };
-                    }
                 }
             };
         })

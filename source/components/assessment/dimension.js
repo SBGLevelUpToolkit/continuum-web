@@ -1,77 +1,54 @@
 import '../../services/createFactories';
 import 'lodash';
 
-class Dimension {
-    constructor(dimensionService) {
-        this.dimensionService = dimensionService;
-        this.currentLevel = 1;
-    }
+function dimension(dimensionService) {
 
-    getAllDimensions() {
-        this.dimensionService.query((dimensions) => {
-            this.dimensions = _.sortBy(dimensions, function(dimension) {
-                return dimension.DisplayOrder;
+    let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
+    return {
+        getAllDimensions: function() {
+            return dimensionService.query((dimensions) => {
+                this.dimensions = _.sortBy(dimensions, function(dimension) {
+                    return dimension.DisplayOrder;
+                });
             });
-        });
-    }
+        },
 
-    getDimension(dimensionId) {
-        this.fullDimension = this.dimensionService.get({ dimension: dimensionId },
-            (dimension) => {
-                this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
-                this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
-                this.currentLevel = 1;
-                this.getCapabilitiesAtLevel(this.minLevel);
+        getDimension: function(dimensionId) {
+            return dimensionService.get({ dimension: dimensionId },
+                (dimension) => {
+                    this.fullDimension = dimension;
+                    this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
+                    this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
+                    this.currentLevel = 1;
+                    this.getCapabilitiesAtLevel(this.minLevel);
+                });
+        },
+
+        getPreviousLevel: function() {
+            this.getCapabilitiesAtLevel(--this.currentLevel);
+        },
+
+        getNextLevel: function() {
+            this.getCapabilitiesAtLevel(++this.currentLevel);
+        },
+
+        getCapabilitiesAtLevel: function(currentLevel) {
+            this.capabilitiesAtSelectedLevel = _.filter(this.fullDimension.Capabilities, function(capability) {
+                return capability.Level === currentLevel;
             });
-    }
 
-    getPreviousLevel() {
-        this.getCapabilitiesAtLevel(--this.currentLevel);
-    }
+            this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_male_avatar_icon.png`;
+        },
 
-    getNextLevel() {
-        this.getCapabilitiesAtLevel(++this.currentLevel);
-    }
+        selectDimension: function(dimensionId) {
+            this._currentlyActiveDimension = window.event.currentTarget;
 
-    getCapabilitiesAtLevel(currentLevel) {
-        this.capabilitiesAtSelectedLevel = _.filter(this.fullDimension.Capabilities, function(capability) {
-            return capability.Level === currentLevel;
-        });
-    }
-
-    selectDimension(dimensionId) {
-        if (this._currentlyActiveDimension) {
-            this._resetDimensionStyle(this._currentlyActiveDimension);
-        } else {
-            this.hasFocus();
+            return this.getDimension(dimensionId);
         }
-        this._currentlyActiveDimension = window.event.currentTarget;
-
-        this.getDimension(dimensionId);
-    }
-
-    hasFocus() {
-        let elm = window.event.currentTarget.firstChild;
-        elm.style.position = 'relative';
-        elm.style.transition = 'all .1s ease-in-out';
-        elm.style.transform = 'scale3d(1.1, 1.1, 1)';
-    }
-
-    lostFocus() {
-        if (this._currentlyActiveDimension !== window.event.currentTarget) {
-            this._resetDimensionStyle(window.event.currentTarget);
-        }
-    }
-
-    _resetDimensionStyle(currentTarget) {
-        //elm.firstChild.style.transform = 'translate(0px, 0)';
-        currentTarget.firstChild.style.position = '';
-        currentTarget.firstChild.style.cssText = ''; //setting position: relative sets this property as well
-    }
-
+    };
 }
 
 var app = angular.module('dimension', [ 'cn.dimensionFactory' ]);
-app.service('dimension', [ 'dimensionService', Dimension ]);
+app.factory('dimension', [ 'dimensionService', dimension ]);
 
 export default app;
