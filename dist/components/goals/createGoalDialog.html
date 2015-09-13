@@ -2,7 +2,7 @@
 
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>CreateGoal</h2>
+            <h2>{{ctrlDialog.headerText}}</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="ctrlDialog.cancel()">
                 <md-icon class="material-icons" md-font-library="material-icons">close</md-icon>
@@ -96,8 +96,8 @@
                 </div>
                 <div class="vertical-spacer"></div>
                 <div layout="row" layout-align="center center">
-                    <md-button id="saveGoal" class="md-raised" ng-click="ctrlDialog.form.$valid && ctrlDialog.addGoal()"
-                               style="font-weight: bold">CREATE GOAL
+                    <md-button id="saveGoal" class="md-raised" ng-click="ctrlDialog.form.$valid && ctrlDialog.saveGoal()"
+                               style="font-weight: bold">Save Goal
                     </md-button>
                 </div>
             </div>

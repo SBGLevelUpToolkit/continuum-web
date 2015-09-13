@@ -5,7 +5,7 @@ import 'angular-material';
 import ctrlDialog from './createGoalDialog';
 import '../../services/createFactories';
 
-fdescribe('Create Goals Dialog', function() {
+describe('Create Goals Dialog', function() {
 
     var scope,
         elm,
@@ -140,7 +140,7 @@ fdescribe('Create Goals Dialog', function() {
     //    ctrl = elm.isolateScope().ctrl;
     //}));
 
-    fdescribe('When the dialog opens', function() {
+    describe('When the dialog opens', function() {
         it('it should get all dimensions', function() {
             var ctrl = {};
             ctrlDialog.call(ctrl, $filter, $mdDialog, goalService, dimensionService);

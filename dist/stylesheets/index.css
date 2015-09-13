@@ -25,7 +25,34 @@ body {
     max-width: 120px;
 }
 
+.pulse {
+    position: relative;
+    animation: pulse 1s;
+    animation-iteration-count: infinite;
 
+}
+
+.dimension-focus {
+    transform: scale3d(1.1, 1.1, 1);
+}
+
+.dimension-blur {
+    transform: initial;
+    position: initial;
+    cssText: inherit;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
+}
 
 .container {
     max-width: 1280px;
@@ -137,7 +164,7 @@ md-toolbar {
 }
 
 .dialog {
-    width:800px;
+    width: 800px;
 }
 
 /*
@@ -156,6 +183,7 @@ md-checkbox .md-container {
 md-checkbox .md-label {
     margin-left: 20px;
 }
+
 /* end of fix */
 
 table {
@@ -166,9 +194,11 @@ td, th {
     max-width: 500px;
     padding: 5px 7px 5px 7px;
 }
+
 tr:nth-child(even) {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
 /*cn-header md-toolbar .md-icon-button .fa-2x {*/
 /*vertical-align: middle;*/
 /*}*/
@@ -184,10 +214,10 @@ cn-header md-toolbar img {
 /*}*/
 
 cn-header md-toolbar .logo-img {
-background-image: url("../images/logo.png");
-background-size: cover;
-height: 120px;
-width: 120px;
+    background-image: url("../images/logo.png");
+    background-size: cover;
+    height: 120px;
+    width: 120px;
 }
 
 /*cn-header md-toolbar .md-primary span {*/
