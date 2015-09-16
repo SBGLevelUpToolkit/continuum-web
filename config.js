@@ -17,6 +17,8 @@ System.config({
         'angular-messages': 'node_modules/angular-messages/angular-messages.js',
         'jquery': 'node_modules/jquery/dist/jquery.js',
         'lodash': 'node_modules/lodash/index.js',
+        'moment': 'node_modules/moment/min/moment.min.js',
+        'moment-timezone': 'node_modules/moment-timezone/moment-timezone.js',
         'angular-ui-router': 'node_modules/angular-ui-router/release/angular-ui-router.js',
         'angular-local-storage': 'node_modules/angular-local-storage/dist/angular-local-storage.js'
     },

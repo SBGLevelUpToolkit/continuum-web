@@ -33,11 +33,8 @@ export default function($filter, $mdDialog, goalService, dimensionService) {
     };
 
     if (this.selectedGoal) {
-        this.goal = {
-            Notes: this.selectedGoal.Notes,
-            DueDate: new Date(this.selectedGoal.DueDate)
-        };
-
+        this.selectedGoal.DueDate = new Date(this.selectedGoal.DueDate);
+        this.goal = this.selectedGoal;
         this.headerText = 'Edit Goal';
         this.searchTextDimension = this.selectedGoal.DimensionText;
         this.getCapabilitiesForSelectedDimension(this.selectedGoal.DimensionId);
@@ -47,16 +44,12 @@ export default function($filter, $mdDialog, goalService, dimensionService) {
 
     this.saveGoal = function() {
         $filter('date')(this.goal.DueDate, 'yyyy-MM-ddTHH.mm.ss.sssZ');
-        let goal = {
-            CapabilityId: this.goal.selectedCapability.Id,
-            Notes: this.goal.Notes,
-            DueDate: this.goal.DueDate
-        };
+        this.goal.CapabilityId = this.goal.selectedCapability.Id;
 
         if (this.selectedGoal) {
-            //goalService.save(goal);
+            goalService.update(this.goal);
         } else {
-            //goalService.update(goal);
+            goalService.save(this.goal);
         }
 
         $mdDialog.hide();

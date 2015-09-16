@@ -1,3 +1,4 @@
+import moment from 'moment';
 import dialogController from './createGoalDialog';
 import template from './goals.html!text';
 import templateCreate from './createGoalDialog.html!text';
@@ -11,27 +12,52 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                 controllerAs: 'ctrl',
                 bindToController: true,
                 controller: /*@ngInject*/function controller($state, $filter, dimensionService, goalService, $mdDialog) {
-                    this.getGoals = () => {
-                        this.goals = goalService.query();
+                    this.loading = true;
+                    this.showCompletedGoals = true;
+
+                    this.getGoals = function() {
+                        this.goals = goalService.query(() => {
+                            this.toggleGoalStatusVisibility();
+                            this.loading = false;
+                        });
+                    };
+
+                    this.toggleGoalStatusVisibility = function() {
+                        this.showCompletedGoals = !this.showCompletedGoals;
+                        this.goalsToDisplay = this.showCompletedGoals ? this.goals : this.goals.filter((goal) => {
+                            return !goal.Completed;
+                        });
                     };
 
                     this.getGoals();
 
-                    this.updateGoalStatus = (Id) => {
-                        console.log('Foo : ' + Id);
-                    //    goalService.update({ item }, (response) => {
-                    //            this.loading = false;
-                    //            $state.go('home');
-                    //        },
-                    //        (response) => {
-                    //            this.loading = false;
-                    //            this.formInvalid = true;
-                    //        }
-                    //)
+                    this.updateGoalStatus = (goal) => {
+                        goal.Completed = !goal.Completed;
+                        goalService.update(goal, (response) => {
+                                //let foo = this.goals.filter((item) => {
+                                //    return item.Id = goal.Id;
+                                //}).
+                                //foo.Completed = goal.Completed;
+                            },
+                            (response) => {
+                                //this.loading = false;
+                                //this.formInvalid = true;
+                            }
+                        );
                     };
 
-                    this.showCreateGoalDialog = (ev, goal) => {
-console.log('GOAL: ' + goal);
+                    this.deleteGoal = function(goal) {
+                        goalService.delete(goal, () => {
+                            var idx = this.goals.findIndex(function(item) {
+                                if (item.Id === goal.Id) {
+                                    return true;
+                                }
+                            });
+                            this.goals.splice(idx, 1);
+                        });
+                    };
+
+                    this.showCreateGoalDialog = function(ev, goal) {
                         $mdDialog.show({
                             controller: dialogController,
                             controllerAs: 'ctrlDialog',
@@ -40,8 +66,8 @@ console.log('GOAL: ' + goal);
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose: true,
-                            locals : {
-                                selectedGoal : goal
+                            locals: {
+                                selectedGoal: goal
                             }
                         })
                             .then(() => {

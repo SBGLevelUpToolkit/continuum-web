@@ -140,12 +140,15 @@ describe('Dimension Class', function() {
         angular.mock.module('dimension');
     });
 
-    beforeEach(inject(function(_dimensionService_, _dimension_, _$httpBackend_) {
+    beforeEach(inject(function(_dimensionService_, _dimension_, _$httpBackend_, _$q_) {
+        var $q = _$q_;
         $httpBackend = _$httpBackend_;
         dimension = _dimension_;
         dimensionService = _dimensionService_;
         spyOn(dimensionService, 'query').and.callFake(function(successCb) {
             successCb(dimensions);
+            let queryDeferred = $q.defer();
+            return queryDeferred.promise;
         });
     }));
 

@@ -16,37 +16,24 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
             controller: /*@ngInject*/function controller(assessmentService, dimension) {
                 this.loading = true;
                 this.dimension = dimension;
+                this.activeDimension = {};
+                this.selectedCapabilities = [];
 
                 let dimensionsRetrieved = dimension.getAllDimensions();
-                dimensionsRetrieved.$promise.then((dimensions) => {
+                dimensionsRetrieved.then((dimensions) => {
                     this.selectDimension(dimensions[ 0 ]);
                 });
 
                 this.selectDimension = function(selDimension) {
-                    if (this.activeDimension) {
-                        this.activeDimension.class = 'dimension-blur';
-                    }
-
+                    this.activeDimension.class = 'dimension-blur';
                     this.activeDimension = selDimension;
-
                     selDimension.class = 'pulse';
-                    let dimensionRetrieved = dimension.selectDimension(selDimension.Id);
-                    dimensionRetrieved.$promise.then((data) => {
+
+                    let dimensionRetrieved = dimension.getDimension(selDimension.Id);
+                    dimensionRetrieved.then((data) => {
                         this.loading = false;
                         this.activeDimension.class = 'dimension-focus';
                     });
-                };
-
-                this.hasFocus = function(selDimension) {
-                    if (selDimension !== this.activeDimension) {
-                        selDimension.class = 'dimension-focus';
-                    }
-                };
-
-                this.lostFocus = function(selDimension) {
-                    if (selDimension !== this.activeDimension) {
-                        selDimension.class = 'dimension-blur';
-                    }
                 };
 
                 assessmentService.query((assessment) => {
@@ -59,6 +46,18 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                     (response) => {
                         console.log(response);
                     });
+
+                this.hasFocus = function(selDimension) {
+                    if (selDimension !== this.activeDimension) {
+                        selDimension.class = 'dimension-focus';
+                    }
+                };
+
+                this.lostFocus = function(selDimension) {
+                    if (selDimension !== this.activeDimension) {
+                        selDimension.class = 'dimension-blur';
+                    }
+                };
 
                 this.saveRating = function(item) {
                     setRatingSelectedState.call(this, item);
@@ -83,17 +82,15 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                 };
 
                 this.capabilityIsSelected = function(item) {
-                    return (this.selectedCapabilities) ? this.selectedCapabilities.indexOf(item.Id) > -1 : false;
+                    return this.selectedCapabilities.indexOf(item.Id) > -1;
                 };
 
                 function setRatingSelectedState(item) {
-                    if (this.selectedCapabilities) {
-                        var idx = this.selectedCapabilities.indexOf(item.Id);
-                        if (idx > -1) {
-                            this.selectedCapabilities.splice(idx, 1);
-                        } else {
-                            this.selectedCapabilities.push(item.Id);
-                        }
+                    var idx = this.selectedCapabilities.indexOf(item.Id);
+                    if (idx > -1) {
+                        this.selectedCapabilities.splice(idx, 1);
+                    } else {
+                        this.selectedCapabilities.push(item.Id);
                     }
                 }
 

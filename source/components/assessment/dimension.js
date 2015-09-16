@@ -10,7 +10,7 @@ function dimension(dimensionService) {
                 this.dimensions = _.sortBy(dimensions, function(dimension) {
                     return dimension.DisplayOrder;
                 });
-            });
+            }).$promise;
         },
 
         getDimension: function(dimensionId) {
@@ -21,7 +21,7 @@ function dimension(dimensionService) {
                     this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
                     this.currentLevel = 1;
                     this.getCapabilitiesAtLevel(this.minLevel);
-                });
+                }).$promise;
         },
 
         getPreviousLevel: function() {
@@ -39,12 +39,6 @@ function dimension(dimensionService) {
 
             this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_male_avatar_icon.png`;
         },
-
-        selectDimension: function(dimensionId) {
-            this._currentlyActiveDimension = window.event.currentTarget;
-
-            return this.getDimension(dimensionId);
-        }
     };
 }
 

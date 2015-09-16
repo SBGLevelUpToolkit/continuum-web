@@ -19,7 +19,9 @@
     "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.5",
     "jquery": "2.1.4",
-    "lodash": "^3.9.3"
+    "lodash": "^3.9.3",
+    "moment": "^2.10.6",
+    "moment-timezone": "^0.4.0"
   },
   "devDependencies": {
     "angular-local-storage": "^0.2.2",

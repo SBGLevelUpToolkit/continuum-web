@@ -127,18 +127,10 @@ describe('Create Goals Dialog', function() {
         spyOn(dimensionService, 'query').and.callFake(function(successCb) {
             successCb(dimensions);
         });
-    }));
 
-    //beforeEach(inject(function(_$compile_, _$rootScope_) {
-    //    compile = _$compile_;
-    //    scope = _$rootScope_.$new();
-    //    $httpBackend.expectGET('undefined/api/goal').respond(200, goals);
-    //    elm = angular.element('<cn-goals></cn-goals>');
-    //    compile(elm)(scope);
-    //    scope.$digest();
-    //    $httpBackend.flush();
-    //    ctrl = elm.isolateScope().ctrl;
-    //}));
+        ctrl = {};
+        ctrlDialog.call(ctrl, $filter, $mdDialog, goalService, dimensionService);
+    }));
 
     describe('When the dialog opens', function() {
         it('it should get all dimensions', function() {
@@ -150,73 +142,58 @@ describe('Create Goals Dialog', function() {
 
     // Going to leave this out. It will be a functional test
     // Should it be a unit test?
-    describe('When selecting a dimension', function() {
-        it('it should return all capabilities for that dimension', function() {
-            $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
-            ctrl.getCapabilitiesForSelectedDimension(dimensions[ 0 ].Id);
-            $httpBackend.flush();
-            expect(ctrl.capabilities.length).toEqual(4);
-        });
-    });
+    //describe('When selecting a dimension', function() {
+    //    it('it should return all capabilities for that dimension', function() {
+    //        $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
+    //        ctrl.getCapabilitiesForSelectedDimension(dimensions[ 0 ].Id);
+    //        $httpBackend.flush();
+    //        expect(ctrl.capabilities.length).toEqual(4);
+    //    });
+    //});
 
     describe('When clearing a dimension', function() {
         it('should clear the capabilities array', function() {
-
+            ctrl.capabilities = capabilities.Capabilities;
+            ctrl.getCapabilitiesForSelectedDimension();
+            expect(ctrl.capabilities.length).toEqual(0);
         });
-    //    it('should not call the capabilities service', function() {
     });
+
+    // How do I set scope on a dialog?
     describe('When saving a new goal', function() {
-        it('it should not call save if a capability has not been selected', function() {
-            let mySpy = spyOn(ctrl, 'addGoal');
-
-            //scope.$apply(function() {
-            //    ctrl.goal = {
-            //        selectedDimension: dimensions[ 0 ]
-            //    };
-            //});
-
-            scope.$apply(function() {
-                ctrl.goal = {
-                    selectedDimension: dimensions[ 0 ],
-                    selectedCapability: capabilities.Capabilities[ 0 ],
-                    date: new Date('2015/10/10')
-                };
-            });
-            var button = elm.find('#saveGoal');
-            button.click();
-            expect(mySpy).not.toHaveBeenCalled();
-        });
-
-        it('it should not call save if a due date has not been selected', inject(function() {
-
-        }));
-
-        it('it should pass a valid goal object to be saved', inject(function() {
-
-        }));
+        //it('it should not call save if a capability has not been selected', function() {
+        //    let mySpy = spyOn(ctrl, 'saveGoal');
+        //
+        //    //scope.$apply(function() {
+        //    //    ctrl.goal = {
+        //    //        selectedDimension: dimensions[ 0 ]
+        //    //    };
+        //    //});
+        //
+        //    scope.$apply(function() {
+        //        ctrl.goal = {
+        //            selectedDimension: dimensions[ 0 ],
+        //            selectedCapability: capabilities.Capabilities[ 0 ],
+        //            date: new Date('2015/10/10')
+        //        };
+        //    });
+        //    var button = elm.find('#saveGoal');
+        //    button.click();
+        //    expect(mySpy).not.toHaveBeenCalled();
+        //});
+        //
+        //it('it should not call save if a due date has not been selected', function() {
+        //
+        //});
+        //
+        //it('it should pass a valid goal object to be saved', function() {
+        //
+        //});
 
         //it('should display the new goal when saving is successful', function() {
-        //    passPromise = true;
-        //
-        //    var user = {
-        //        userName: 'br@ders.co.za',
-        //        password: 'kensentme!'
-        //    };
-        //
-        //    ctrl.login(user);
-        //    scope.$digest();
         //});
         //
         //it('should display an error message when saving is unsuccessful', function() {
-        //    passPromise = true;
-        //
-        //    var user = {
-        //        userName: 'br@ders.co.za',
-        //        password: 'kensentme!'
-        //    };
-        //
-        //    ctrl.login(user);
-        //    scope.$digest();
         //});
     });
 });

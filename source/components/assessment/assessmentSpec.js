@@ -1,5 +1,6 @@
 import 'angular-mocks';
 import './assessment';
+import './dimension';
 import 'lodash';
 import '../../services/createFactories';
 
@@ -10,8 +11,8 @@ describe('Assessment Directive', function() {
         ctrl,
         compile,
         $httpBackend,
-        dimensionService,
-        assessmentService;
+        assessmentService,
+        passPromise;
 
     var dimensions = [
         {
@@ -113,19 +114,27 @@ describe('Assessment Directive', function() {
         'AssessmentResults': []
     };
 
+    var queryDeferred;
+
     beforeEach(function() {
         angular.mock.module('cn.assessment');
         angular.mock.module('cn.assessmentFactory');
         angular.mock.module('cn.dimensionFactory');
     });
 
-    beforeEach(inject(function(_dimensionService_, _assessmentService_) {
-        dimensionService = _dimensionService_;
+    beforeEach(inject(function(_$q_, $controller, _dimension_, _assessmentService_) {
         assessmentService = _assessmentService_;
+        var $q = _$q_,
+            dimension = _dimension_,
+            mockedApiService = {
+                query: function() {
+                    dimension.dimensions = dimensions;
+                    queryDeferred = $q.defer();
+                    return queryDeferred.promise;
+                }
+            };
 
-        spyOn(dimensionService, 'query').and.callFake(function(successCb) {
-            successCb(dimensions);
-        });
+        spyOn(dimension, 'getAllDimensions').and.callFake(mockedApiService.query);
 
         spyOn(assessmentService, 'query').and.callFake(function(successCb) {
             successCb(assessments);
@@ -145,6 +154,7 @@ describe('Assessment Directive', function() {
     describe('When the directive compiles', function() {
 
         it('it should get all dimensions', function() {
+            passPromise = true;
             expect(ctrl.dimension.dimensions.length).toEqual(3);
         });
 
@@ -157,7 +167,9 @@ describe('Assessment Directive', function() {
 
         beforeEach(function() {
             spyOn(assessmentService, 'save').and.stub();
-            $httpBackend.expectGET('undefined/api/dimension/2').respond(200, capabilities);
+
+            //mock service
+            $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
             var targetElement = elm.find('.dimension-icon').find('div')[ 0 ];
 
             // Simulate a mouse event so the correct currentTarget is passed

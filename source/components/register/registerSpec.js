@@ -44,43 +44,59 @@ describe('Register Directive', function() {
         var userName = elm.find('#userName'),
             password = elm.find('#password');
 
-        expect(userName.text()).toBe('');
-        expect(password.text()).toBe('');
+        expect(userName.val()).toBe('');
+        expect(password.val()).toBe('');
 
         scope.$apply(function() {
             ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme'
+                email: 'br@ders.co.za',
+                password: 'kensentme!'
             };
         });
 
         expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('kensentme');
+        expect(password.val()).toBe('kensentme!');
     });
 
     it('should not call register when userName is invalid', function() {
+        var userName = elm.find('#userName'),
+            password = elm.find('#password');
+
         scope.$apply(function() {
             ctrl.user = {
                 password: 'kensentme!'
             };
         });
 
+        expect(userName.val()).toBe('');
+        expect(password.val()).toBe('kensentme!');
+
         var mySpy = spyOn(elm.scope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
 
-        ctrl.user.userName = 'brders.co.za';
+        scope.$apply(function() {
+            ctrl.user.email = 'brders.co.za';
+        });
+
+        expect(userName.val()).toBe('brders.co.za');
         smallButton.click();
         expect(mySpy).not.toHaveBeenCalled();
     });
 
     it('should not call register when password is invalid', function() {
+        var userName = elm.find('#userName'),
+            password = elm.find('#password');
+
         scope.$apply(function() {
             ctrl.user = {
-                userName: 'br@ders.co.za'
+                email: 'br@ders.co.za'
             };
         });
+
+        expect(userName.val()).toBe('br@ders.co.za');
+        expect(password.val()).toBe('');
 
         var mySpy = spyOn(elm.scope().ctrl, 'register');
         var smallButton = elm.find('md-button')[ 0 ];

@@ -7,8 +7,8 @@ export default function createResourceFactory(resource) {
         'hostName', '$resource', function(hostName, $resource) {
             var serviceBase = hostName + '/api/';
             var fullPath = serviceBase + resource.name + '/';
-
-            return $resource(fullPath + ':' + resource.name, { resource: '@' + resource.name }, {
+            //var User = $resource('/user/:userId', {userId:'@id'});
+            return $resource(fullPath + ':' + resource.name, { Id: '@Id' }, {
                 query: {
                     method: 'GET', isArray: resource.isArray
                 },

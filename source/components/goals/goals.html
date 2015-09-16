@@ -3,23 +3,24 @@
 
     <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
         <md-content class="feature-panel" flex="40" style="position: relative;">
-            <img ng-show="ctrl.loading" src="images/loading.gif" style="position: absolute; left: 95px; top: 65px"/>
-
             <div layout layout-align="center center">
                 <div class="line" flex></div>
                 <div class="text">GOALS</div>
                 <div class="line" flex></div>
             </div>
             <div layout flex="100" class="top-spacer">
-                <div layout flex="30" layout-align="start start" >
+                <div layout flex="30" layout-align="start start">
                     <md-button id="saveGoal" class="md-raised" ng-click="ctrl.showCreateGoalDialog($event)"
                                style="font-weight: bold">Add Goal
                     </md-button>
                 </div>
                 <div flex="40" layout layout-align="center center">
-                    View and create goals for your team
+                    <img ng-show="ctrl.loading" src="images/loading.gif"/>
+                    <span ng-hide="ctrl.loading">View and create goals for your team</span>
                 </div>
-                <div flex="30"></div>
+                <div flex="30" layout layout-align="end end">
+                    <md-checkbox id="goalFilter" ng-click="ctrl.toggleGoalStatusVisibility()">Show completed goals</md-checkbox>
+                </div>
             </div>
             <div class="top-spacer"></div>
             <table width="100%">
@@ -31,15 +32,17 @@
                     <th>Completed</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="goal in ctrl.goals">
+                <tr id="goalList" ng-repeat="goal in ctrl.goalsToDisplay">
+
                     <td>{{goal.DimensionText}}</td>
                     <td>{{goal.CapabilityText}}</td>
                     <td>{{goal.Notes}}</td>
-                    <td>{{goal.DueDate | date:'dd/MM/yyyy'}}</td>
+                    <td>{{goal.DueDate | date: 'dd/MM/yyyy'}}</td>
                     <td>
                         <div layout="column" flex>
                             <div layout="column" layout-align="center center">
-                                <md-checkbox ng-click="ctrl.updateGoalStatus(goal)"></md-checkbox>
+                                <md-checkbox ng-checked="goal.Completed"
+                                             ng-click="ctrl.updateGoalStatus(goal)"></md-checkbox>
                             </div>
                         </div>
                     </td>
@@ -47,8 +50,12 @@
                         <md-button class="md-icon-button" aria-label="Edit" title="Edit" ng-click="ctrl.showCreateGoalDialog($event, goal)">
                             <md-icon class="material-icons" md-font-library="material-icons">edit</md-icon>
                         </md-button>
-
                     </td>
+                    <!--<td>-->
+                    <!--<md-button class="md-icon-button"  aria-label="Delete" title="Delete" ng-click="ctrl.deleteGoal(goal)">-->
+                    <!--<md-icon class="material-icons" md-font-library="material-icons">delete</md-icon>-->
+                    <!--</md-button>-->
+                    <!--</td>-->
                 </tr>
             </table>
             <div class="top-spacer"></div>

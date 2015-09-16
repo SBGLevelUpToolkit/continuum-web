@@ -34,7 +34,7 @@ describe('Goals Directive', function() {
             'Capability': 'Be all I can be',
             'Notes': 'Use group hugs',
             'DueDate': '20 Aug 2015',
-            'Completed': false
+            'Completed': true
         },
         {
             'Dimension': 'Alignment',
@@ -140,26 +140,44 @@ describe('Goals Directive', function() {
             expect(ctrl.goals.length).toEqual(4);
         });
 
-        it('should only show active goals', function() {
+        it('should only show active goals by default', function() {
+            expect(ctrl.goalsToDisplay.length).toEqual(1);
         });
     });
 
     describe('When clicking the View Completed Goals filter ', function() {
         it('it should display all goals if selected', function() {
+            elm.find('#goalFilter').click();
+            expect(ctrl.goalsToDisplay.length).toEqual(4);
         });
 
         it('it should only display active goals if deselected', function() {
+            let goalCheckBox = elm.find('#goalFilter');
+            goalCheckBox.click();
+            goalCheckBox.click();
+            expect(ctrl.goalsToDisplay.length).toEqual(1);
         });
     });
 
     describe('When marking a goal as complete', function() {
-        it('it should save the goal update', function() {
+        it('it should call the goal status update function', function() {
+            $httpBackend.expect('PUT', 'undefined/api/goal').respond(200);
+            let mySpy = spyOn(ctrl, 'updateGoalStatus');
+            elm.find('#goalList md-checkbox').click();
+            expect(mySpy).toHaveBeenCalled();
         });
 
-        it('if the View Completed Goals filter is not active it should remove the goal from the view', function() {
-        });
-
-        it('if the View Completed Goals filter is active it should not remove the goal from the view', function() {
+        it('it should set and save the goal object with the updated status', function() {
+            $httpBackend.expect('PUT', 'undefined/api/goal',
+                {
+                    'Dimension': 'Teamwork',
+                    'Capability': 'Be all I can be',
+                    'Notes': 'Use group hugs',
+                    'DueDate': '20 Aug 2015',
+                    'Completed': false
+                }).respond(200);
+            elm.find('#goalList md-checkbox').click();
+            $httpBackend.flush();
         });
     });
 
