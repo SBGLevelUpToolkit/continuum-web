@@ -1,12 +1,11 @@
-import template from './assessment.html!text';
+import template from './moderateAssessment.html!text';
 import 'angular-resource';
 import 'angular-ui-router';
 import '../../services/dimension';
 import 'lodash';
-import 'angular-local-storage';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension' ])
-    .directive('cnAssessment', function() {
+var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'dimension' ])
+    .directive('cnModerateAssessment', function() {
 
         return {
             scope: {},
@@ -14,18 +13,56 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller(assessmentService, dimension, localStorageService) {
-                this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;
+            controller: /*@ngInject*/function controller(assessmentService, dimension) {
                 this.loading = true;
-                this.activeAssessment = true;
                 this.dimension = dimension;
                 this.activeDimension = {};
                 this.selectedCapabilities = [];
 
                 let dimensionsRetrieved = dimension.getAllDimensions();
                 dimensionsRetrieved.then((dimensions) => {
-                    this.selectDimension(dimensions[ 0 ]);
+                    assessmentService.query((assessments) => {
+                        this.assessment = dimensions.map(function(dimension) {
+                            let assessment = assessments.AssessmentResults.filter(function(assessment) {
+                                return assessment.DimensionId === dimension.Id;
+                            });
+
+                            return {
+                                Id: dimension.Id,
+                                Name: dimension.Name,
+                                DisplayOrder: dimension.DisplayOrder,
+                                ImageName: dimension.ImageName,
+                                Rating: assessment.Rating
+                            };
+                        });
+
+                        this.loading = false;
+                        console.log(this.assessment);
+                    });
+
+
                 });
+
+                //[{"Id":1,
+                //    "Capabilities":null,
+                //    "Name":"Strategy Alignment",
+                //    "DisplayOrder":0,
+                //    "ImageName":"icon_strategy_alignment_small.png"},
+                //    {"Id":2,
+                //
+                //AssessmentResults": [
+                //{
+                //    "AssessmentId": 1,
+                //    "DimensionId": 2,
+                //    "Rating": 3
+                //},
+                //{
+                //    "AssessmentId": 1,
+                //    "DimensionId": 2,
+                //    "Rating": 3
+                //}
+                //]
+                //
 
                 this.selectDimension = function(selDimension) {
                     this.activeDimension.class = 'dimension-blur';
@@ -34,30 +71,20 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
 
                     let dimensionRetrieved = dimension.getDimension(selDimension.Id);
                     dimensionRetrieved.then((data) => {
+                        this.loading = false;
                         this.activeDimension.class = 'dimension-focus';
                     });
                 };
 
                 assessmentService.query((assessment) => {
-                        if (assessment.Status === 'closed') {
-                            this.activeAssessment = false;
-                            this.assessmentAction = 'Create';
-                        } else {
-                            this.assessmentAction = 'Moderate';
-                            this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
-                                return item.CapabilityAchieved;
-                            }).map(item => {
-                                return item.CapabilityId;
-                            });
-
-                            this.loading = false;
-                        }
+                        this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
+                            return item.CapabilityAchieved;
+                        }).map(item => {
+                            return item.CapabilityId;
+                        });
                     },
                     (response) => {
-                        this.loading = false;
-                        this.assessmentAction = 'Create';
-                        this.activeAssessment = false;
-                        this.assessmentMessage = response.data;
+                        console.log(response);
                     });
 
                 this.hasFocus = function(selDimension) {
@@ -90,11 +117,11 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                         });
                 };
 
-                this.setStatus = function() {
-                    if (this.assessmentAction === 'Create') {
-                        assessmentService.create();
+                this.setStatus = function(action) {
+                    if (this.assessmentAction === 'open') {
+                        assessmentService.open();
                     } else {
-                        assessmentService.moderate();
+                        assessmentService.close();
                         $state.go('home.moderateAssessment');
                     }
                 };
@@ -111,7 +138,6 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
                         this.selectedCapabilities.push(item.Id);
                     }
                 }
-
             }
         };
     });

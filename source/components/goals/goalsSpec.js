@@ -141,7 +141,7 @@ describe('Goals Directive', function() {
         });
 
         it('should only show active goals by default', function() {
-            expect(ctrl.goalsToDisplay.length).toEqual(1);
+            expect(ctrl.goalsToDisplay.length).toEqual(3);
         });
     });
 
@@ -155,45 +155,37 @@ describe('Goals Directive', function() {
             let goalCheckBox = elm.find('#goalFilter');
             goalCheckBox.click();
             goalCheckBox.click();
-            expect(ctrl.goalsToDisplay.length).toEqual(1);
+            expect(ctrl.goalsToDisplay.length).toEqual(3);
         });
     });
 
     describe('When marking a goal as complete', function() {
         it('it should call the goal status update function', function() {
             $httpBackend.expect('PUT', 'undefined/api/goal').respond(200);
-            let mySpy = spyOn(ctrl, 'updateGoalStatus');
-            elm.find('#goalList md-checkbox').click();
+            let mySpy = spyOn(ctrl, 'updateGoalStatus').and.callThrough();
+            let goalCheck = elm.find('#goalList md-checkbox:first');
+            goalCheck.click();
             expect(mySpy).toHaveBeenCalled();
+            $httpBackend.flush();
         });
 
         it('it should set and save the goal object with the updated status', function() {
             $httpBackend.expect('PUT', 'undefined/api/goal',
                 {
-                    'Dimension': 'Teamwork',
-                    'Capability': 'Be all I can be',
-                    'Notes': 'Use group hugs',
-                    'DueDate': '20 Aug 2015',
-                    'Completed': false
+                    'Dimension': 'Strategy',
+                    'Capability': 'Be the best I can be',
+                    'Notes': 'Use fear and terror',
+                    'DueDate': '10 Aug 2015',
+                    'Completed': true
                 }).respond(200);
-            elm.find('#goalList md-checkbox').click();
+
+            elm.find('#goalList md-checkbox:first').click();
             $httpBackend.flush();
         });
     });
 
-    describe('When saving a new goal', function() {
-
-        //it('should display the new goal when saving is successful', function() {
-        //    passPromise = true;
-        //
-        //    var user = {
-        //        userName: 'br@ders.co.za',
-        //        password: 'kensentme!'
-        //    };
-        //
-        //    ctrl.login(user);
-        //    scope.$digest();
-        //});
-        //
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 });

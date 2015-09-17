@@ -1,4 +1,4 @@
-import '../../services/createFactories';
+import './createFactories';
 import 'lodash';
 
 function dimension(dimensionService) {

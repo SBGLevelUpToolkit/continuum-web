@@ -1,8 +1,8 @@
 import 'angular-mocks';
-import './assessment';
+import '../components/assessment/assessment';
 import './dimension';
 import 'lodash';
-import '../../services/createFactories';
+import './createFactories';
 
 describe('Dimension Class', function() {
 

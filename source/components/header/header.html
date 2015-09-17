@@ -1,31 +1,25 @@
-<md-toolbar class="md-tall" layout="row" layout-align="space-between center">
+<md-toolbar layout="row" layout-align="start start">
     <div class="logo-img"></div>
-    <div>
-        <div flex layout-align="end" layout>
-            <div class="profile-name" layout-align="center center" layout>
-                <small class="md-caption">Brett Upton</small>
-            </div>
-            <div class="profile-button">
-                <md-button class="md-icon-button" aria-label="Sign out" ng-click="ctrl.signOut()">
-                    <md-icon class="material-icons" md-font-library="material-icons">exit_to_app</md-icon>
-                </md-button>
-            </div>
-        </div>
-        <div class="menu-icon">
-            <md-button class="btn1" ui-sref="home.assessment">
-                <img src="images/menu_assessments_icon.png"/>
+    <div flex></div>
+    <div layout layout-align="start start">
+        <md-button class="btn1" ng-click="ctrl.checkAssessmentStatus()" ui-sref="home.assessment">
+            <img src="images/menu_assessments_icon.png"/>
 
-                <div>Assessment</div>
-            </md-button>
-            <md-button class="btn1" ui-sref="home.goals">
-                <img src="images/menu_goals_icon.png"/>
+            <div>Assessment</div>
+        </md-button>
+        <md-button class="btn1" ui-sref="home.goals">
+            <img src="images/menu_goals_icon.png"/>
 
-                <div>Goals</div>
-            </md-button>
-            <md-button class="btn1" ui-sref="teamSelection">
-                <img src="images/menu_traveller_male_avatar_icon.png"/>
+            <div>Goals</div>
+        </md-button>
+        <md-button class="btn1" ui-sref="teamSelection">
+            <img src="images/menu_traveller_male_avatar_icon.png"/>
 
-                <div>Web Platform</div>
+            <div>Web Platform</div>
+        </md-button>
+        <div class="profile-button">
+            <md-button class="md-icon-button" aria-label="Sign out" ng-click="ctrl.signOut()">
+                <md-icon class="material-icons" md-font-library="material-icons">exit_to_app</md-icon>
             </md-button>
         </div>
     </div>

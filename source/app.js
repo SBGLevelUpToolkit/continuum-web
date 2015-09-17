@@ -87,7 +87,7 @@ angular.module('Continuum', [
             })
             .state('home', {
                 url: '/home',
-                template: '<cn-container flex layout="column"></cn-container>'
+                template: '<cn-container flex layout="column" fill-defined-flex></cn-container>'
             })
             .state('home.goals', {
                 url: '/goals',
@@ -96,6 +96,10 @@ angular.module('Continuum', [
             .state('home.assessment', {
                 url: '/assessment',
                 template: '<cn-assessment flex layout></cn-assessment>'
+            })
+            .state('home.moderateAssessment', {
+                url: '/moderateAssessment',
+                template: '<cn-moderate-assessment flex layout></cn-moderate-assessment>'
             })
             .state('teamSelection', {
                 url: '/teamSelection',

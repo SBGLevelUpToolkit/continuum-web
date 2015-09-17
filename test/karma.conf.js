@@ -34,6 +34,7 @@ module.exports = function(config) {
                 'node_modules/angular-ui-router/release/angular-ui-router.js',
                 'node_modules/angular-local-storage/dist/angular-local-storage.js',
                 'node_modules/lodash/index.js',
+                'node_modules/moment/min/moment.min.js',
                 'test/unit/*.js',
                 'source/**/*'
             ],

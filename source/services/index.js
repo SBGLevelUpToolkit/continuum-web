@@ -10,7 +10,8 @@ var app = angular.module('cn.services', [
     'cn.auth',
     'cn.teamFactory',
     'cn.assessmentFactory',
-    'cn.dimensionFactory'
+    'cn.dimensionFactory',
+    'cn.userFactory'
 ]);
 
 export default app;

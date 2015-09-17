@@ -8,6 +8,7 @@ import './register/register';
 import './goals/goals';
 import './teamSelection/teamSelection';
 import './assessment/assessment';
+import './moderateAssessment/moderateAssessment';
 import './forgotPassword/forgotPassword';
 
 var app = angular.module('cn.components', [
@@ -18,6 +19,7 @@ var app = angular.module('cn.components', [
     'cn.goals',
     'cn.teamSelection',
     'cn.assessment',
+    'cn.moderateAssessment',
     'cn.forgotPassword'
 ]);
 

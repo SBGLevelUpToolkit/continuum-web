@@ -112,6 +112,11 @@ md-content {
     padding-right: 40px
 }
 
+[fill-defined-flex] {
+    width: 100%;
+    height: 100%;
+}
+
 .vertical-spacer {
     padding: 20px 0 20px 0;
 }
@@ -193,6 +198,10 @@ table {
 td, th {
     max-width: 500px;
     padding: 5px 7px 5px 7px;
+}
+
+.ratingRow div:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 tr:nth-child(even) {
