@@ -13,7 +13,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller(assessmentService, dimension) {
+            controller: /*@ngInject*/function controller($state, assessmentService, dimension) {
                 this.loading = true;
                 this.dimension = dimension;
                 this.activeDimension = {};
@@ -39,30 +39,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         this.loading = false;
                         console.log(this.assessment);
                     });
-
-
                 });
-
-                //[{"Id":1,
-                //    "Capabilities":null,
-                //    "Name":"Strategy Alignment",
-                //    "DisplayOrder":0,
-                //    "ImageName":"icon_strategy_alignment_small.png"},
-                //    {"Id":2,
-                //
-                //AssessmentResults": [
-                //{
-                //    "AssessmentId": 1,
-                //    "DimensionId": 2,
-                //    "Rating": 3
-                //},
-                //{
-                //    "AssessmentId": 1,
-                //    "DimensionId": 2,
-                //    "Rating": 3
-                //}
-                //]
-                //
 
                 this.selectDimension = function(selDimension) {
                     this.activeDimension.class = 'dimension-blur';

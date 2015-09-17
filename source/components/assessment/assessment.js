@@ -14,7 +14,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimensio
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller(assessmentService, dimension, localStorageService) {
+            controller: /*@ngInject*/function controller($state, assessmentService, dimension, localStorageService) {
                 this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;
                 this.loading = true;
                 this.activeAssessment = true;

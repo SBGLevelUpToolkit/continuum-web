@@ -18,9 +18,9 @@
                         <span ng-hide="ctrl.loading">Rate your teams capabilities</span>
                     </div>
                     <div flex="30" layout layout-align="end">
-                        <div>
-                            <md-button id="saveGoal" class="md-raised" ng-click="ctrl.setStatusToModerated()"
-                                       style="font-weight: bold">Moderate
+                        <div ng-show="ctrl.userIsAdmin">
+                            <md-button id="setStatus" class="md-raised" ng-click="ctrl.setStatus()"
+                                       style="font-weight: bold">{{ctrl.assessmentAction}}
                             </md-button>
                         </div>
                     </div>
@@ -39,13 +39,15 @@
                         <div ng-hide="ctrl.loading">Level {{ctrl.dimension.currentLevel}}</div>
                     </div>
                     <div flex="90" style="overflow: auto; padding-bottom: 20px">
-                        <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
-                            <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
-                                         aria-label="Rating checkbox">
-                                {{capability.Description}}
-                            </md-checkbox>
+                        <div ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
+                        <div ng-show="ctrl.activeAssessment">
+                            <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
+                                <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
+                                             aria-label="Rating checkbox">
+                                    {{capability.Description}}
+                                </md-checkbox>
+                            </div>
                         </div>
-
                     </div>
                 </div>
 
