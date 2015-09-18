@@ -3,6 +3,7 @@
 import angular from 'angular';
 import './container/container';
 import './header/header';
+import './home/home';
 import './login/login';
 import './register/register';
 import './goals/goals';
@@ -14,6 +15,7 @@ import './forgotPassword/forgotPassword';
 var app = angular.module('cn.components', [
     'cn.container',
     'cn.header',
+    'cn.home',
     'cn.login',
     'cn.register',
     'cn.goals',

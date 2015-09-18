@@ -1,8 +1,8 @@
 <md-toolbar layout="row" layout-align="start start">
-    <div class="logo-img"></div>
+    <div class="logo-img link" ui-sref="home.home"></div>
     <div flex></div>
     <div layout layout-align="start start">
-        <md-button class="btn1" ng-click="ctrl.checkAssessmentStatus()" ui-sref="home.assessment">
+        <md-button class="btn1" ng-click="ctrl.checkAssessmentStatus()">
             <img src="images/menu_assessments_icon.png"/>
 
             <div>Assessment</div>
@@ -15,7 +15,7 @@
         <md-button class="btn1" ui-sref="teamSelection">
             <img src="images/menu_traveller_male_avatar_icon.png"/>
 
-            <div>Web Platform</div>
+            <div>{{ctrl.team}}</div>
         </md-button>
         <div class="profile-button">
             <md-button class="md-icon-button" aria-label="Sign out" ng-click="ctrl.signOut()">

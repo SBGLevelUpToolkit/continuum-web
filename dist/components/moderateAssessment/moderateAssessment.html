@@ -14,7 +14,7 @@
                     </div>
                     <div flex="40" layout layout-align="center start" class="top-spacer">
                         <img ng-show="ctrl.loading" src="images/loading.gif"/>
-                        <span ng-hide="ctrl.loading">Rate your teams capabilities</span>
+                        <span ng-hide="ctrl.loading">Moderate your teams capabilities</span>
                     </div>
                     <div flex="30" layout layout-align="end">
                         <div>
@@ -32,199 +32,25 @@
             <div layout="row" flex="80" style="width:100%; height: 65%">
                 <div flex layout="row"></div>
 
-                <div layout="column" flex="95" style="height: 100%">
-                    <div class="ratingRow" layout="row" flex>
-                        <div layout-align="center center" flex layout>
+                <div layout="row" flex="95">
+                    <div ng-repeat="item in ctrl.data" layout="column" layout-align="center center" flex>
+                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 5 ? item.Rating : 0}}">
                             <div>5</div>
                         </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>5</div>
-                        </div>
-                    </div>
-                    <div class="ratingRow" layout="row" flex>
-                        <div layout-align="center center" flex layout>
+                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 4 ? item.Rating : 0}}">
                             <div>4</div>
                         </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>4</div>
-                        </div>
-                    </div>
-                    <div class="ratingRow" layout="row" flex>
-                        <div layout-align="center center" flex layout>
+                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 3 ? item.Rating : 0}}">
                             <div>3</div>
                         </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>3</div>
-                        </div>
-                    </div>
-                    <div class="ratingRow" layout="row" flex>
-                        <div layout-align="center center" flex layout>
+                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 2 ? item.Rating : 0}}">
                             <div>2</div>
                         </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>2</div>
-                        </div>
-                    </div>
-                    <div class="ratingRow" layout="row" flex>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
-                            <div>1</div>
-                        </div>
-                        <div layout-align="center center" flex layout>
+                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 1 ? item.Rating : 0}}">
                             <div>1</div>
                         </div>
                     </div>
                 </div>
-
                 <div flex layout="row"></div>
             </div>
             <div layout="row" style="width:100%; height: 20%">

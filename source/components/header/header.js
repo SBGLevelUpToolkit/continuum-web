@@ -1,5 +1,6 @@
 import template from './header.html!text';
 import '../../services/security/authFactory';
+import 'angular-local-storage';
 
 var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
     .directive('cnHeader', function() {
@@ -8,7 +9,10 @@ var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/ function(authService, assessmentService, $state) {
+            controller: /*@ngInject*/ function(authService, assessmentService, $state, localStorageService) {
+                let user = localStorageService.get('userDetails');
+                this.team = user.Teams[ 0 ].Name;
+
                 this.signOut = function() {
                     authService.logOut();
                     $state.go('login');

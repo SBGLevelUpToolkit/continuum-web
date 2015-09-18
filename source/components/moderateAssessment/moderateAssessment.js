@@ -3,6 +3,7 @@ import 'angular-resource';
 import 'angular-ui-router';
 import '../../services/dimension';
 import 'lodash';
+import 'd3';
 
 var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'dimension' ])
     .directive('cnModerateAssessment', function() {
@@ -14,6 +15,70 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller($state, assessmentService, dimension) {
+
+                this.data = [
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 1,
+                        'Rating': 3
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 2,
+                        'Rating': 3
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 3,
+                        'Rating': 1
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 4,
+                        'Rating': 5
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 5,
+                        'Rating': 4
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 6,
+                        'Rating': 2
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 7,
+                        'Rating': 3
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 8,
+                        'Rating': 3
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 9,
+                        'Rating': 1
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 10,
+                        'Rating': 5
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 11,
+                        'Rating': 4
+                    },
+                    {
+                        'AssessmentId': 1,
+                        'DimensionId': 12,
+                        'Rating': 2
+                    }
+                ];
+
                 this.loading = true;
                 this.dimension = dimension;
                 this.activeDimension = {};
@@ -37,6 +102,56 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         });
 
                         this.loading = false;
+
+                        $('div[attr-rating]').each(function(index, elm) {
+                            let element = $(elm).find('div:first-child')[ 0 ];
+                            let rating = $(elm).attr('attr-rating');
+                            if (rating > 0) {
+                                $(element).text('');
+
+                                var svg = d3.select(element).append('svg')
+                                    .attr('width', 50)
+                                    .attr('height', 50);
+
+                                /* Define the data for the circles */
+                                var elem = svg.selectAll('g myCircleText')
+                                    .data(rating);
+
+                                /*Create and place the 'blocks' containing the circle and the text */
+                                var elemEnter = elem.enter()
+                                    .append('g')
+                                    .attr('transform', function(d) {
+                                        return 'translate(25, 25)';
+                                    });
+
+                                /*Create the circle for each block */
+                                var circle = elemEnter.append('circle')
+                                    .attr('r', 0)
+                                    .attr('stroke', 'black')
+                                    .attr('fill', 'rgba(255,255,255,0.5');
+
+                                /* Create the text for each block */
+                                elemEnter.append('text')
+                                    .attr('dx', function(d) {
+                                        return -5;
+                                    })
+                                    .attr('dy', function(d) {
+                                        return 5;
+                                    })
+                                    .text(function(d) {
+                                        return d;
+                                    });
+
+                                circle
+                                    .transition()
+                                    .delay(250)
+                                    .attr('r', function(d) {
+                                        return d * 5;
+                                    });
+
+                            }
+                        });
+
                         console.log(this.assessment);
                     });
                 });
@@ -52,17 +167,6 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         this.activeDimension.class = 'dimension-focus';
                     });
                 };
-
-                assessmentService.query((assessment) => {
-                        this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
-                            return item.CapabilityAchieved;
-                        }).map(item => {
-                            return item.CapabilityId;
-                        });
-                    },
-                    (response) => {
-                        console.log(response);
-                    });
 
                 this.hasFocus = function(selDimension) {
                     if (selDimension !== this.activeDimension) {
