@@ -15,6 +15,10 @@ let assessmentOperations = function(fullPath) {
         close: {
             method: 'POST',
             url: `${fullPath}close`
+        },
+        reopen: {
+            method: 'POST',
+            url: `${fullPath}reopen`
         }
     };
 };

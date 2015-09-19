@@ -21,7 +21,7 @@ System.config({
         'moment-timezone': 'node_modules/moment-timezone/moment-timezone.js',
         'angular-ui-router': 'node_modules/angular-ui-router/release/angular-ui-router.js',
         'angular-local-storage': 'node_modules/angular-local-storage/dist/angular-local-storage.js',
-        'd3': 'node_modules/d3/d3.min.js'
+        'd3': 'node_modules/d3/d3.js'
     },
     'defaultJSExtensions': true,
     'meta': {

@@ -58,6 +58,10 @@ body {
     max-width: 1280px;
 }
 
+cn-header {
+    max-height:180px;
+}
+
 .top-spacer {
     padding-top: 20px;
 }

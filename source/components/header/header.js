@@ -10,8 +10,14 @@ var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/ function(authService, assessmentService, $state, localStorageService) {
+                const avatars = {
+                    Barbarian: 'images/menu_traveller_male_avatar_icon.png',
+                    Amazon: 'images/menu_traveller_female_avatar_icon.png'
+                };
+
                 let user = localStorageService.get('userDetails');
                 this.team = user.Teams[ 0 ].Name;
+                this.avatarType = avatars[ user.Teams[ 0 ].AvatarName ];
 
                 this.signOut = function() {
                     authService.logOut();

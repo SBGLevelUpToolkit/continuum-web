@@ -5,6 +5,59 @@ import '../../services/dimension';
 import 'lodash';
 import 'd3';
 
+function displayVisualisation(element, ratingType) {
+    element.each(function(index, elm) {
+        let element = $(elm).find('div:first-child')[ 0 ],
+            rating = $(elm).attr(ratingType),
+            fill = ratingType === 'moderated-rating' ? 'rgba(3, 128, 26, 1)' : 'rgba(255,255,255,0.5';
+
+        if (rating > 0) {
+            $(element).text('');
+
+            var svg = d3.select(element).append('svg')
+                .attr('width', 50)
+                .attr('height', 50);
+
+            /* Define the data for the circles */
+            var elem = svg.selectAll('g myCircleText')
+                .data(rating);
+
+            /*Create and place the 'blocks' containing the circle and the text */
+            var elemEnter = elem.enter()
+                .append('g')
+                .attr('transform', function(d) {
+                    return 'translate(25, 25)';
+                });
+
+            /*Create the circle for each block */
+            var circle = elemEnter.append('circle')
+                .attr('r', 0)
+                .attr('stroke', 'black')
+                .attr('fill', fill);
+
+            /* Create the text for each block */
+            elemEnter.append('text')
+                .attr('dx', function(d) {
+                    return -5;
+                })
+                .attr('dy', function(d) {
+                    return 5;
+                })
+                .text(function(d) {
+                    return d;
+                });
+
+            circle
+                .transition()
+                .delay(250)
+                .attr('r', function(d) {
+                    return ratingType === 'moderated-rating' ? 25 :  d * 5;
+                });
+
+        }
+    });
+}
+
 var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'dimension' ])
     .directive('cnModerateAssessment', function() {
 
@@ -103,69 +156,14 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                         this.loading = false;
 
-                        $('div[attr-rating]').each(function(index, elm) {
-                            let element = $(elm).find('div:first-child')[ 0 ];
-                            let rating = $(elm).attr('attr-rating');
-                            if (rating > 0) {
-                                $(element).text('');
-
-                                var svg = d3.select(element).append('svg')
-                                    .attr('width', 50)
-                                    .attr('height', 50);
-
-                                /* Define the data for the circles */
-                                var elem = svg.selectAll('g myCircleText')
-                                    .data(rating);
-
-                                /*Create and place the 'blocks' containing the circle and the text */
-                                var elemEnter = elem.enter()
-                                    .append('g')
-                                    .attr('transform', function(d) {
-                                        return 'translate(25, 25)';
-                                    });
-
-                                /*Create the circle for each block */
-                                var circle = elemEnter.append('circle')
-                                    .attr('r', 0)
-                                    .attr('stroke', 'black')
-                                    .attr('fill', 'rgba(255,255,255,0.5');
-
-                                /* Create the text for each block */
-                                elemEnter.append('text')
-                                    .attr('dx', function(d) {
-                                        return -5;
-                                    })
-                                    .attr('dy', function(d) {
-                                        return 5;
-                                    })
-                                    .text(function(d) {
-                                        return d;
-                                    });
-
-                                circle
-                                    .transition()
-                                    .delay(250)
-                                    .attr('r', function(d) {
-                                        return d * 5;
-                                    });
-
-                            }
-                        });
-
-                        console.log(this.assessment);
+                        displayVisualisation($('div[rating]'), 'rating');
                     });
                 });
 
                 this.selectDimension = function(selDimension) {
                     this.activeDimension.class = 'dimension-blur';
                     this.activeDimension = selDimension;
-                    selDimension.class = 'pulse';
-
-                    let dimensionRetrieved = dimension.getDimension(selDimension.Id);
-                    dimensionRetrieved.then((data) => {
-                        this.loading = false;
-                        this.activeDimension.class = 'dimension-focus';
-                    });
+                    this.activeDimension.class = 'dimension-focus';
                 };
 
                 this.hasFocus = function(selDimension) {
@@ -180,8 +178,22 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     }
                 };
 
-                this.saveRating = function(item) {
-                    setRatingSelectedState.call(this, item);
+                function removeExistingModeratedRating(dimensionColumn) {
+                    dimensionColumn.each(function(element) {
+                        $(element).attr('moderatedRating', '');
+                    });
+                }
+
+                this.setModeratedRating = function(ev, item) {
+                    let selectedElement = $(ev.currentTarget),
+                        dimensionColumn = selectedElement.parent().find('div[rating]'),
+                        selectedRating = selectedElement.find('div').text();
+
+                    removeExistingModeratedRating(dimensionColumn);
+
+                    $(ev.currentTarget).attr('moderated-rating', selectedRating);
+
+                    displayVisualisation($(ev.currentTarget), 'moderated-rating');
 
                     let ratingInfo = [
                         {
@@ -190,17 +202,17 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         }
                     ];
 
-                    assessmentService.save(ratingInfo, function(response) {
-                            console.log('SUCCESS: ');
-                        },
-                        function(response) {
-                            console.log('ERROR: ');
-                        });
+                    //assessmentService.update(ratingInfo, function(response) {
+                    //        console.log('SUCCESS: ');
+                    //    },
+                    //    function(response) {
+                    //        console.log('ERROR: ');
+                    //    });
                 };
 
                 this.setStatus = function(action) {
-                    if (this.assessmentAction === 'open') {
-                        assessmentService.open();
+                    if (action === 'reopen') {
+                        assessmentService.reopen();
                     } else {
                         assessmentService.close();
                         $state.go('home.moderateAssessment');

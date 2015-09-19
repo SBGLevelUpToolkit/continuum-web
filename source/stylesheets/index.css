@@ -58,6 +58,10 @@ body {
     max-width: 1280px;
 }
 
+cn-header {
+    max-height:180px;
+}
+
 .top-spacer {
     padding-top: 20px;
 }
@@ -86,6 +90,11 @@ a, a:hover, a:focus {
     text-decoration: none;
     outline: none;
     border: 0;
+}
+
+.moderateCell {
+    height: 90px;
+    color: #ffffff;
 }
 
 md-toolbar.md-tall {

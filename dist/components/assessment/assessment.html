@@ -34,10 +34,14 @@
                 </div>
 
                 <div layout="column" flex="80" style="height: 100%">
-                    <div flex="10" layout-align="start center" layout="column">
-
+                    <div flex="10" layout-align="start center" layout="column" ng-show="ctrl.assessmentAction !== 'Create'">
                         <div ng-hide="ctrl.loading">Level {{ctrl.dimension.currentLevel}}</div>
                     </div>
+
+                    <div layout-align="center center" layout ng-show="ctrl.userIsAdmin && ctrl.assessmentAction === 'Create'">
+                        There is no active assessment. Click Create to create an assessment.
+                    </div>
+
                     <div flex="90" style="overflow: auto; padding-bottom: 20px">
                         <div ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
                         <div ng-show="ctrl.activeAssessment">

@@ -1,7 +1,8 @@
 import './createFactories';
 import 'lodash';
+import 'angular-local-storage';
 
-function dimension(dimensionService) {
+function dimension(dimensionService, localStorageService) {
 
     let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
     return {
@@ -37,12 +38,14 @@ function dimension(dimensionService) {
                 return capability.Level === currentLevel;
             });
 
-            this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_male_avatar_icon.png`;
+            let user = localStorageService.get('userDetails');
+            let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+            this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
         },
     };
 }
 
 var app = angular.module('dimension', [ 'cn.dimensionFactory' ]);
-app.factory('dimension', [ 'dimensionService', dimension ]);
+app.factory('dimension', [ 'dimensionService', 'localStorageService', dimension ]);
 
 export default app;
