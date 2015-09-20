@@ -34,19 +34,19 @@
 
                 <div layout="row" flex="95">
                     <div ng-repeat="item in ctrl.data" layout="column" layout-align="center center" flex>
-                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 5 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 5 ? item.Rating : 0}}">
                             <div>5</div>
                         </div>
-                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 4 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 4 ? item.Rating : 0}}">
                             <div>4</div>
                         </div>
-                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 3 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 3 ? item.Rating : 0}}">
                             <div>3</div>
                         </div>
-                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 2 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 2 ? item.Rating : 0}}">
                             <div>2</div>
                         </div>
-                        <div style="height: 90px" layout layout-align="center center" flex attr-rating="{{item.Rating === 1 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 1 ? item.Rating : 0}}">
                             <div>1</div>
                         </div>
                     </div>

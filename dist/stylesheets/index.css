@@ -92,6 +92,11 @@ a, a:hover, a:focus {
     border: 0;
 }
 
+.moderateCell {
+    height: 90px;
+    color: #ffffff;
+}
+
 md-toolbar.md-tall {
     max-height: 160px;
     height: 160px;
