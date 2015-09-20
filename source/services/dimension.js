@@ -41,11 +41,11 @@ function dimension(dimensionService, localStorageService) {
             let user = localStorageService.get('userDetails');
             let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
             this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
-        },
+        }
     };
 }
 
-var app = angular.module('dimension', [ 'cn.dimensionFactory' ]);
+var app = angular.module('cn.dimension', [ 'cn.dimensionFactory' ]);
 app.factory('dimension', [ 'dimensionService', 'localStorageService', dimension ]);
 
 export default app;

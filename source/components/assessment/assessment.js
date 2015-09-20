@@ -5,7 +5,7 @@ import '../../services/dimension';
 import 'lodash';
 import 'angular-local-storage';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'dimension' ])
+var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'cn.dimension' ])
     .directive('cnAssessment', function() {
 
         return {

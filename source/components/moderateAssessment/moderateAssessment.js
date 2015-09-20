@@ -1,64 +1,12 @@
 import template from './moderateAssessment.html!text';
+import './moderateAssessmentHelper';
 import 'angular-resource';
 import 'angular-ui-router';
 import '../../services/dimension';
 import 'lodash';
 import 'd3';
 
-function displayVisualisation(element, ratingType) {
-    element.each(function(index, elm) {
-        let element = $(elm).find('div:first-child')[ 0 ],
-            rating = $(elm).attr(ratingType),
-            fill = ratingType === 'moderated-rating' ? 'rgba(3, 128, 26, 1)' : 'rgba(255,255,255,0.5';
-
-        if (rating > 0) {
-            $(element).text('');
-
-            var svg = d3.select(element).append('svg')
-                .attr('width', 50)
-                .attr('height', 50);
-
-            /* Define the data for the circles */
-            var elem = svg.selectAll('g myCircleText')
-                .data(rating);
-
-            /*Create and place the 'blocks' containing the circle and the text */
-            var elemEnter = elem.enter()
-                .append('g')
-                .attr('transform', function(d) {
-                    return 'translate(25, 25)';
-                });
-
-            /*Create the circle for each block */
-            var circle = elemEnter.append('circle')
-                .attr('r', 0)
-                .attr('stroke', 'black')
-                .attr('fill', fill);
-
-            /* Create the text for each block */
-            elemEnter.append('text')
-                .attr('dx', function(d) {
-                    return -5;
-                })
-                .attr('dy', function(d) {
-                    return 5;
-                })
-                .text(function(d) {
-                    return d;
-                });
-
-            circle
-                .transition()
-                .delay(250)
-                .attr('r', function(d) {
-                    return ratingType === 'moderated-rating' ? 25 :  d * 5;
-                });
-
-        }
-    });
-}
-
-var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'dimension' ])
+var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'cn.dimension', 'cn.moderateAssessmentHelper' ])
     .directive('cnModerateAssessment', function() {
 
         return {
@@ -67,7 +15,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, assessmentService, dimension) {
+            controller: /*@ngInject*/function controller($state, assessmentService, dimension, helper) {
 
                 this.data = [
                     {
@@ -156,7 +104,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                         this.loading = false;
 
-                        displayVisualisation($('div[rating]'), 'rating');
+                        helper.displayVisualisation($('div[rating]'), 'rating');
                     });
                 });
 
@@ -178,22 +126,16 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     }
                 };
 
-                function removeExistingModeratedRating(dimensionColumn) {
-                    dimensionColumn.each(function(element) {
-                        $(element).attr('moderatedRating', '');
-                    });
-                }
-
                 this.setModeratedRating = function(ev, item) {
                     let selectedElement = $(ev.currentTarget),
                         dimensionColumn = selectedElement.parent().find('div[rating]'),
                         selectedRating = selectedElement.find('div').text();
 
-                    removeExistingModeratedRating(dimensionColumn);
+                    helper.removeExistingModeratedRating(dimensionColumn);
 
                     $(ev.currentTarget).attr('moderated-rating', selectedRating);
 
-                    displayVisualisation($(ev.currentTarget), 'moderated-rating');
+                    helper.displayVisualisation($(ev.currentTarget), 'moderated-rating');
 
                     let ratingInfo = [
                         {
@@ -202,12 +144,12 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         }
                     ];
 
-                    //assessmentService.update(ratingInfo, function(response) {
-                    //        console.log('SUCCESS: ');
-                    //    },
-                    //    function(response) {
-                    //        console.log('ERROR: ');
-                    //    });
+                    assessmentService.update(ratingInfo, function(response) {
+                            console.log('SUCCESS: ');
+                        },
+                        function(response) {
+                            console.log('ERROR: ');
+                        });
                 };
 
                 this.setStatus = function(action) {

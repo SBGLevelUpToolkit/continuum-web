@@ -86,6 +86,7 @@ angular.module('Continuum', [
                 template: '<cn-forgot-password flex layout></cn-forgot-password>'
             })
             .state('home', {
+                url: '',
                 template: '<cn-container flex layout="column" fill-defined-flex></cn-container>'
             })
             .state('home.home', {
