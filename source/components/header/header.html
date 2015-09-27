@@ -2,17 +2,17 @@
     <div class="logo-img link" ui-sref="home.home"></div>
     <div flex></div>
     <div layout layout-align="start start">
-        <md-button class="btn1" ng-click="ctrl.checkAssessmentStatus()">
+        <md-button class="btn1" ng-click="ctrl.checkAssessmentStatus($event)">
             <img src="images/menu_assessments_icon.png"/>
 
             <div>Assessment</div>
         </md-button>
-        <md-button class="btn1" ui-sref="home.goals">
+        <md-button class="btn1" ng-click="ctrl.setActive($event)">
             <img src="images/menu_goals_icon.png"/>
 
             <div>Goals</div>
         </md-button>
-        <md-button class="btn1" ui-sref="teamSelection">
+        <md-button class="btn1">
             <img ng-src="{{ctrl.avatarType}}"/>
 
             <div>{{ctrl.team}}</div>

@@ -65,6 +65,6 @@ ModerateAssessmentHelper.prototype.removeExistingModeratedRating = function(dime
 };
 
 var app = angular.module('cn.moderateAssessmentHelper', []);
-app.service('helper', [ ModerateAssessmentHelper ]);
+app.service('moderateAssessmentHelper', [ ModerateAssessmentHelper ]);
 
 export default app;

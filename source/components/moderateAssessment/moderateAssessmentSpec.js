@@ -1,10 +1,9 @@
 import 'angular-mocks';
-import './assessment';
-import './dimension';
+import '../dimension/dimension';
 import 'lodash';
 import '../../services/createFactories';
 
-describe('Assessment Directive', function() {
+describe('Moderate Assessment Directive', function() {
 
     var scope,
         elm,

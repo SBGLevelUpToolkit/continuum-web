@@ -1,27 +1,190 @@
 <?xml version="1.0"?>
 <testsuites>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-25T14:59:08" id="0" hostname="Bretts-MacBook-Pro.local">
+  <testsuite name="Chrome 45.0.2454 (Mac OS X 10.10.5)" package="" timestamp="2015-09-25T07:11:44" id="0" hostname="Bretts-MacBook-Pro.local" tests="73" errors="0" failures="0" time="0.554">
     <properties>
-      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"/>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36"/>
     </properties>
-  </testsuite>
-  <testsuite name="Chrome 44.0.2403 (Mac OS X 10.10.4)" package="" timestamp="2015-08-25T14:59:09" id="0" hostname="Bretts-MacBook-Pro.local" tests="24" errors="1" failures="0" time="0.303">
-    <properties>
-      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"/>
-    </properties>
-    <testcase name="should get all dimensions" time="0.074" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Assessment Directive"/>
-    <testcase name="should bind the content" time="0.039" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
-    <testcase name="should not call login when userName is invalid" time="0.03" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
-    <testcase name="should not call login when password is invalid" time="0.019" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
-    <testcase name="should call home state when authorization is successful" time="0.023" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
-    <testcase name="should set an invalid property when authorization is unsuccessful" time="0.019" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Login Directive"/>
-    <testcase name="should bind the content" time="0.02" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
-    <testcase name="should not call register when userName is invalid" time="0.039" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
-    <testcase name="should not call register when password is invalid" time="0.014" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
-    <testcase name="should call teamSelection state when registration is successful" time="0.013" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
-    <testcase name="should set an invalid property when authorization is unsuccessful" time="0.011" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Register Directive"/>
-    <testcase name="should return the correct host name" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Factory Hostname Provider"/>
-    <testcase name="should create a factory" time="0.001" classname="Chrome 44.0.2403 (Mac OS X 10.10.4).Factory CreateFactory"/>
+    <testcase name="it should set the assessment action to create" time="0.106" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state "/>
+    <testcase name="it should show a message" time="0.034" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state "/>
+    <testcase name="it should display the correct status button text" time="0.024" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is an admin"/>
+    <testcase name="it should display the correct help text" time="0.029" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is an admin"/>
+    <testcase name="it should call a service to create an assessment" time="0.026" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is an admin When the Create button is clicked"/>
+    <testcase name="it should change the view to create mode" time="0.025" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is an admin When the Create button is clicked"/>
+    <testcase name="it should hide the status button" time="0.017" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is not an admin"/>
+    <testcase name="it should display the correct help text" time="0.021" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there are no assessments in an open or moderated state  When the logged in user is not an admin"/>
+    <testcase name="it should get the saved ratings for the current assessment" time="0.031" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment"/>
+    <testcase name="it should set the assessment action to moderate" time="0.02" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment"/>
+    <testcase name="it should not show a message" time="0.018" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment"/>
+    <testcase name="it should display the correct status button text" time="0.02" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is an admin"/>
+    <testcase name="it should hide the help text" time="0.02" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is an admin"/>
+    <testcase name="it should call a service to update the assessment status" time="0.021" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is an admin When the Moderate button is clicked"/>
+    <testcase name="it should route to assessment moderation" time="0.021" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is an admin When the Moderate button is clicked"/>
+    <testcase name="it should hide the status button" time="0.019" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is not an admin"/>
+    <testcase name="it should hide the help text" time="0.022" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When there is an open assessment When the logged in user is not an admin"/>
+    <testcase name="it should call the save function" time="0.061" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When a rating is selected"/>
+    <testcase name="it should set the correct rating state" time="0.019" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles When a rating is selected"/>
+    <testcase name="should bind the content" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should not call login when userName is invalid" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should not call login when password is invalid" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should pass a valid object to login" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should call home state when authorization is successful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should set an invalid property when authorization is unsuccessful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Login Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should bind the content" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should not call register when userName is invalid" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should not call register when password is invalid" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive">
+      <skipped/>
+    </testcase>
+    <testcase name="should call login" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive When registration is successful">
+      <skipped/>
+    </testcase>
+    <testcase name="should call teamSelection state when login is successful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive When registration is successful">
+      <skipped/>
+    </testcase>
+    <testcase name="should set an invalid property when login is unsuccessful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive When registration is successful">
+      <skipped/>
+    </testcase>
+    <testcase name="it should set an invalid property for general errors" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive When registration is unsuccessful">
+      <skipped/>
+    </testcase>
+    <testcase name="it should show specific invalid password requirements messages" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Register Directive When registration is unsuccessful When the password does not meet the requirements">
+      <skipped/>
+    </testcase>
+    <testcase name="should return the correct host name" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Factory Hostname Provider">
+      <skipped/>
+    </testcase>
+    <testcase name="should create a factory" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Factory CreateFactory">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all dimensions" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should sort the dimensions by displayOrder" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all capabilities for the first dimension" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When a dimension is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should find the minimum level for all the capabilities" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When a dimension is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should find the maximum level for all the capabilities" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When a dimension is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should filter all capabilities to the minimum level" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Dimension Directive When a dimension is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all dimensions" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Create Goals Dialog When the dialog opens">
+      <skipped/>
+    </testcase>
+    <testcase name="should clear the capabilities array" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Create Goals Dialog When clearing a dimension">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all goals" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="should only show active goals by default" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should display all goals if selected" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When clicking the View Completed Goals filter ">
+      <skipped/>
+    </testcase>
+    <testcase name="it should only display active goals if deselected" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When clicking the View Completed Goals filter ">
+      <skipped/>
+    </testcase>
+    <testcase name="it should call the goal status update function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When marking a goal as complete">
+      <skipped/>
+    </testcase>
+    <testcase name="it should set and save the goal object with the updated status" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Goals Directive When marking a goal as complete">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all dimensions" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get the saved ratings for the current assessment" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should call the save function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When a rating is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should set the correct rating state" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Assessment Directive When a rating is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should get all teams" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When the directive compiles">
+      <skipped/>
+    </testcase>
+    <testcase name="it should call the submit function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When an existing team is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="then it should call the save function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When an existing team is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should navigate to home if the save is successful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When an existing team is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should set the form to invalid after an unsuccessful response" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When an existing team is selected">
+      <skipped/>
+    </testcase>
+    <testcase name="it should call the submit function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When a new team is entered">
+      <skipped/>
+    </testcase>
+    <testcase name="then it should call the update function" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When a new team is entered">
+      <skipped/>
+    </testcase>
+    <testcase name="it should navigate to home if the update is successful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When a new team is entered">
+      <skipped/>
+    </testcase>
+    <testcase name="it should set the form to invalid after an unsuccessful response" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).TeamSelection Directive When a new team is entered">
+      <skipped/>
+    </testcase>
+    <testcase name="should set the content-type header" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthFactory Login">
+      <skipped/>
+    </testcase>
+    <testcase name="should store auth data when login is successful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthFactory Login">
+      <skipped/>
+    </testcase>
+    <testcase name="should remove stored auth data when login is unsuccessful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthFactory Login">
+      <skipped/>
+    </testcase>
+    <testcase name="should call the register web service" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthFactory SaveRegistration">
+      <skipped/>
+    </testcase>
+    <testcase name="should remove stored auth data when login is unsuccessful" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthFactory Logout">
+      <skipped/>
+    </testcase>
+    <testcase name="should have authInterceptorService be defined" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService">
+      <skipped/>
+    </testcase>
+    <testcase name="should have no api token upon start up" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService">
+      <skipped/>
+    </testcase>
+    <testcase name="should have the authInterceptorService as an interceptor" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService HTTP requests">
+      <skipped/>
+    </testcase>
+    <testcase name="should token in the headers when calling a web service" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService HTTP requests">
+      <skipped/>
+    </testcase>
+    <testcase name="should not place a token in the http request headers if no token is set" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService HTTP requests">
+      <skipped/>
+    </testcase>
+    <testcase name="should place a token in the http request headers after a token is set" time="0" classname="Chrome 45.0.2454 (Mac OS X 10.10.5).Security AuthInterceptorService HTTP requests">
+      <skipped/>
+    </testcase>
     <system-out><![CDATA[
 ]]></system-out>
     <system-err/>

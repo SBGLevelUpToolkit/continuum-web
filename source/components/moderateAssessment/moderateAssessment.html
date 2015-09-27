@@ -34,38 +34,31 @@
 
                 <div layout="row" flex="95">
                     <div ng-repeat="item in ctrl.data" layout="column" layout-align="center center" flex>
-                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 5 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center"
+                             flex rating="{{item.Rating === 5 ? item.Rating : 0}}">
                             <div>5</div>
                         </div>
-                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 4 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center"
+                             flex rating="{{item.Rating === 4 ? item.Rating : 0}}">
                             <div>4</div>
                         </div>
-                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 3 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center"
+                             flex rating="{{item.Rating === 3 ? item.Rating : 0}}">
                             <div>3</div>
                         </div>
-                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 2 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center"
+                             flex rating="{{item.Rating === 2 ? item.Rating : 0}}">
                             <div>2</div>
                         </div>
-                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center" flex rating="{{item.Rating === 1 ? item.Rating : 0}}">
+                        <div class="moderateCell link" ng-click="ctrl.setModeratedRating($event, item)" layout layout-align="center center"
+                             flex rating="{{item.Rating === 1 ? item.Rating : 0}}">
                             <div>1</div>
                         </div>
                     </div>
                 </div>
                 <div flex layout="row"></div>
             </div>
-            <div layout="row" style="width:100%; height: 20%">
-                <div id="dimensionList" class="overlap" flex layout layout-fill layout-align="end end">
-                    <div class="dimension-icon" flex ng-repeat="dimension in ctrl.dimension.dimensions">
-                        <div class="link"
-                             ng-class="dimension.class"
-                             ng-mouseover="ctrl.hasFocus(dimension)"
-                             ng-mouseleave="ctrl.lostFocus(dimension)"
-                             ng-click="ctrl.selectDimension(dimension)"><img
-                                ng-src="images/{{dimension.ImageName}}">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <cn-dimension></cn-dimension>
         </md-content>
     </div>
 </div>

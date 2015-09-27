@@ -8,9 +8,10 @@ var app = angular.module('cn.container', [])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller(userService, localStorageService) {
+            controller: /*@ngInject*/function controller(userService, localStorageService, mediatorService) {
                 userService.query((user) => {
                     localStorageService.set('userDetails', user);
+                    mediatorService.notify('UserDetailsLoaded');
                 });
             }
         };

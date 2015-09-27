@@ -6,7 +6,7 @@ module.exports = function(config) {
         // base path, that will be used to resolve files and exclude
         basePath: '../',
 
-        files: [],
+        files: [{ pattern: 'source/images/*', watched: false, included: false, served: true }],
 
         // frameworks to use
         frameworks: [ 'jasmine', 'systemjs' ],
@@ -36,7 +36,9 @@ module.exports = function(config) {
                 'node_modules/lodash/index.js',
                 'node_modules/moment/min/moment.min.js',
                 'test/unit/*.js',
-                'source/**/*'
+                'test/unit/mocks/*.json',
+                'source/**/*.js',
+                'source/**/*.html'
             ],
 
             // SystemJS configuration specifically for tests, added after your config file.
@@ -62,6 +64,10 @@ module.exports = function(config) {
             testFileSuffix: 'Spec.js'
         },
 
+        proxies: {
+            '/images/': '/base/source/images/',
+        },
+
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
         //reporters: [ 'spec', 'junit', 'coverage' ],
@@ -81,7 +87,7 @@ module.exports = function(config) {
 
         colors: true,
 
-        logLevel: config.LOG_DEBUG,
+        logLevel: config.LOG_INFO,
 
         autoWatch: true,
 

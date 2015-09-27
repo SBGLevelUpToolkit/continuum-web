@@ -1,0 +1,25 @@
+{
+  "dimensions": [
+    {
+      "Id": 1,
+      "Capabilities": null,
+      "Name": "Strategy Alignment",
+      "DisplayOrder": 3,
+      "ImageName": "icon_strategy_alignment_small.png"
+    },
+    {
+      "Id": 2,
+      "Capabilities": null,
+      "Name": "Planning and Requirements",
+      "DisplayOrder": 1,
+      "ImageName": "icon_planning_requirements_small.png"
+    },
+    {
+      "Id": 3,
+      "Capabilities": null,
+      "Name": "Number 2",
+      "DisplayOrder": 2,
+      "ImageName": "icon_planning_requirements_small.png"
+    }
+  ]
+}

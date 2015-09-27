@@ -2,20 +2,28 @@ import template from './moderateAssessment.html!text';
 import './moderateAssessmentHelper';
 import 'angular-resource';
 import 'angular-ui-router';
-import '../../services/dimension';
 import 'lodash';
 import 'd3';
 
-var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'cn.dimension', 'cn.moderateAssessmentHelper' ])
+var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', 'cn.moderateAssessmentHelper' ])
     .directive('cnModerateAssessment', function() {
 
         return {
             scope: {},
             restrict: 'E',
             template: template,
+            link: function link(scope, element, attrs, controller) {
+                // How we get access to the child controller
+                // Is there a better way?
+                var childElem = element.find('cn-dimension'),
+                    dimensionCtrl = childElem.isolateScope().ctrlDimension;
+                dimensionCtrl.dimensions.then(function(data) {
+                    controller.buildAssessment(dimensionCtrl.dimension.dimensions);
+                });
+            },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, assessmentService, dimension, helper) {
+            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper) {
 
                 this.data = [
                     {
@@ -81,12 +89,9 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 ];
 
                 this.loading = true;
-                this.dimension = dimension;
-                this.activeDimension = {};
                 this.selectedCapabilities = [];
 
-                let dimensionsRetrieved = dimension.getAllDimensions();
-                dimensionsRetrieved.then((dimensions) => {
+                this.buildAssessment = function(dimensions) {
                     assessmentService.query((assessments) => {
                         this.assessment = dimensions.map(function(dimension) {
                             let assessment = assessments.AssessmentResults.filter(function(assessment) {
@@ -104,26 +109,8 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                         this.loading = false;
 
-                        helper.displayVisualisation($('div[rating]'), 'rating');
+                        moderateAssessmentHelper.displayVisualisation($('div[rating]'), 'rating');
                     });
-                });
-
-                this.selectDimension = function(selDimension) {
-                    this.activeDimension.class = 'dimension-blur';
-                    this.activeDimension = selDimension;
-                    this.activeDimension.class = 'dimension-focus';
-                };
-
-                this.hasFocus = function(selDimension) {
-                    if (selDimension !== this.activeDimension) {
-                        selDimension.class = 'dimension-focus';
-                    }
-                };
-
-                this.lostFocus = function(selDimension) {
-                    if (selDimension !== this.activeDimension) {
-                        selDimension.class = 'dimension-blur';
-                    }
                 };
 
                 this.setModeratedRating = function(ev, item) {
@@ -131,11 +118,11 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                         dimensionColumn = selectedElement.parent().find('div[rating]'),
                         selectedRating = selectedElement.find('div').text();
 
-                    helper.removeExistingModeratedRating(dimensionColumn);
+                    moderateAssessmentHelper.removeExistingModeratedRating(dimensionColumn);
 
                     $(ev.currentTarget).attr('moderated-rating', selectedRating);
 
-                    helper.displayVisualisation($(ev.currentTarget), 'moderated-rating');
+                    moderateAssessmentHelper.displayVisualisation($(ev.currentTarget), 'moderated-rating');
 
                     let ratingInfo = [
                         {

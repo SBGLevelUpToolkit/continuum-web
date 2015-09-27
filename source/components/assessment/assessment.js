@@ -1,20 +1,35 @@
 import template from './assessment.html!text';
 import 'angular-resource';
 import 'angular-ui-router';
-import '../../services/dimension';
 import 'lodash';
 import 'angular-local-storage';
 
-var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'cn.dimension' ])
+var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalStorageModule' ])
     .directive('cnAssessment', function() {
 
         return {
             scope: {},
             restrict: 'E',
             template: template,
+            link: function link(scope, element, attrs, controller) {
+                // How we get access to the child controller
+                // Is there a better way?
+                var childElem = element.find('cn-dimension'),
+                    dimensionCtrl = childElem.isolateScope().ctrlDimension;
+                controller.dimension = dimensionCtrl;
+                dimensionCtrl.dimensionRetrieved.promise.then(function() {
+                    controller.currentLevel = dimensionCtrl.minLevel;
+                });
+            },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, assessmentService, dimension, localStorageService) {
+            controller: /*@ngInject*/function controller($state, assessmentService, localStorageService) {
+                //TODO Too much 'this'. Will fp help?
+                //TODO Too much going on in this controller
+                let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
+                let user = localStorageService.get('userDetails');
+                let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+
                 let setRatingSelectedState = function(item) {
                     var idx = this.selectedCapabilities.indexOf(item.Id);
                     if (idx > -1) {
@@ -27,24 +42,30 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'cn.dimen
                 this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;
                 this.loading = true;
                 this.activeAssessment = true;
-                this.dimension = dimension;
-                this.activeDimension = {};
                 this.selectedCapabilities = [];
 
                 this.setStatus = function() {
                     if (this.assessmentAction === 'Create') {
-                        assessmentService.create();
+                        assessmentService.create(() => {
+                            getAssessment.call(this);
+                        });
                     } else {
                         assessmentService.moderate();
                         $state.go('home.moderateAssessment');
                     }
                 };
 
-                assessmentService.query((assessment) => {
-                        if (assessment.Status) {
-                            if (assessment.Status === 'closed') {
+                function getAssessment() {
+                    assessmentService.query((assessment) => {
+                            if (!assessment.Status || assessment.Status === 'Closed') {
+                                this.loading = false;
                                 this.activeAssessment = false;
                                 this.assessmentAction = 'Create';
+                                if (this.userIsAdmin) {
+                                    this.assessmentMessage = 'There is no active assessment. Click Create to create an assessment.';
+                                } else {
+                                    this.assessmentMessage = 'There is no active assessment.';
+                                }
                             } else {
                                 this.assessmentAction = 'Moderate';
                                 this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
@@ -54,69 +75,50 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'cn.dimen
                                 });
 
                                 this.loading = false;
-
-                                let dimensionsRetrieved = dimension.getAllDimensions();
-                                dimensionsRetrieved.then((dimensions) => {
-                                    this.selectDimension(dimensions[ 0 ]);
-                                });
-
-                                this.selectDimension = function(selDimension) {
-                                    this.activeDimension.class = 'dimension-blur';
-                                    this.activeDimension = selDimension;
-                                    selDimension.class = 'pulse';
-
-                                    let dimensionRetrieved = dimension.getDimension(selDimension.Id);
-                                    dimensionRetrieved.then((data) => {
-                                        this.activeDimension.class = 'dimension-focus';
-                                    });
-                                };
-
-                                this.hasFocus = function(selDimension) {
-                                    if (selDimension !== this.activeDimension) {
-                                        selDimension.class = 'dimension-focus';
-                                    }
-                                };
-
-                                this.lostFocus = function(selDimension) {
-                                    if (selDimension !== this.activeDimension) {
-                                        selDimension.class = 'dimension-blur';
-                                    }
-                                };
-
-                                this.saveRating = function(item) {
-                                    setRatingSelectedState.call(this, item);
-
-                                    let ratingInfo = [
-                                        {
-                                            CapabilityId: item.Id,
-                                            CapabilityAchieved: this.capabilityIsSelected(item)
-                                        }
-                                    ];
-
-                                    assessmentService.save(ratingInfo, function(response) {
-                                            console.log('SUCCESS: ');
-                                        },
-                                        function(response) {
-                                            console.log('ERROR: ');
-                                        });
-                                };
-
-                                this.capabilityIsSelected = function(item) {
-                                    return this.selectedCapabilities.indexOf(item.Id) > -1;
-                                };
                             }
-                        } else {
+                        },
+                        (response) => {
                             this.loading = false;
                             this.assessmentAction = 'Create';
                             this.activeAssessment = false;
+                            this.assessmentMessage = response.data;
+                        });
+                }
+
+                getAssessment.call(this);
+
+                this.saveRating = function(item) {
+                    setRatingSelectedState.call(this, item);
+
+                    let ratingInfo = [
+                        {
+                            CapabilityId: item.Id,
+                            CapabilityAchieved: this.capabilityIsSelected(item)
                         }
-                    },
-                    (response) => {
-                        this.loading = false;
-                        this.assessmentAction = 'Create';
-                        this.activeAssessment = false;
-                        this.assessmentMessage = response.data;
-                    });
+                    ];
+
+                    assessmentService.save(ratingInfo, function(response) {
+                            console.log('SUCCESS: ');
+                        },
+                        function(response) {
+                            console.log('ERROR: ');
+                        });
+                };
+
+                this.capabilityIsSelected = function(item) {
+                    return this.selectedCapabilities.indexOf(item.Id) > -1;
+                };
+
+                this.getPreviousLevel = function() {
+
+                    this.dimension.getCapabilitiesAtLevel(--this.currentLevel);
+                    this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
+                };
+
+                this.getNextLevel = function() {
+                    this.dimension.getCapabilitiesAtLevel(++this.currentLevel);
+                    this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
+                };
             }
         };
     });

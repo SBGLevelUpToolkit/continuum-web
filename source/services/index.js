@@ -3,6 +3,7 @@ import './security/authInterceptorService';
 import './hostNameProvider';
 import './security/authFactory';
 import './createFactories';
+import './mediator';
 
 var app = angular.module('cn.services', [
     'cn.authInterceptor',
@@ -11,7 +12,8 @@ var app = angular.module('cn.services', [
     'cn.teamFactory',
     'cn.assessmentFactory',
     'cn.dimensionFactory',
-    'cn.userFactory'
+    'cn.userFactory',
+    'cn.mediatorFactory'
 ]);
 
 export default app;

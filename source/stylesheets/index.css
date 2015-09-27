@@ -21,6 +21,34 @@ body {
     text-transform: none;
 }
 
+.amazon {
+    width: 146px;
+    height: 195px;
+    background-image: url(../images/avatar_female_normal.png);
+}
+
+.amazon.hover {
+    background-image: url(../images/avatar_female_rollover.png);
+}
+
+.amazon.selected {
+    background-image: url(../images/avatar_female_selected.png);
+}
+
+.barbarian {
+    width: 146px;
+    height: 195px;
+    background-image: url(../images/avatar_male_normal.png);
+}
+
+.barbarian.hover {
+    background-image: url(../images/avatar_male_rollover.png);
+}
+
+.barbarian.selected {
+    background-image: url(../images/avatar_male_selected.png);
+}
+
 .dimension-icon img {
     max-width: 120px;
 }
@@ -59,7 +87,7 @@ body {
 }
 
 cn-header {
-    max-height:180px;
+    max-height: 180px;
 }
 
 .top-spacer {
@@ -306,4 +334,9 @@ cn-header md-toolbar .logo-img {
 .btn1[disabled] {
     color: rgb(187, 187, 187);
     background-color: rgba(230, 230, 229, 0.1);
+}
+
+.btn1.selected {
+    background-color: rgb(1, 57, 80);
+    color: #FFFFFF;
 }
