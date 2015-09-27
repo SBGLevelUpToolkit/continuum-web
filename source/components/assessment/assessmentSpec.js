@@ -102,8 +102,8 @@ describe('Assessment Directive', function() {
     });
 
     beforeEach(inject(function($controller, _assessmentService_, _localStorageService_) {
-        assessmentService = _assessmentService_,
-            localStorageService = _localStorageService_;
+        assessmentService = _assessmentService_;
+        localStorageService = _localStorageService_;
 
         let mockedDimensionService = {
             query: function(successCb) {

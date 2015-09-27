@@ -17,6 +17,17 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
 
                 let activeDimension = {};
 
+                let getDimensionData = (dimensionId) => {
+                    return dimensionService.get({ dimension: dimensionId },
+                        (dimension) => {
+                            this.fullDimension = dimension;
+                            this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
+                            this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
+                            this.getCapabilitiesAtLevel(this.minLevel);
+                            this.dimensionRetrieved.resolve();
+                        }).$promise;
+                };
+
                 this.selectDimension = function(selDimension) {
                     activeDimension.class = 'dimension-blur';
                     activeDimension = selDimension;
@@ -53,17 +64,6 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                         });
                         this.selectDimension(dimensions[ 0 ]);
                     });
-                };
-
-                let getDimensionData = (dimensionId) => {
-                    return dimensionService.get({ dimension: dimensionId },
-                        (dimension) => {
-                            this.fullDimension = dimension;
-                            this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
-                            this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
-                            this.getCapabilitiesAtLevel(this.minLevel);
-                            this.dimensionRetrieved.resolve();
-                        }).$promise;
                 };
 
                 getAllDimensions();

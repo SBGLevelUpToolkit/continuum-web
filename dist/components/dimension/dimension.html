@@ -1,0 +1,13 @@
+<div layout="row" style="width:100%; height: 20%">
+    <div id="dimensionList" class="overlap" flex layout layout-fill layout-align="end end">
+        <div class="dimension-icon" flex ng-repeat="dimension in ctrlDimension.dimensions">
+            <div class="link"
+                 ng-class="dimension.class"
+                 ng-mouseover="ctrlDimension.hasFocus(dimension)"
+                 ng-mouseleave="ctrlDimension.lostFocus(dimension)"
+                 ng-click="ctrlDimension.selectDimension(dimension)"><img
+                    ng-src="images/{{dimension.ImageName}}">
+            </div>
+        </div>
+    </div>
+</div>

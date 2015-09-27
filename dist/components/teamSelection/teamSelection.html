@@ -56,7 +56,21 @@
                     </div>
                 </div>
             </md-input-container>
-            <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
+            <div layout layout-align="center">
+                <div>Select your team avatar</div>
+            </div>
+            <div id="avatars" layout>
+                <a ng-class="ctrl.amazon"
+                   ng-mouseover="ctrl.setAvatar($event)"
+                   ng-mouseleave="ctrl.setAvatar($event)"
+                   ng-click="ctrl.setAvatar($event)"></a>
+                <div flex></div>
+                <a ng-class="ctrl.barbarian"
+                   ng-mouseover="ctrl.setAvatar($event)"
+                   ng-mouseleave="ctrl.setAvatar($event)"
+                   ng-click="ctrl.setAvatar($event)"></a>
+            </div>
+            <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.message}}</div>
             <div layout="row" layout-align="center center">
                 <md-button class="md-raised" ng-click="ctrl.form.$valid && ctrl.submitTeam(ctrl.selectedItem)"
                            style="font-weight: bold">Submit
