@@ -12,6 +12,7 @@ import './assessment/assessment';
 import './moderateAssessment/moderateAssessment';
 import './dimension/dimension';
 import './forgotPassword/forgotPassword';
+import './renderComplete/renderComplete';
 
 var app = angular.module('cn.components', [
     'cn.container',
@@ -24,7 +25,8 @@ var app = angular.module('cn.components', [
     'cn.assessment',
     'cn.moderateAssessment',
     'cn.dimension',
-    'cn.forgotPassword'
+    'cn.forgotPassword',
+    'cn.onRenderComplete'
 ]);
 
 export default app;

@@ -26,7 +26,7 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
                     this.loading = true;
                     return authService.login(data).then((response) => {
                             this.loading = false;
-                            $state.go('home');
+                            $state.go('home.home');
                         },
                         (err) => {
                             this.loading = false;

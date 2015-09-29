@@ -17,18 +17,23 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                 var childElem = element.find('cn-dimension'),
                     dimensionCtrl = childElem.isolateScope().ctrlDimension;
                 controller.dimension = dimensionCtrl;
-                dimensionCtrl.dimensionRetrieved.promise.then(function() {
-                    controller.currentLevel = dimensionCtrl.minLevel;
-                });
+
+                //dimensionCtrl.dimensionRetrieved.promise.then(function() {
+                //    controller.currentLevel = dimensionCtrl.minLevel;
+                //});
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, assessmentService, localStorageService) {
+            controller: /*@ngInject*/function controller($state, assessmentService, localStorageService, mediatorService) {
                 //TODO Too much 'this'. Will fp help?
                 //TODO Too much going on in this controller
                 let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
                 let user = localStorageService.get('userDetails');
                 let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+
+                mediatorService.listen('DimensionsAvailable', function(options) {
+                    options.dimensionCtrl.selectDimension(options.dimensionCtrl.dimensions[ 0 ]);
+                });
 
                 let setRatingSelectedState = function(item) {
                     var idx = this.selectedCapabilities.indexOf(item.Id);
@@ -38,6 +43,10 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                         this.selectedCapabilities.push(item.Id);
                     }
                 };
+
+                mediatorService.listen('DimensionChanged', (options) => {
+                    this.currentLevel = options.minLevel;
+                });
 
                 this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;
                 this.loading = true;
@@ -110,7 +119,6 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                 };
 
                 this.getPreviousLevel = function() {
-
                     this.dimension.getCapabilitiesAtLevel(--this.currentLevel);
                     this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
                 };

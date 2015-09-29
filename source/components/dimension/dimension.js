@@ -11,7 +11,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
             template: template,
             controllerAs: 'ctrlDimension',
             bindToController: true,
-            controller: /*@ngInject*/function controller($q, dimensionService) {
+            controller: /*@ngInject*/function controller($q, dimensionService, mediatorService) {
 
                 this.dimensionRetrieved = $q.defer(); // Notify any subscribers when dimensions have been retrieved
 
@@ -24,6 +24,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                             this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
                             this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
                             this.getCapabilitiesAtLevel(this.minLevel);
+                            mediatorService.notify('DimensionChanged', { minLevel: this.minLevel });
                             this.dimensionRetrieved.resolve();
                         }).$promise;
                 };
@@ -62,7 +63,8 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                         this.dimensions = _.sortBy(dimensions, (dimension) => {
                             return dimension.DisplayOrder;
                         });
-                        this.selectDimension(dimensions[ 0 ]);
+                        mediatorService.notify('DimensionsAvailable', { dimensionCtrl : this });
+                        //this.selectDimension(dimensions[ 0 ]);
                     });
                 };
 

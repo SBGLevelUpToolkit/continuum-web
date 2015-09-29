@@ -1,64 +1,64 @@
 <div md-theme="continuumDark" flex layout="column" layout-align="center center">
-    <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
-        <md-content class="feature-panel" flex="40" style="position: relative;">
 
-            <div style="height: 15%">
-                <div layout layout-align="center center">
-                    <div class="line" flex></div>
-                    <div class="text">ASSESSMENT</div>
-                    <div class="line" flex></div>
+    <md-content class="feature-panel">
+
+        <div style="height: 15%">
+            <div layout layout-align="center center">
+                <div class="line" flex></div>
+                <div class="text">ASSESSMENT</div>
+                <div class="line" flex></div>
+            </div>
+
+            <div layout flex="100">
+                <div flex="30" layout layout-align="start">
+                    <img ng-src="images/{{ctrl.avatar}}" style="max-height: 80px">
                 </div>
-
-                <div layout flex="100">
-                    <div flex="30" layout layout-align="start">
-                        <img ng-src="images/{{ctrl.avatar}}" style="max-height: 80px">
-                    </div>
-                    <div flex="40" layout layout-align="center start" class="top-spacer">
-                        <img ng-show="ctrl.loading" src="images/loading.gif"/>
-                        <span ng-hide="ctrl.loading">Rate your teams capabilities</span>
-                    </div>
-                    <div flex="30" layout layout-align="end">
-                        <div id="setStatus" ng-show="ctrl.userIsAdmin">
-                            <md-button  class="md-raised" ng-click="ctrl.setStatus()"
-                                       style="font-weight: bold">{{ctrl.assessmentAction}}</md-button>
-                        </div>
+                <div flex="40" layout layout-align="center start" class="top-spacer">
+                    <img ng-show="ctrl.loading" src="images/loading.gif"/>
+                    <span ng-hide="ctrl.loading">Rate your teams capabilities</span>
+                </div>
+                <div flex="30" layout layout-align="end">
+                    <div id="setStatus" ng-show="ctrl.userIsAdmin">
+                        <md-button class="md-raised" ng-click="ctrl.setStatus()"
+                                   style="font-weight: bold">{{ctrl.assessmentAction}}
+                        </md-button>
                     </div>
                 </div>
             </div>
-            <div layout="row" style="width:100%; height: 65%">
-                <div flex="10" layout="row" layout-align="center center">
-                    <md-button ng-disabled="ctrl.currentLevel === ctrl.dimension.minLevel"
-                               ng-click="ctrl.getPreviousLevel()">< Prev
-                    </md-button>
-                </div>
-
-                <div layout="column" flex="80" style="height: 100%">
-                    <div flex="10" layout-align="start center" layout="column" ng-show="ctrl.assessmentAction !== 'Create'">
-                        <div ng-hide="ctrl.loading">Level {{ctrl.currentLevel}}</div>
-                    </div>
-
-                    <div flex="90" style="overflow: auto; padding-bottom: 20px">
-                        <div id="assessmentMessage" ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
-                        <!--<div ng-show="ctrl.activeAssessment">-->
-                            <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
-                                <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
-                                             aria-label="Rating checkbox">
-                                    {{capability.Description}}
-                                </md-checkbox>
-                            </div>
-                        <!--</div>-->
-                    </div>
-                </div>
-
-                <div flex="10" layout="row" layout-align="center center">
-                    <md-button ng-disabled="ctrl.currentLevel === ctrl.dimension.maxLevel"
-                               ng-click="ctrl.getNextLevel()">
-                        Next >
-                    </md-button>
-                </div>
-
+        </div>
+        <div layout="row" style="width:100%; height: 65%">
+            <div flex="10" layout="row" layout-align="center center">
+                <md-button ng-disabled="ctrl.currentLevel === ctrl.dimension.minLevel"
+                           ng-click="ctrl.getPreviousLevel()">< Prev
+                </md-button>
             </div>
-            <cn-dimension></cn-dimension>
-        </md-content>
-    </div>
+
+            <div layout="column" flex="80" style="height: 100%">
+                <div flex="10" layout-align="start center" layout="column" ng-show="ctrl.assessmentAction !== 'Create'">
+                    <div ng-hide="ctrl.loading">Level {{ctrl.currentLevel}}</div>
+                </div>
+
+                <div flex="90" style="overflow: auto; padding-bottom: 20px">
+                    <div id="assessmentMessage" ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
+                    <!--<div ng-show="ctrl.activeAssessment">-->
+                    <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
+                        <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
+                                     aria-label="Rating checkbox">
+                            {{capability.Description}}
+                        </md-checkbox>
+                    </div>
+                    <!--</div>-->
+                </div>
+            </div>
+
+            <div flex="10" layout="row" layout-align="center center">
+                <md-button ng-disabled="ctrl.currentLevel === ctrl.dimension.maxLevel"
+                           ng-click="ctrl.getNextLevel()">
+                    Next >
+                </md-button>
+            </div>
+
+        </div>
+        <cn-dimension></cn-dimension>
+    </md-content>
 </div>

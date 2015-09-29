@@ -31,6 +31,11 @@ body {
     background-image: url(../images/avatar_female_rollover.png);
 }
 
+.amazon.disabled {
+    background-image: url(../images/avatar_female_inactive.png);
+    cursor: default;
+}
+
 .amazon.selected {
     background-image: url(../images/avatar_female_selected.png);
 }
@@ -43,6 +48,11 @@ body {
 
 .barbarian.hover {
     background-image: url(../images/avatar_male_rollover.png);
+}
+
+.barbarian.disabled {
+    background-image: url(../images/avatar_male_inactive.png);
+    cursor: default;
 }
 
 .barbarian.selected {
@@ -80,10 +90,6 @@ body {
     100% {
         transform: scale3d(1, 1, 1);
     }
-}
-
-.container {
-    max-width: 1280px;
 }
 
 cn-header {
@@ -132,7 +138,7 @@ md-toolbar.md-tall {
 
 md-content {
     border-radius: 5px;
-    padding: 35px 40px 30px 40px
+    padding: 35px 40px 20px 40px
 }
 
 .form-panel {
@@ -140,8 +146,7 @@ md-content {
 }
 
 .feature-panel {
-    max-width: 1024px;
-    min-width: 1024px;
+    width: 960px;
     height: 600px;
 }
 
@@ -286,11 +291,11 @@ cn-header md-toolbar .logo-img {
     z-index: 0 !important;
 }
 
-/*.md-input {*/
-/*color: #FFFFFF !important;*/
-/*border-radius: 2px !important;*/
-/*//background-color: rgba(255, 255, 255, .5) !important;*/
-/*}*/
+.md-input {
+    color: #FFFFFF !important;
+    border-radius: 2px !important;
+/ / background-color : rgba(255, 255, 255, .5) !important;
+}
 
 /*.md-button.md-primary {*/
 /*color: #ffffff !important*/

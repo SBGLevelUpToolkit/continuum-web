@@ -17,15 +17,354 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 // Is there a better way?
                 var childElem = element.find('cn-dimension'),
                     dimensionCtrl = childElem.isolateScope().ctrlDimension;
-                dimensionCtrl.dimensions.then(function(data) {
-                    controller.buildAssessment(dimensionCtrl.dimension.dimensions);
-                });
+                controller.dimension = dimensionCtrl;
+                controller.parseResults();
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper) {
+            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper, mediatorService) {
 
-                this.data = [
+                this.data = {
+                    'DimensionResults': [
+                        {
+                            'DimensionId': 1,
+                            'Rating': 0,
+                            'ResponseCount': 7,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 1,
+                                    'Level': 1,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 3,
+                                    'Level': 2,
+                                    'ResponseCount': 3,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 3,
+                                    'Level': 4,
+                                    'ResponseCount': 3,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 2,
+                            'Rating': 0,
+                            'ResponseCount': 2,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 5,
+                                    'Level': 1,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 5,
+                                    'Level': 2,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 3,
+                            'Rating': 0,
+                            'ResponseCount': 2,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 1,
+                                    'Level': 1,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 2,
+                                    'Level': 2,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 4,
+                            'Rating': 0,
+                            'ResponseCount': 17,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 6,
+                                    'Level': 1,
+                                    'ResponseCount': 4,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 3,
+                                    'Level': 2,
+                                    'ResponseCount': 3,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 6,
+                                    'Level': 3,
+                                    'ResponseCount': 5,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 10,
+                                    'Level': 5,
+                                    'ResponseCount': 5,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 6,
+                            'Rating': 0,
+                            'ResponseCount': 3,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 3,
+                                    'Level': 2,
+                                    'ResponseCount': 3,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 7,
+                            'Rating': 0,
+                            'ResponseCount': 9,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 4,
+                                    'Level': 3,
+                                    'ResponseCount': 2,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 5,
+                                    'Level': 4,
+                                    'ResponseCount': 5,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 2,
+                                    'Level': 5,
+                                    'ResponseCount': 2,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 10,
+                            'Rating': 0,
+                            'ResponseCount': 6,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 4,
+                                    'Level': 2,
+                                    'ResponseCount': 1,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 8,
+                                    'Level': 3,
+                                    'ResponseCount': 3,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 5,
+                                    'Level': 4,
+                                    'ResponseCount': 2,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 12,
+                            'Rating': 0,
+                            'ResponseCount': 4,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 4,
+                                    'Level': 1,
+                                    'ResponseCount': 4,
+                                    'LevelAchieved': true
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 2,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 5,
+                            'Rating': 0,
+                            'ResponseCount': 0,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 2,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 8,
+                            'Rating': 0,
+                            'ResponseCount': 0,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 2,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 9,
+                            'Rating': 0,
+                            'ResponseCount': 0,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 2,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }, {
+                            'DimensionId': 11,
+                            'Rating': 0,
+                            'ResponseCount': 0,
+                            'Levels': [
+                                {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 1,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 2,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 3,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, {
+                                    'TargetCapabilityCount': 0,
+                                    'Level': 4,
+                                    'ResponseCount': 0,
+                                    'LevelAchieved': false
+                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
+                            ]
+                        }
+                    ], 'TotalUserCount': 1
+                };
+
+                this.parseResults = function() {
+                    this.assessmentResult = this.data.DimensionResults.sort(function(a, b) {
+                        return a.DimensionId < b.DimensionId ? -1 : 1;
+                    }).map(function(dimension) {
+                        return dimension.Levels.sort(function(a, b) {
+                            return a.Level > b.Level ? -1 : 1;
+                        });
+                    });
+                };
+
+                this.data2 = [
                     {
                         'AssessmentId': 1,
                         'DimensionId': 1,
@@ -91,27 +430,11 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 this.loading = true;
                 this.selectedCapabilities = [];
 
-                this.buildAssessment = function(dimensions) {
-                    assessmentService.query((assessments) => {
-                        this.assessment = dimensions.map(function(dimension) {
-                            let assessment = assessments.AssessmentResults.filter(function(assessment) {
-                                return assessment.DimensionId === dimension.Id;
-                            });
+                this.loading = false;
 
-                            return {
-                                Id: dimension.Id,
-                                Name: dimension.Name,
-                                DisplayOrder: dimension.DisplayOrder,
-                                ImageName: dimension.ImageName,
-                                Rating: assessment.Rating
-                            };
-                        });
-
-                        this.loading = false;
-
-                        moderateAssessmentHelper.displayVisualisation($('div[rating]'), 'rating');
-                    });
-                };
+                mediatorService.listen('NgRepeatRenderComplete', function() {
+                    moderateAssessmentHelper.displayVisualisation($('div[rating]'), 'rating');
+                });
 
                 this.setModeratedRating = function(ev, item) {
                     let selectedElement = $(ev.currentTarget),

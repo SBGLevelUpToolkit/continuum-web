@@ -10,17 +10,28 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller($state, teamService) {
-                let  showMessage = function(message) {
+                let avatars = [ 'amazon', 'barbarian' ];
+                let setAvatar = (avatarState = '') => {
+                    avatars.forEach((avatar) => {
+                        this[ avatar ] = `link ${avatar} ${avatarState}`;
+                    });
+                };
+
+                let avatarSelectionEnabled = true;
+
+                let showMessage = function(message) {
                     this.message = message;
                     this.loading = false;
                     this.formInvalid = true;
                 }.bind(this);
 
+                setAvatar();
+
                 this.teams = teamService.query((response) => {
                         this.loading = false;
                     },
                     (err) => {
-                        showMessage(err);
+                        showMessage(err.Message);
                     });
 
                 this.submitTeam = (item) => {
@@ -28,7 +39,7 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                     if (typeof item === 'object') {
                         teamService.save(item, (response) => {
                                 this.loading = false;
-                                $state.go('home');
+                                $state.go('home.home');
                             },
                             (err) => {
                                 showMessage(err);
@@ -50,31 +61,38 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                 };
 
                 this.searchTextChange = (text) => {
+                    avatarSelectionEnabled = true;
+                    setAvatar();
                     this.selectedItem = text;
+                };
+
+                this.selectedItemChange = function(item) {
+                    if (item) {
+                        setAvatar('disabled');
+                        avatarSelectionEnabled = false;
+                    }
                 };
 
                 this.querySearch = (query) => {
                     return query ? this.teams.filter(this.createFilterFor(query)) : this.teams;
                 };
 
-                this.amazon = 'link amazon';
-                this.barbarian = 'link barbarian';
-
                 this.setAvatar = function(event) {
-                    let avatarType = event.currentTarget.classList[ 1 ],
-                        eventType = {
-                            mouseover: 'hover',
-                            mouseleave: '',
-                            click: 'selected'
-                        };
+                    if (avatarSelectionEnabled) {
+                        let avatarType = event.currentTarget.classList[ 1 ],
+                            eventType = {
+                                mouseover: 'hover',
+                                mouseleave: '',
+                                click: 'selected'
+                            };
 
-                    if (event.type === 'click') {
-                        this.amazon = 'link amazon';
-                        this.barbarian = 'link barbarian';
-                    }
+                        if (event.type === 'click') {
+                            setAvatar();
+                        }
 
-                    if (this[ avatarType ].indexOf('selected') === -1) {
-                        this[ avatarType ] = `link ${avatarType} ${eventType[ event.type ]}`;
+                        if (this[ avatarType ].indexOf('selected') === -1) {
+                            this[ avatarType ] = `link ${avatarType} ${eventType[ event.type ]}`;
+                        }
                     }
                 };
 
