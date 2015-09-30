@@ -59,7 +59,7 @@
   },
   "scripts": {
     "update-webdriver": "node node_modules/protractor/bin/webdriver-manager update",
-    "uglify": "uglifyjs dist/build.js --o dist/build.js --compress",
+    "uglify": "uglifyjs dist/build.js --o dist/build.js --compress --mangle",
     "annotate": "ng-annotate -a dist/build.js -o dist/build.js",
     "clean": "n-clean dist/ && mkdir dist && cd dist && mkdir stylesheets && mkdir images && mkdir fonts",
     "quality": "jscs source && jshint source",

@@ -1,4 +1,4 @@
-var path = require("path");
+var path = require('path');
 var Builder = require('systemjs-builder');
 System.buildCSS = false;
 var builder = new Builder();
@@ -11,5 +11,5 @@ builder.loadConfig('config.js')
             .catch(function(err) {
                 console.log('Build error');
                 console.log(err);
-            })
+            });
     });
