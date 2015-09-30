@@ -8,9 +8,11 @@ function mediator() {
             _handlers[ event_name ].push(func);
         },
         notify(event_name, options) {
-            _handlers[ event_name ] && _handlers[ event_name ].forEach(function(func) {
-                func(options);
-            });
+            if (_handlers[ event_name ]) {
+                _handlers[ event_name ].forEach(function(func) {
+                    func(options);
+                });
+            }
         },
         getHandlers(event_name) {
             return _handlers[ event_name ];

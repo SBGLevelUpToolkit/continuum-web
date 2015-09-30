@@ -67,7 +67,7 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                 };
 
                 this.selectedItemChange = function(item) {
-                    if (item) {
+                    if (typeof item === 'object') {
                         setAvatar('disabled');
                         avatarSelectionEnabled = false;
                     }

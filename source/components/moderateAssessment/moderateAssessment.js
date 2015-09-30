@@ -18,7 +18,6 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 var childElem = element.find('cn-dimension'),
                     dimensionCtrl = childElem.isolateScope().ctrlDimension;
                 controller.dimension = dimensionCtrl;
-                controller.parseResults();
             },
             controllerAs: 'ctrl',
             bindToController: true,
@@ -354,15 +353,15 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     ], 'TotalUserCount': 1
                 };
 
-                this.parseResults = function() {
-                    this.assessmentResult = this.data.DimensionResults.sort(function(a, b) {
+                assessmentService.query((assessment) => {
+                    this.assessmentResult = assessment.AssessmentResults.sort(function(a, b) {
                         return a.DimensionId < b.DimensionId ? -1 : 1;
                     }).map(function(dimension) {
                         return dimension.Levels.sort(function(a, b) {
                             return a.Level > b.Level ? -1 : 1;
                         });
                     });
-                };
+                });
 
                 this.data2 = [
                     {
@@ -474,15 +473,6 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 this.capabilityIsSelected = function(item) {
                     return this.selectedCapabilities.indexOf(item.Id) > -1;
                 };
-
-                function setRatingSelectedState(item) {
-                    var idx = this.selectedCapabilities.indexOf(item.Id);
-                    if (idx > -1) {
-                        this.selectedCapabilities.splice(idx, 1);
-                    } else {
-                        this.selectedCapabilities.push(item.Id);
-                    }
-                }
             }
         };
     });

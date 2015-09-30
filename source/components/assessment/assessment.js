@@ -59,8 +59,9 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                             getAssessment.call(this);
                         });
                     } else {
-                        assessmentService.moderate();
-                        $state.go('home.moderateAssessment');
+                        assessmentService.moderate(() => {
+                            $state.go('home.moderateAssessment');
+                        });
                     }
                 };
 

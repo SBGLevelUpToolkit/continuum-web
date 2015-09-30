@@ -5,7 +5,7 @@ ModerateAssessmentHelper.prototype.displayVisualisation = function(element, rati
     element.each(function(index, elm) {
         let element = $(elm).find('div:first-child')[ 0 ],
             rating = +$(elm).attr(ratingType),
-            fill = 'rgba(255, 0, 0, 0.5)';
+            fill = 'rgba(255, 20, 20, 1)';
 
         if (ratingType === 'moderated-rating') {
             fill = 'rgba(237, 156, 24, 1)';
