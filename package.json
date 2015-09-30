@@ -59,7 +59,7 @@
   },
   "scripts": {
     "update-webdriver": "node node_modules/protractor/bin/webdriver-manager update",
-    "uglify": "uglifyjs dist/build.js --o dist/build.js --compress --mangle",
+    "uglify": "uglifyjs dist/build.js --o dist/build.js --compress",
     "annotate": "ng-annotate -a dist/build.js -o dist/build.js",
     "clean": "n-clean dist/ && mkdir dist && cd dist && mkdir stylesheets && mkdir images && mkdir fonts",
     "quality": "jscs source && jshint source",
@@ -72,7 +72,7 @@
     "copy:images": "sbgcopy --source source/images --destination dist/images '**/*'",
     "copy:scripts": "sbgcopy --source source/external-modules --destination dist/ 'source/**/*.js'",
     "copy:fonts": "sbgcopy --source source/fonts --destination dist/fonts '**/*'",
-    "copy:css": "npm-css source/stylesheets/index.css > dist/stylesheets/index.css && npm-css source/stylesheets/vendor.css > dist/stylesheets/bundle.css",
+    "copy:css": "sbgcopy --source source/stylesheets --destination dist/stylesheets 'index.css' && npm-css source/stylesheets/vendor.css > dist/stylesheets/vendor.css",
     "open:dev": "opener http://localhost:9091/index.html",
     "prebuild:dist": "npm run clean && npm run quality && npm run replaceEnv",
     "build:dist": "node build && npm run annotate && npm run uglify",
