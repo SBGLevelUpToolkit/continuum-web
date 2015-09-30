@@ -353,9 +353,9 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     ], 'TotalUserCount': 1
                 };
 
-                assessmentService.query((assessment) => {
-                    if (assessment.AssessmentResults.length > 0) {
-                        this.assessmentResult = assessment.AssessmentResults.sort(function(a, b) {
+                assessmentService.score((assessment) => {
+                    if (assessment.DimensionResults.length > 0) {
+                        this.assessmentResult = assessment.DimensionResults.sort(function(a, b) {
                             return a.DimensionId < b.DimensionId ? -1 : 1;
                         }).map(function(dimension) {
                             return dimension.Levels.sort(function(a, b) {

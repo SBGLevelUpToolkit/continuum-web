@@ -19,6 +19,10 @@ let assessmentOperations = function(fullPath) {
         reopen: {
             method: 'POST',
             url: `${fullPath}reopen`
+        },
+        score: {
+            method: 'GET',
+            url: `${fullPath}score`
         }
     };
 };
