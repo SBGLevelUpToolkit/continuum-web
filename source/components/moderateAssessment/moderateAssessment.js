@@ -22,7 +22,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper, mediatorService) {
-
+                this.assessmentMessage = '';
                 this.data = {
                     'DimensionResults': [
                         {
@@ -354,13 +354,17 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 };
 
                 assessmentService.query((assessment) => {
-                    this.assessmentResult = assessment.AssessmentResults.sort(function(a, b) {
-                        return a.DimensionId < b.DimensionId ? -1 : 1;
-                    }).map(function(dimension) {
-                        return dimension.Levels.sort(function(a, b) {
-                            return a.Level > b.Level ? -1 : 1;
+                    if (assessment.AssessmentResults.length > 0) {
+                        this.assessmentResult = assessment.AssessmentResults.sort(function(a, b) {
+                            return a.DimensionId < b.DimensionId ? -1 : 1;
+                        }).map(function(dimension) {
+                            return dimension.Levels.sort(function(a, b) {
+                                return a.Level > b.Level ? -1 : 1;
+                            });
                         });
-                    });
+                    } else {
+                        this.assessmentMessage = 'No ratings were submitted';
+                    }
                 });
 
                 this.data2 = [
@@ -463,10 +467,11 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                 this.setStatus = function(action) {
                     if (action === 'reopen') {
-                        assessmentService.reopen();
+                        assessmentService.reopen(() => {
+                            $state.go('home.assessment');
+                        });
                     } else {
                         assessmentService.close();
-                        $state.go('home.moderateAssessment');
                     }
                 };
 

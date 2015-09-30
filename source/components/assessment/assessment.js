@@ -77,6 +77,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                                     this.assessmentMessage = 'There is no active assessment.';
                                 }
                             } else {
+                                this.activeAssessment = true;
                                 this.assessmentAction = 'Moderate';
                                 this.selectedCapabilities = assessment.AssessmentItems.filter((item) => {
                                     return item.CapabilityAchieved;
