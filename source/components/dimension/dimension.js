@@ -5,14 +5,21 @@ import 'lodash';
 var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
     .directive('cnDimension', function() {
 
+        var link = function(scope, element, attributes, ctrl) {
+            if (attributes.disableService) {
+                ctrl.serviceDisabled = true;
+            }
+        };
+
         return {
             scope: {},
             restrict: 'E',
             template: template,
+            link: link,
             controllerAs: 'ctrlDimension',
             bindToController: true,
             controller: /*@ngInject*/function controller($q, dimensionService, mediatorService) {
-
+                this.serviceDisabled = false;
                 this.dimensionRetrieved = $q.defer(); // Notify any subscribers when dimensions have been retrieved
 
                 let activeDimension = {};
@@ -24,7 +31,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                             this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
                             this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
                             this.getCapabilitiesAtLevel(this.minLevel);
-                            mediatorService.notify('DimensionChanged', { minLevel: this.minLevel });
+                            mediatorService.notify('DimensionChanged', { minLevel: this.minLevel, dimensionId: dimensionId });
                             this.dimensionRetrieved.resolve();
                         }).$promise;
                 };
@@ -34,10 +41,15 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                     activeDimension = selDimension;
                     selDimension.class = 'pulse';
 
-                    let dimensionRetrieved = getDimensionData(selDimension.Id);
-                    dimensionRetrieved.then(() => {
+                    if (!this.serviceDisabled) {
+                        let dimensionRetrieved = getDimensionData(selDimension.Id);
+                        dimensionRetrieved.then(() => {
+                            activeDimension.class = 'dimension-focus';
+                        });
+                    } else {
                         activeDimension.class = 'dimension-focus';
-                    });
+                        mediatorService.notify('DimensionChanged', { minLevel: this.minLevel, dimensionId: selDimension.Id });
+                    }
                 };
 
                 this.getCapabilitiesAtLevel = function(currentLevel) {
@@ -63,7 +75,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                         this.dimensions = _.sortBy(dimensions, (dimension) => {
                             return dimension.DisplayOrder;
                         });
-                        mediatorService.notify('DimensionsAvailable', { dimensionCtrl : this });
+                        mediatorService.notify('DimensionsAvailable', { dimensionCtrl: this });
                         //this.selectDimension(dimensions[ 0 ]);
                     });
                 };

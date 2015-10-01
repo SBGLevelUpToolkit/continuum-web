@@ -67,7 +67,6 @@ body {
     position: relative;
     animation: pulse 1s;
     animation-iteration-count: infinite;
-
 }
 
 .dimension-focus {
@@ -116,6 +115,10 @@ a, a:hover, a:focus {
 
 .errorMessage {
     color: #ff0000;
+}
+
+.column-focus {
+    background-color: rgba(243, 242, 227, 0.4);
 }
 
 .link {

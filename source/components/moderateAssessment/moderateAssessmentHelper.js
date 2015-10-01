@@ -3,9 +3,10 @@ var ModerateAssessmentHelper = function() {
 
 ModerateAssessmentHelper.prototype.displayVisualisation = function(element, ratingType) {
     element.each(function(index, elm) {
-        let element = $(elm).find('div:first-child')[ 0 ],
-            rating = +$(elm).attr(ratingType),
-            fill = 'rgba(255, 20, 20, 1)';
+        let $elm = $(elm),
+            element = $elm.find('div:first-child')[ 0 ],
+            rating = +$elm.attr(ratingType);
+        let fill = 'rgba(255, 20, 20, 1)';
 
         if (ratingType === 'moderated-rating') {
             fill = 'rgba(237, 156, 24, 1)';
@@ -65,10 +66,12 @@ ModerateAssessmentHelper.prototype.displayVisualisation = function(element, rati
 };
 
 ModerateAssessmentHelper.prototype.removeExistingModeratedRating = function(dimensionColumn) {
-    dimensionColumn.each(function(element) {
-        $(element).attr('moderatedRating', '');
+    dimensionColumn.each((index, element) => {
+        if (+$(element).attr('moderated-rating') > 0) {
+            $(element).attr('moderated-rating', '');
+            this.displayVisualisation($(element), 'rating');
+        }
     });
-    this.displayVisualisation(dimensionColumn, 'rating');
 };
 
 var app = angular.module('cn.moderateAssessmentHelper', []);

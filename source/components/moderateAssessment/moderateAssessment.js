@@ -21,423 +21,67 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper, mediatorService) {
-                this.assessmentMessage = '';
-                this.data = {
-                    'DimensionResults': [
-                        {
-                            'DimensionId': 1,
-                            'Rating': 0,
-                            'ResponseCount': 7,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 1,
-                                    'Level': 1,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 3,
-                                    'Level': 2,
-                                    'ResponseCount': 3,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 3,
-                                    'Level': 4,
-                                    'ResponseCount': 3,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 2,
-                            'Rating': 0,
-                            'ResponseCount': 2,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 5,
-                                    'Level': 1,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 5,
-                                    'Level': 2,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 3,
-                            'Rating': 0,
-                            'ResponseCount': 2,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 1,
-                                    'Level': 1,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 2,
-                                    'Level': 2,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 4,
-                            'Rating': 0,
-                            'ResponseCount': 17,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 6,
-                                    'Level': 1,
-                                    'ResponseCount': 4,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 3,
-                                    'Level': 2,
-                                    'ResponseCount': 3,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 6,
-                                    'Level': 3,
-                                    'ResponseCount': 5,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 10,
-                                    'Level': 5,
-                                    'ResponseCount': 5,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 6,
-                            'Rating': 0,
-                            'ResponseCount': 3,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 3,
-                                    'Level': 2,
-                                    'ResponseCount': 3,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 7,
-                            'Rating': 0,
-                            'ResponseCount': 9,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 4,
-                                    'Level': 3,
-                                    'ResponseCount': 2,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 5,
-                                    'Level': 4,
-                                    'ResponseCount': 5,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 2,
-                                    'Level': 5,
-                                    'ResponseCount': 2,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 10,
-                            'Rating': 0,
-                            'ResponseCount': 6,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 4,
-                                    'Level': 2,
-                                    'ResponseCount': 1,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 8,
-                                    'Level': 3,
-                                    'ResponseCount': 3,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 5,
-                                    'Level': 4,
-                                    'ResponseCount': 2,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 12,
-                            'Rating': 0,
-                            'ResponseCount': 4,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 4,
-                                    'Level': 1,
-                                    'ResponseCount': 4,
-                                    'LevelAchieved': true
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 2,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 5,
-                            'Rating': 0,
-                            'ResponseCount': 0,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 2,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 8,
-                            'Rating': 0,
-                            'ResponseCount': 0,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 2,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 9,
-                            'Rating': 0,
-                            'ResponseCount': 0,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 2,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }, {
-                            'DimensionId': 11,
-                            'Rating': 0,
-                            'ResponseCount': 0,
-                            'Levels': [
-                                {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 1,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 2,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 3,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, {
-                                    'TargetCapabilityCount': 0,
-                                    'Level': 4,
-                                    'ResponseCount': 0,
-                                    'LevelAchieved': false
-                                }, { 'TargetCapabilityCount': 0, 'Level': 5, 'ResponseCount': 0, 'LevelAchieved': false }
-                            ]
-                        }
-                    ], 'TotalUserCount': 1
-                };
-
-                assessmentService.score((assessment) => {
-                    if (assessment.DimensionResults.length > 0) {
-                        this.assessmentResult = assessment.DimensionResults.sort(function(a, b) {
-                            return a.DimensionId < b.DimensionId ? -1 : 1;
-                        }).map(function(dimension) {
-                            return dimension.Levels.sort(function(a, b) {
-                                return a.Level > b.Level ? -1 : 1;
-                            });
-                        });
-                    } else {
-                        this.assessmentMessage = 'No ratings were submitted';
-                    }
-                });
-
-                this.data2 = [
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 1,
-                        'Rating': 3
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 2,
-                        'Rating': 3
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 3,
-                        'Rating': 1
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 4,
-                        'Rating': 5
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 5,
-                        'Rating': 4
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 6,
-                        'Rating': 2
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 7,
-                        'Rating': 3
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 8,
-                        'Rating': 3
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 9,
-                        'Rating': 1
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 10,
-                        'Rating': 5
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 11,
-                        'Rating': 4
-                    },
-                    {
-                        'AssessmentId': 1,
-                        'DimensionId': 12,
-                        'Rating': 2
-                    }
-                ];
-
+            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper,
+                                                         mediatorService) {
                 this.loading = true;
-                this.selectedCapabilities = [];
+                let assessmentId;
+                this.assessmentMessage = '';
 
-                this.loading = false;
+                assessmentService.query((assessment) => {
+                    assessmentId = assessment.Id;
+
+                    assessmentService.score((score) => {
+                        if (score.DimensionResults.length > 0) {
+                            this.assessmentResult = score.DimensionResults.sort(function(a, b) {
+                                return a.DimensionId < b.DimensionId ? -1 : 1;
+                            }).map(function(dimension) {
+                                let levels = dimension.Levels.sort(function(a, b) {
+                                    return a.Level > b.Level ? -1 : 1;
+                                });
+
+                                let result = assessment.AssessmentResults.filter((item) => {
+                                    return item.DimensionId === dimension.DimensionId;
+                                });
+
+                                return {
+                                    dimensionId: dimension.DimensionId,
+                                    rating: result[ 0 ] ? result[ 0 ].Rating : 0,
+                                    levels: levels
+                                };
+                            });
+                            this.loading = false;
+                        } else {
+                            this.loading = false;
+                            this.assessmentMessage = 'No ratings were submitted';
+                        }
+                    });
+                });
 
                 mediatorService.listen('NgRepeatRenderComplete', function() {
                     moderateAssessmentHelper.displayVisualisation($('div[rating]'), 'rating');
+                    showModeratedRatings();
                 });
+
+                mediatorService.listen('DimensionChanged', function(dimension) {
+                    highlightDimensionColumn(dimension.dimensionId);
+                });
+
+                function highlightDimensionColumn(dimensionId) {
+                    $('#scoreBlock > [ng-repeat]').each(function(index, elm) {
+                        $(elm).removeClass('column-focus');
+                    });
+
+                    let selectedColumn = $($('#scoreBlock > [ng-repeat]')[ dimensionId - 1 ]);
+                    selectedColumn.addClass('column-focus');
+                }
+
+                function showModeratedRatings() {
+                    $('div[moderated-rating]').each(function(index, elm) {
+                        if (+$(elm).attr('moderated-rating') > 0) {
+                            moderateAssessmentHelper.displayVisualisation($(elm), 'moderated-rating');
+                        }
+                    });
+                }
 
                 this.setModeratedRating = function(ev, item) {
                     let selectedElement = $(ev.currentTarget),
@@ -452,8 +96,9 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                     let ratingInfo = [
                         {
-                            CapabilityId: item.Id,
-                            CapabilityAchieved: this.capabilityIsSelected(item)
+                            AssessmentId: assessmentId,
+                            DimensionId: item.dimensionId,
+                            Rating: selectedRating
                         }
                     ];
 

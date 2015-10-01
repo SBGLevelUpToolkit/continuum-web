@@ -31,18 +31,19 @@
         <div layout="row" flex="80" style="width:100%; height: 60%">
             <div flex layout="row"></div>
 
-            <div layout="row" flex="95">
+            <div id="scoreBlock" layout="row" flex="95">
                 <div id="assessmentMessage" ng-hide="ctrl.assessmentMessage.length === 0">{{ctrl.assessmentMessage}}</div>
                 <div ng-repeat="dimension in ctrl.assessmentResult" layout="column" layout-align="center center" on-render-complete flex>
-                    <div ng-repeat="level in dimension" class="moderateCell link"
+                    <div ng-repeat="level in dimension.levels" class="moderateCell link"
                          ng-click="ctrl.setModeratedRating($event, dimension)" layout layout-align="center center"
-                         flex rating="{{ level.ResponseCount > 0 ? level.ResponseCount / level.TargetCapabilityCount : 0}}">
+                         flex moderated-rating="{{ level.Level === dimension.rating ? dimension.rating : 0 }}"
+                         rating="{{ level.ResponseCount > 0 ? level.ResponseCount / level.TargetCapabilityCount : 0}}">
                         <div>{{ level.Level }}</div>
                     </div>
                 </div>
             </div>
             <div flex layout="row"></div>
         </div>
-        <cn-dimension style="height: 25%" layout layout-align="end end"></cn-dimension>
+        <cn-dimension disable-service="true" style="height: 25%" layout layout-align="end end"></cn-dimension>
     </md-content>
 </div>
