@@ -21,7 +21,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($element, $state, assessmentService, moderateAssessmentHelper,
+            controller: /*@ngInject*/function controller($element, $state, assessmentService, dimensionService, moderateAssessmentHelper,
                                                          mediatorService) {
                 this.loading = true;
                 let assessmentId;
@@ -62,8 +62,8 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     showModeratedRatings();
                 });
 
-                mediatorService.listen('DimensionChanged', function(dimension) {
-                    highlightDimensionColumn(dimension.dimensionId);
+                mediatorService.listen('DimensionChanged', function(minLevel, dimensionId) {
+                    highlightDimensionColumn(dimensionId);
                 });
 
                 function highlightDimensionColumn(dimensionId) {
@@ -122,6 +122,21 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
 
                 this.capabilityIsSelected = function(item) {
                     return this.selectedCapabilities.indexOf(item.Id) > -1;
+                };
+
+                //TODO dimension needs some serious refactoring so I don't have to do this
+                this.getCapabilitiesAtLevel = function(currentLevel) {
+                    this.capabilitiesAtSelectedLevel = _.filter(this.fullDimension.Capabilities, function(capability) {
+                        return capability.Level === currentLevel;
+                    });
+                };
+
+                this.showCapabilities = function(dimension, level) {
+                    dimensionService.get({ dimension: dimension.dimensionId },
+                        (dimension) => {
+                            this.fullDimension = dimension;
+                           this.getCapabilitiesAtLevel(level.Level);
+                        });
                 };
             }
         };

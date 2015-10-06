@@ -10,15 +10,13 @@ var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function(authService, assessmentService, $state, localStorageService, mediatorService) {
-                const avatars = {
-                    Barbarian: 'images/menu_traveller_male_avatar_icon.png',
-                    Amazon: 'images/menu_traveller_female_avatar_icon.png'
-                };
+                let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
 
                 mediatorService.listen('UserDetailsLoaded', () => {
                     let user = localStorageService.get('userDetails');
                     this.team = user.Teams[ 0 ].Name;
-                    this.avatarType = avatars[ user.Teams[ 0 ].AvatarName ];
+                    let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+                    this.avatarType = `images/menu_${levelNames[ user.Teams[ 0 ].CurrentLevel ]}_${gender}_avatar_icon.png`;
                 });
 
                 this.signOut = function() {

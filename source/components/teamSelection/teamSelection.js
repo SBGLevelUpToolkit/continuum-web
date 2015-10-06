@@ -37,12 +37,12 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                 this.submitTeam = (item) => {
                     this.loading = true;
                     if (typeof item === 'object') {
-                        teamService.save(item, (response) => {
+                        teamService.join(item, (response) => {
                                 this.loading = false;
                                 $state.go('home.home');
                             },
                             (err) => {
-                                showMessage(err);
+                                showMessage(err.data.Message);
                             });
                     } else {
                         if ((this.amazon + this.barbarian).indexOf('selected') === -1) {

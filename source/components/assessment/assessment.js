@@ -31,8 +31,8 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                 let user = localStorageService.get('userDetails');
                 let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
 
-                mediatorService.listen('DimensionsAvailable', function(options) {
-                    options.dimensionCtrl.selectDimension(options.dimensionCtrl.dimensions[ 0 ]);
+                mediatorService.listen('DimensionsAvailable', function(dimensionCtrl) {
+                    dimensionCtrl.selectDimension(dimensionCtrl.dimensions[ 0 ]);
                 });
 
                 let setRatingSelectedState = function(item) {
@@ -44,8 +44,8 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                     }
                 };
 
-                mediatorService.listen('DimensionChanged', (options) => {
-                    this.currentLevel = options.minLevel;
+                mediatorService.listen('DimensionChanged', (minLevel) => {
+                    this.currentLevel = minLevel;
                 });
 
                 this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;

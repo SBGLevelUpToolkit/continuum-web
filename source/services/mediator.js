@@ -7,10 +7,12 @@ function mediator() {
             }
             _handlers[ event_name ].push(func);
         },
-        notify(event_name, options) {
+        notify(event_name) {
             if (_handlers[ event_name ]) {
+                let args = arguments;
+                Array.prototype.shift.apply(args);
                 _handlers[ event_name ].forEach(function(func) {
-                    func(options);
+                    func.apply(this, args);
                 });
             }
         },

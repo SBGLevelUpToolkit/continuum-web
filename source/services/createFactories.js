@@ -27,10 +27,19 @@ let assessmentOperations = function(fullPath) {
     };
 };
 
+let teamOperations = function(fullPath) {
+    return {
+        join: {
+            method: 'POST',
+            url: `${fullPath}:Id/join`
+        }
+    };
+};
+
 let factories = [
     { name: 'dimension', isArray: true },
     { name: 'assessment', isArray: false, operations: assessmentOperations },
-    { name: 'team', isArray: true },
+    { name: 'team', isArray: true, operations: teamOperations },
     { name: 'goal', isArray: true },
     { name: 'user', isArray: false }
 ];

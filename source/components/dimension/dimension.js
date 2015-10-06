@@ -31,7 +31,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                             this.minLevel = _.min(_.pluck(dimension.Capabilities, 'Level'));
                             this.maxLevel = _.max(_.pluck(dimension.Capabilities, 'Level'));
                             this.getCapabilitiesAtLevel(this.minLevel);
-                            mediatorService.notify('DimensionChanged', { minLevel: this.minLevel, dimensionId: dimensionId });
+                            mediatorService.notify('DimensionChanged', this.minLevel, dimensionId );
                             this.dimensionRetrieved.resolve();
                         }).$promise;
                 };
@@ -48,7 +48,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                         });
                     } else {
                         activeDimension.class = 'dimension-focus';
-                        mediatorService.notify('DimensionChanged', { minLevel: this.minLevel, dimensionId: selDimension.Id });
+                        mediatorService.notify('DimensionChanged', this.minLevel, selDimension.Id );
                     }
                 };
 
@@ -75,7 +75,7 @@ var app = angular.module('cn.dimension', [ 'ngResource', 'ui.router' ])
                         this.dimensions = _.sortBy(dimensions, (dimension) => {
                             return dimension.DisplayOrder;
                         });
-                        mediatorService.notify('DimensionsAvailable', { dimensionCtrl: this });
+                        mediatorService.notify('DimensionsAvailable', this );
                         //this.selectDimension(dimensions[ 0 ]);
                     });
                 };
