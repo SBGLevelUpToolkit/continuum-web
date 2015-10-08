@@ -48,8 +48,8 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                         if ((this.amazon + this.barbarian).indexOf('selected') === -1) {
                             showMessage('Please select an avatar');
                         } else {
-                            let avatar = this.amazon.indexOf('selected') ? 'Amazon' : 'Barbarian';
-                            teamService.update({ Name: item, AvatarName: avatar }, (response) => {
+                            let avatar = this.amazon.indexOf('selected') > -1 ? 'Amazon' : 'Barbarian';
+                            teamService.save({ Name: item, AvatarName: avatar }, (response) => {
                                     this.loading = false;
                                     $state.go('home');
                                 },

@@ -16,7 +16,7 @@
                     <span ng-hide="ctrl.loading">Moderate your teams capabilities</span>
                 </div>
                 <div flex="30" layout layout-align="end">
-                    <div>
+                    <div id="setStatus" ng-show="ctrl.user.IsAdmin && ctrl.status === 'Moderating'">
                         <md-button id="setOpenStatus" class="md-raised" ng-click="ctrl.setStatus('reopen')"
                                    style="font-weight: bold">Re-open
                         </md-button>

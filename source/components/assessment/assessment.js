@@ -27,9 +27,10 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
             controller: /*@ngInject*/function controller($state, assessmentService, localStorageService, mediatorService) {
                 //TODO Too much 'this'. Will fp help?
                 //TODO Too much going on in this controller
+
+                this.user = localStorageService.get('userDetail');
                 let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
-                let user = localStorageService.get('userDetails');
-                let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+                let gender = this.user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
 
                 mediatorService.listen('DimensionsAvailable', function(dimensionCtrl) {
                     dimensionCtrl.selectDimension(dimensionCtrl.dimensions[ 0 ]);
@@ -48,7 +49,6 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                     this.currentLevel = minLevel;
                 });
 
-                this.userIsAdmin = localStorageService.get('userDetails').IsAdmin;
                 this.loading = true;
                 this.activeAssessment = true;
                 this.selectedCapabilities = [];
@@ -71,7 +71,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                                 this.loading = false;
                                 this.activeAssessment = false;
                                 this.assessmentAction = 'Create';
-                                if (this.userIsAdmin) {
+                                if (this.user.IsAdmin) {
                                     this.assessmentMessage = 'There is no active assessment. Click Create to create an assessment.';
                                 } else {
                                     this.assessmentMessage = 'There is no active assessment.';

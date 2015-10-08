@@ -16,6 +16,7 @@ angular.module('Continuum', [
     'cn.components'
 ])
     .config(function($stateProvider,
+                     $locationProvider,
                      $urlRouterProvider,
                      $compileProvider,
                      $httpProvider,
@@ -84,6 +85,10 @@ angular.module('Continuum', [
             .state('forgotPassword', {
                 url: '/forgotPassword',
                 template: '<cn-forgot-password flex layout></cn-forgot-password>'
+            })
+            .state('confirmation', {
+                url: '/confirmation',
+                template: '<cn-confirmation flex layout></cn-confirmation>'
             })
             .state('home', {
                 template: '<cn-container flex layout="column" fill-defined-flex></cn-container>'

@@ -21,13 +21,18 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($element, $state, assessmentService, dimensionService, moderateAssessmentHelper,
-                                                         mediatorService) {
+            controller: /*@ngInject*/function controller($element, $state, assessmentService, localStorageService, dimensionService,
+                                                         moderateAssessmentHelper, mediatorService) {
+                this.user = localStorageService.get('userDetails');
                 this.loading = true;
                 let assessmentId;
                 this.assessmentMessage = '';
 
                 assessmentService.query((assessment) => {
+                    if (assessment.Status === 'Moderating') {
+                        this.status = 'Moderating';
+                    }
+
                     assessmentId = assessment.Id;
 
                     assessmentService.score((score) => {
@@ -135,7 +140,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                     dimensionService.get({ dimension: dimension.dimensionId },
                         (dimension) => {
                             this.fullDimension = dimension;
-                           this.getCapabilitiesAtLevel(level.Level);
+                            this.getCapabilitiesAtLevel(level.Level);
                         });
                 };
             }

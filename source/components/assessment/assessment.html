@@ -18,7 +18,7 @@
                     <span ng-hide="ctrl.loading">Rate your teams capabilities</span>
                 </div>
                 <div flex="30" layout layout-align="end">
-                    <div id="setStatus" ng-show="ctrl.userIsAdmin">
+                    <div id="setStatus" ng-show="ctrl.user.IsAdmin">
                         <md-button class="md-raised" ng-click="ctrl.setStatus()"
                                    style="font-weight: bold">{{ctrl.assessmentAction}}
                         </md-button>

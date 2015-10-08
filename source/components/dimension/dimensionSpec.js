@@ -4,7 +4,7 @@ import './dimension';
 import 'lodash';
 import '../../services/createFactories';
 
-fdescribe('Dimension Directive', function() {
+describe('Dimension Directive', function() {
 
     let scope,
         elm,

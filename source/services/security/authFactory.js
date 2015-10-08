@@ -41,9 +41,9 @@ app.factory('authService', [
                     deferred.resolve(response);
 
                 }).error(function(err, status) {
-                    _logOut();
-                    deferred.reject(err);
-                });
+                _logOut();
+                deferred.reject(err);
+            });
 
             return deferred.promise;
 
@@ -57,6 +57,13 @@ app.factory('authService', [
 
         };
 
+        var _confirmEmail = function(userId, code) {
+            return $http.post(
+                `${serviceBase}api/account/ConfirmEmail?userId=${userId}&code=${code}`).then(function(response) {
+                return response;
+            });
+        };
+
         var _fillAuthData = function() {
 
             var authData = localStorageService.get('authorizationData');
@@ -68,6 +75,7 @@ app.factory('authService', [
 
         authServiceFactory.saveRegistration = _saveRegistration;
         authServiceFactory.login = _login;
+        authServiceFactory.confirmEmail = _confirmEmail;
         authServiceFactory.logOut = _logOut;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;

@@ -35,6 +35,7 @@ module.exports = function(config) {
                 'node_modules/angular-local-storage/dist/angular-local-storage.js',
                 'node_modules/lodash/index.js',
                 'node_modules/moment/min/moment.min.js',
+                'node_modules/d3/d3.js',
                 'test/unit/*.js',
                 'test/unit/mocks/*.json',
                 'source/**/*.js',
