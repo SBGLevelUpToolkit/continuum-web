@@ -9,8 +9,8 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, authService) {
-                this.master = {};
+            controller: /*@ngInject*/function controller($state, authService, localStorageService) {
+                localStorageService.clearAll();
 
                 this.setTouched = () => {
                     angular.forEach(this.form.$error.required, function(field) {

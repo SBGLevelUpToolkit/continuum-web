@@ -21,7 +21,7 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
             },
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($element, $state, assessmentService, localStorageService, dimensionService,
+            controller: /*@ngInject*/function controller($state, assessmentService, localStorageService, dimensionService,
                                                          moderateAssessmentHelper, mediatorService) {
                 this.user = localStorageService.get('userDetails');
                 this.loading = true;
