@@ -21,8 +21,10 @@ app.factory('authInterceptorService', [
             };
 
             var _responseError = function(rejection) {
-                if (String(rejection.status).substr(0, 1) === '4') {
-                    $location.path('/login');
+                if (rejection.config.url.indexOf('register') === -1) {
+                    if (String(rejection.status).substr(0, 1) === '4') {
+                        $location.path('/login');
+                    }
                 }
                 return $q.reject(rejection);
             };

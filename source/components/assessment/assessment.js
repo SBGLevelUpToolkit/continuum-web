@@ -12,28 +12,38 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
             restrict: 'E',
             template: template,
             link: function link(scope, element, attrs, controller) {
-                // How we get access to the child controller
-                // Is there a better way?
                 var childElem = element.find('cn-dimension'),
                     dimensionCtrl = childElem.isolateScope().ctrlDimension;
                 controller.dimension = dimensionCtrl;
-
-                //dimensionCtrl.dimensionRetrieved.promise.then(function() {
-                //    controller.currentLevel = dimensionCtrl.minLevel;
-                //});
             },
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller($state, assessmentService, localStorageService, mediatorService) {
-                //TODO Too much 'this'. Will fp help?
-                //TODO Too much going on in this controller
+                let levelNames,
+                    gender;
 
-                this.user = localStorageService.get('userDetail');
-                let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
-                let gender = this.user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+                this.user = localStorageService.get('userDetails');
+
+                let setAvatar = () => {
+                    if (this.user && this.currentLevel) {
+                        levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
+                        gender = this.user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
+                        this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
+                    }
+                };
+
+                mediatorService.listen('UserDetailsLoaded', () => {
+                    this.user = localStorageService.get('userDetails');
+                    setAvatar();
+                });
 
                 mediatorService.listen('DimensionsAvailable', function(dimensionCtrl) {
                     dimensionCtrl.selectDimension(dimensionCtrl.dimensions[ 0 ]);
+                });
+
+                mediatorService.listen('DimensionChanged', (minLevel) => {
+                    this.currentLevel = minLevel;
+                    setAvatar();
                 });
 
                 let setRatingSelectedState = function(item) {
@@ -44,10 +54,6 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                         this.selectedCapabilities.push(item.Id);
                     }
                 };
-
-                mediatorService.listen('DimensionChanged', (minLevel) => {
-                    this.currentLevel = minLevel;
-                });
 
                 this.loading = true;
                 this.activeAssessment = true;
@@ -122,12 +128,12 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
 
                 this.getPreviousLevel = function() {
                     this.dimension.getCapabilitiesAtLevel(--this.currentLevel);
-                    this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
+                    setAvatar();
                 };
 
                 this.getNextLevel = function() {
                     this.dimension.getCapabilitiesAtLevel(++this.currentLevel);
-                    this.avatar = `menu_${levelNames[ this.currentLevel - 1 ]}_${gender}_avatar_icon.png`;
+                    setAvatar();
                 };
             }
         };

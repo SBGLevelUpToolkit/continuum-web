@@ -11,9 +11,10 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
             bindToController: true,
             controller: /*@ngInject*/function controller($state, authService, $location, localStorageService) {
                 let code = $location.search().code,
-                    loginData = localStorageService.get('confirmationDetails');
+                    userId = $location.search().userId;
+                    //loginData = localStorageService.get('confirmationDetails');
                 this.loading = true;
-                return authService.confirmEmail(code, loginData.userId).then((response) => {
+                return authService.confirmEmail(userId, code).then((response) => {
 
                         localStorageService.remove('confirmationDetails');
                         authService.login(loginData).then((response) => {

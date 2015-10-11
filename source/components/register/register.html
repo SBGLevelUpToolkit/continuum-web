@@ -11,7 +11,7 @@
                 <div class="line" flex></div>
             </div>
             <div class="vertical-spacer" ng-show="ctrl.showConfirmationMessage">
-                <p>A confirmation link has been sent to your email address. Please click on the link to continue.</p>
+                <p>A confirmation link has been sent to your email address. Please check your email to continue.</p>
 
                 <p>You can close this page.</p>
             </div>
@@ -49,7 +49,7 @@
                         </div>
                     </md-input-container>
 
-                    <div class="errorMessage" ng-show="ctrl.formInvalid">An error occurred.</div>
+                    <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.message}}</div>
 
                     <div layout="row" layout-align="center center">
                         <md-button class="md-raised" ng-click="(ctrl.form.$valid) ? ctrl.register(ctrl.user) : ctrl.setTouched()">REGISTER
