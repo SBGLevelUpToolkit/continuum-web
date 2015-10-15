@@ -1,7 +1,7 @@
 import 'angular-mocks';
-import './login';
+import './confirmation';
 
-describe('Login Directive', function() {
+describe('Confirmation Directive', function() {
 
     var scope,
         elm,

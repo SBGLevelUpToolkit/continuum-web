@@ -6,7 +6,7 @@ module.exports = function(config) {
         // base path, that will be used to resolve files and exclude
         basePath: '../',
 
-        files: [{ pattern: 'source/images/*', watched: false, included: false, served: true }],
+        files: [ { pattern: 'source/images/*', watched: false, included: false, served: true } ],
 
         // frameworks to use
         frameworks: [ 'jasmine', 'systemjs' ],
@@ -73,6 +73,10 @@ module.exports = function(config) {
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
         //reporters: [ 'spec', 'junit', 'coverage' ],
         reporters: [ 'spec' ],
+
+        specReporter: {
+            suppressSkipped: true
+        },
 
         coverageReporter: {
             type: 'html',

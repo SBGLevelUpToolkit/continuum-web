@@ -17,9 +17,12 @@ fdescribe('Moderate Assessment Directive', function() {
         localStorageService,
         mediatorService,
         dimensions,
-        capabilities;
+        capabilities,
+        score,
+        assessments;
 
     let dimensionServiceSpy = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]);
+    //assessmentServiceSpy = jasmine.createSpyObj('assessmentService', [ 'reopen', 'close' ]);
 
     let adminUser = {
         'UserId': 'foo.bar@gmail.com',
@@ -52,315 +55,9 @@ fdescribe('Moderate Assessment Directive', function() {
     beforeAll(function() {
         dimensions = helper.getDimensions();
         capabilities = helper.getDimension();
+        score = helper.getScore();
+        assessments = helper.getAssessments();
     });
-
-    let assessments = {
-        'Id': 1,
-        'Status': 'Moderating',
-        'AssessmentItems': [
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 254,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 255,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 256,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 257,
-                'CapabilityAchieved': true
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 293,
-                'CapabilityAchieved': true
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 357,
-                'CapabilityAchieved': false
-            }
-        ],
-        'AssessmentResults': []
-    };
-
-    let score = {
-        'DimensionResults': [
-            {
-                'DimensionId': 1,
-                'Rating': 0,
-                'ResponseCount': 1,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 1,
-                        'Level': 1,
-                        'ResponseCount': 1,
-                        'LevelAchieved': true
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 2,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 3,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 4,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 5,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 6,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 7,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 8,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 9,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 10,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 11,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }, {
-                'DimensionId': 12,
-                'Rating': 0,
-                'ResponseCount': 0,
-                'Levels': [
-                    {
-                        'TargetCapabilityCount': 0,
-                        'Level': 1,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 2, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 3,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }, { 'TargetCapabilityCount': 0, 'Level': 4, 'ResponseCount': 0, 'LevelAchieved': false }, {
-                        'TargetCapabilityCount': 0,
-                        'Level': 5,
-                        'ResponseCount': 0,
-                        'LevelAchieved': false
-                    }
-                ]
-            }
-        ], 'TotalUserCount': 1
-    };
 
     var queryDeferred;
 
@@ -414,6 +111,7 @@ fdescribe('Moderate Assessment Directive', function() {
             successCb();
         });
 
+        //spyOn(assessmentService, 'update').and.stub();
         spyOn(assessmentService, 'close').and.stub();
     }));
 
@@ -432,39 +130,90 @@ fdescribe('Moderate Assessment Directive', function() {
 
     describe('When the directive compiles', function() {
 
-        describe('When an assessment is in a moderated state ', function() {
+        beforeEach(function() {
+            compileCtrl();
+        });
 
-            fit('it should show the reopen and close buttons', function() {
-                compileCtrl();
-                expect(elm.find('#setStatus').hasClass('ng-hide')).toBeFalsy();
+        it('it should set scores correctly', function() {
+            let selectedCapabilities = [ 1, 3, 5 ];
+            selectedCapabilities.forEach(function(value, index) {
+                let rating = elm.find('#scoreBlock > div:nth-child(' + (index + 2) + ') > div');
+                expect(rating[ 5 - value ].getAttribute('rating')).toEqual('1');
             });
+        });
 
-            describe('When the logged in user is an admin', function() {
+        describe('When an assessment is in a moderated state ', function() {
+            fdescribe('When the logged in user is an admin', function() {
 
-                beforeEach(function() {
-                    compileCtrl();
+                it('it should show the reopen and close buttons', function() {
+                    expect(elm.find('#setStatus').hasClass('ng-hide')).toBeFalsy();
                 });
 
-                it('it should display the correct status button text', function() {
-                    expect(elm.find('#setStatus md-button').text()).toEqual('Create');
+                describe('When the reopen button is clicked', function() {
+                    it('it should call a service to reopen the assessment', inject(function($state) {
+                        spyOn($state, 'go');
+                        elm.find('#setOpenStatus').click();
+                        expect(assessmentService.reopen).toHaveBeenCalled();
+                    }));
+
+                    it('it should route to the assessment view', inject(function($state) {
+                        spyOn($state, 'go');
+                        elm.find('#setOpenStatus').click();
+                        expect($state.go).toHaveBeenCalledWith('home.assessment');
+                    }));
                 });
 
-                it('it should display the correct help text', function() {
-                    let message = 'There is no active assessment. Click Create to create an assessment.';
-                    expect(elm.find('#assessmentMessage').text()).toEqual(message);
+                describe('When the close button is clicked', function() {
+                    it('it should call a service to close the assessment', function() {
+                        elm.find('#setCloseStatus').click();
+                        expect(assessmentService.close).toHaveBeenCalled();
+                    });
                 });
 
-                describe('When the Create button is clicked', function() {
-                    it('it should call a service to create an assessment', function() {
-                        elm.find('#setStatus md-button').click();
-                        expect(assessmentService.create).toHaveBeenCalled();
+                describe('When a capability level is clicked', function() {
+
+                    it('it should set the moderated rating', function() {
+                        spyOn(assessmentService, 'update').and.stub();
+                        let rating = elm.find('#scoreBlock > div:nth-child(2) > div');
+                        rating.each(function(index, item) {
+                            expect(item.getAttribute('moderated-rating')).toEqual('0');
+                        });
+
+                        elm.find('#scoreBlock > div:nth-child(2) > :first-child').click();
+
+                        expect(rating[ 0 ].getAttribute('moderated-rating')).toEqual('5');
                     });
 
-                    it('it should change the view to create mode', function() {
-                        assessments.Status = 'Open';
-                        elm.find('#setStatus md-button').click();
-                        expect(elm.find('#setStatus md-button').text()).toEqual('Moderate');
-                        assessments.Status = 'Closed';
+                    it('it should call the update service', function() {
+                        let rating = [
+                            {
+                                AssessmentId: 1,
+                                DimensionId: 1,
+                                Rating: '5'
+                            }
+                        ];
+
+                        $httpBackend.expect('PUT', 'undefined/api/assessment',
+                            rating).respond(200);
+                        elm.find('#scoreBlock > div:nth-child(2) > :first-child').click();
+
+                        $httpBackend.flush();
+
+                    });
+
+                    describe('When a different capability level is clicked', function() {
+
+                        it('it should remove the existing moderated rating', function() {
+                            spyOn(assessmentService, 'update').and.stub();
+                            let rating = elm.find('#scoreBlock > div:nth-child(2) > div');
+
+                            elm.find('#scoreBlock > div:nth-child(2) > :first-child').click();
+                            expect(rating[ 0 ].getAttribute('moderated-rating')).toEqual('5');
+
+                            elm.find('#scoreBlock > div:nth-child(2) > :nth-child(2)').click();
+                            expect(rating[ 0 ].getAttribute('moderated-rating')).toEqual('');
+                            expect(rating[ 1 ].getAttribute('moderated-rating')).toEqual('4');
+                        });
                     });
                 });
             });

@@ -1,0 +1,449 @@
+{
+  "DimensionResults": [
+    {
+      "DimensionId": 1,
+      "Rating": 0,
+      "ResponseCount": 1,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 1,
+          "Level": 1,
+          "ResponseCount": 1,
+          "LevelAchieved": true
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 2,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 1,
+          "Level": 3,
+          "ResponseCount": 1,
+          "LevelAchieved": true
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 3,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 1,
+          "Level": 5,
+          "ResponseCount": 1,
+          "LevelAchieved": true
+        }
+      ]
+    },
+    {
+      "DimensionId": 4,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 5,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 6,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 7,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 8,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 9,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 10,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 11,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    },
+    {
+      "DimensionId": 12,
+      "Rating": 0,
+      "ResponseCount": 0,
+      "Levels": [
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 1,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 2,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 3,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 4,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        },
+        {
+          "TargetCapabilityCount": 0,
+          "Level": 5,
+          "ResponseCount": 0,
+          "LevelAchieved": false
+        }
+      ]
+    }
+  ],
+  "TotalUserCount": 1
+}

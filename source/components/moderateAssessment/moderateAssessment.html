@@ -35,7 +35,6 @@
                 <div id="assessmentMessage" ng-hide="ctrl.assessmentMessage.length === 0">{{ctrl.assessmentMessage}}</div>
                 <div ng-repeat="dimension in ctrl.assessmentResult" layout="column" layout-align="center center" on-render-complete flex>
                     <div ng-repeat="level in dimension.levels" class="moderateCell link"
-                         ng-mouseenter="ctrl.showCapabilities(dimension, level)"
                          ng-click="ctrl.setModeratedRating($event, dimension)"
                          layout layout-align="center center"
                          flex moderated-rating="{{ level.Level === dimension.rating ? dimension.rating : 0 }}"

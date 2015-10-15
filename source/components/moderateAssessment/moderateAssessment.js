@@ -89,30 +89,32 @@ var app = angular.module('cn.moderateAssessment', [ 'ngResource', 'ui.router', '
                 }
 
                 this.setModeratedRating = function(ev, item) {
-                    let selectedElement = $(ev.currentTarget),
-                        dimensionColumn = selectedElement.parent().find('div[rating]'),
-                        selectedRating = selectedElement.find('div').text();
+                    if (this.user.IsAdmin) {
+                        let selectedElement = $(ev.currentTarget),
+                            dimensionColumn = selectedElement.parent().find('div[rating]'),
+                            selectedRating = selectedElement.find('div').text();
 
-                    moderateAssessmentHelper.removeExistingModeratedRating(dimensionColumn);
+                        moderateAssessmentHelper.removeExistingModeratedRating(dimensionColumn);
 
-                    $(ev.currentTarget).attr('moderated-rating', selectedRating);
+                        $(ev.currentTarget).attr('moderated-rating', selectedRating);
 
-                    moderateAssessmentHelper.displayVisualisation($(ev.currentTarget), 'moderated-rating');
+                        moderateAssessmentHelper.displayVisualisation($(ev.currentTarget), 'moderated-rating');
 
-                    let ratingInfo = [
-                        {
-                            AssessmentId: assessmentId,
-                            DimensionId: item.dimensionId,
-                            Rating: selectedRating
-                        }
-                    ];
+                        let ratingInfo = [
+                            {
+                                AssessmentId: assessmentId,
+                                DimensionId: item.dimensionId,
+                                Rating: selectedRating
+                            }
+                        ];
 
-                    assessmentService.update(ratingInfo, function(response) {
-                            console.log('SUCCESS: ');
-                        },
-                        function(response) {
-                            console.log('ERROR: ');
-                        });
+                        assessmentService.update(ratingInfo, function(response) {
+                                console.log('SUCCESS: ');
+                            },
+                            function(response) {
+                                console.log('ERROR: ');
+                            });
+                    }
                 };
 
                 this.setStatus = function(action) {

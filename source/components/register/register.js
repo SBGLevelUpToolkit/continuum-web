@@ -20,7 +20,7 @@ var app = angular.module('cn.register', [ 'cn.auth', 'ui.router' ])
                                 userName: data.email,
                                 password: data.password
                             };
-                            //localStorageService.set('confirmationDetails', loginData);
+                            localStorageService.set('confirmationDetails', loginData);
                             this.showConfirmationMessage = true;
 
                             //return authService.login(loginData).then((response) => {

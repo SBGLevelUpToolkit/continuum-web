@@ -5,30 +5,33 @@ import 'angular-mocks';
 
 window.ngModule = angular.mock.module;
 
+function load(url) {
+    let data;
+    $.ajax({
+        dataType: 'json',
+        url: url,
+        async: false,
+        success: function(result) {
+            data = result;
+        }
+    });
+    return data;
+}
+
 export default {
     getDimensions: function() {
-        let dimensions;
-        $.ajax({
-            dataType: 'json',
-            url: 'base/test/unit/mocks/dimensions.json',
-            async: false,
-            success: function(data) {
-                dimensions = data.dimensions;
-            }
-        });
-        return dimensions;
+        return load('base/test/unit/mocks/dimensions.json').dimensions;
     },
 
     getDimension: function() {
-        let dimension;
-        $.ajax({
-            dataType: 'json',
-            url: 'base/test/unit/mocks/dimension.json',
-            async: false,
-            success: function(data) {
-                dimension = data.dimension;
-            }
-        });
-        return dimension;
+        return load('base/test/unit/mocks/dimension.json').dimension;
+    },
+
+    getScore: function() {
+        return load('base/test/unit/mocks/score.json');
+    },
+
+    getAssessments: function() {
+        return load('base/test/unit/mocks/assessments.json');
     }
-}
+};
