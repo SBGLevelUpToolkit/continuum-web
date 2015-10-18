@@ -1,0 +1,83 @@
+<div layout="column" flex layout-align="start center">
+    <img src="images/logo.png" style="max-width:300px; max-height:300px;"/>
+
+    <div class="layout-content" layout="row" layout-fill="" layout-align="center center">
+        <md-content class="form-panel flex=" 40
+        " style="position: relative;">
+        <img ng-show="ctrl.loading" src="images/loading.gif" style="position: absolute; left: 95px; top: 65px"/>
+
+        <div layout="row" layout-align="center center">
+            <div class="line" flex></div>
+            <div class="text">SELECT TEAM</div>
+            <div class="line" flex></div>
+        </div>
+        <div class="top-spacer">
+            Select your team from the list or create a new team
+        </div>
+        <div class="top-spacer"></div>
+        <form id="form" name="ctrl.form" novalidate>
+            <md-autocomplete id="team" class="form-field" required
+                             md-input-name="team"
+                             ng-disabled="ctrl.isDisabled"
+                             md-no-cache="ctrl.noCache"
+                             md-selected-item="ctrl.selectedItem"
+                             md-selected-item-change="ctrl.selectedItemChange(item)"
+                             md-search-text="ctrl.searchText"
+                             md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                             md-items="item in ctrl.querySearch(ctrl.searchText)"
+                             md-item-text="item.Name"
+                             md-min-length="0"
+                             placeholder="Select or create a team"
+                             md-menu-class="autocomplete-custom-template">
+                <md-item-template>
+                        <span class="item-title">
+                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.Name}}</span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                              Team Lead: <strong>{{item.TeamLeadName}}</strong>
+                            </span>
+                        </span>
+                </md-item-template>
+                <div ng-messages="ctrl.form.team.$error">
+                    <div ng-message="required">This field is required</div>
+                </div>
+                <md-not-found>
+                    No matches found for "{{ctrl.searchText}}".
+                </md-not-found>
+            </md-autocomplete>
+
+            <!-- This has to remain until mdAutoComplete bugs are fixed and it displays validation errors correctly -->
+            <md-input-container>
+                <input ng-hide="true" type="password" name="autoCompleteValidation" ng-model="ctrl.selectedItem" required>
+
+                <div ng-messages="ctrl.form.autoCompleteValidation.$error">
+                    <div ng-show="ctrl.form.$submitted || ctrl.form.autoCompleteValidation.$touched">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </div>
+            </md-input-container>
+            <div layout layout-align="center">
+                <div>Select your team avatar</div>
+            </div>
+            <div id="avatars" layout>
+                <a ng-class="ctrl.amazon"
+                   ng-mouseover="ctrl.setAvatar($event)"
+                   ng-mouseleave="ctrl.setAvatar($event)"
+                   ng-click="ctrl.setAvatar($event)"></a>
+                <div flex></div>
+                <a ng-class="ctrl.barbarian"
+                   ng-mouseover="ctrl.setAvatar($event)"
+                   ng-mouseleave="ctrl.setAvatar($event)"
+                   ng-click="ctrl.setAvatar($event)"></a>
+            </div>
+            <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.message}}</div>
+            <div layout="row" layout-align="center center">
+                <md-button class="md-raised" ng-click="ctrl.form.$valid && ctrl.submitTeam(ctrl.selectedItem)"
+                           style="font-weight: bold">Submit
+                </md-button>
+            </div>
+        </form>
+        </md-content>
+    </div>
+</div>

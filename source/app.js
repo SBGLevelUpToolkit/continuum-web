@@ -15,6 +15,7 @@ angular.module('Continuum', [
     'cn.services',
     'cn.components'
 ])
+    /* jshint -W072 */
     .config(function($stateProvider,
                      $locationProvider,
                      $urlRouterProvider,
@@ -22,6 +23,7 @@ angular.module('Continuum', [
                      $httpProvider,
                      $mdThemingProvider,
                      hostNameProvider) {
+        /* jshint +W072 */
         //$compileProvider.debugInfoEnabled(false);
 
         //CB001D red
@@ -54,7 +56,7 @@ angular.module('Continuum', [
             .backgroundPalette('continuum');
 
         var continuumDarkMap = $mdThemingProvider.extendPalette('continuum', {
-            'A100': 'rgba(2, 48, 68, .9)', //background
+            'A100': 'rgba(2, 48, 68, .9)' //background
         });
 
         $mdThemingProvider.definePalette('continuumDark', continuumDarkMap);
