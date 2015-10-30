@@ -1,6 +1,7 @@
 function getEnvironment() {
-    let host = window.location.pathname;
-    if (host.indexOf('staging') > -1 || host.indexOf('source') > -1) {
+    let host = window.location.host;
+    let pathName = window.location.pathname;
+    if (host.indexOf('staging') > -1 || pathName.indexOf('source') > -1) {
         console.log('Host: ' + host);
         return 'http://continuumapi-staging.azurewebsites.net';
     } else {
