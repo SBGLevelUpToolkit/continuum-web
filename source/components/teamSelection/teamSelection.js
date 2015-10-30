@@ -9,7 +9,7 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, teamService) {
+            controller: /*@ngInject*/function controller($state, teamService, userService, localStorageService) {
                 let avatars = [ 'amazon', 'barbarian' ];
                 let setAvatar = (avatarState = '') => {
                     avatars.forEach((avatar) => {
@@ -38,8 +38,13 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                     this.loading = true;
                     if (typeof item === 'object') {
                         teamService.join(item, (response) => {
-                                this.loading = false;
-                                $state.go('home.home');
+                                userService.query((user) => {
+                                    localStorageService.set('userDetails', user);
+                                    this.loading = false;
+                                    $state.go('home.home');
+                                    this.loading = false;
+                                    $state.go('home.home');
+                                });
                             },
                             (err) => {
                                 showMessage(err.data.Message);

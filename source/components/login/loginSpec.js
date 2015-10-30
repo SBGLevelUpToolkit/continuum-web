@@ -1,22 +1,47 @@
 import 'angular-mocks';
 import './login';
+import '../../services/createFactories';
 
-describe('Login Directive', function() {
+fdescribe('Login Directive', function() {
 
     var scope,
         elm,
         ctrl,
         passPromise,
+        userInTeam,
         $httpBackend,
         authService,
+        userService,
+        localStorageService,
         validUser = {
             userName: 'br@ders.co.za',
             password: 'kensentme!'
         };
 
     beforeEach(function() {
+        angular.mock.module('LocalStorageModule');
+        angular.mock.module('cn.userFactory');
         angular.mock.module('cn.login');
     });
+
+    beforeEach(inject(function(_authService_, _userService_, _localStorageService_, $q) {
+        authService = _authService_;
+        userService = _userService_;
+        localStorageService = _localStorageService_;
+        spyOn(authService, 'login').and.callFake(function() {
+            return (passPromise) ? $q.when() : $q.reject({
+                error_description: 'oh noze'
+            });
+        });
+        spyOn(userService, 'query').and.callFake(function(cb) {
+            let teams = (userInTeam) ? [ 1 ] : [];
+            let user = {
+                Name: 'foo',
+                Teams: teams
+            };
+            cb(user);
+        });
+    }));
 
     beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
         var compile = _$compile_;
@@ -31,13 +56,6 @@ describe('Login Directive', function() {
 
     beforeEach(inject(function($state) {
         spyOn($state, 'go');
-    }));
-
-    beforeEach(inject(function(_authService_, $q) {
-        authService = _authService_;
-        spyOn(authService, 'login').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject();
-        });
     }));
 
     it('should bind the content', function() {
@@ -99,20 +117,49 @@ describe('Login Directive', function() {
         expect(mySpy).toHaveBeenCalled();
     }));
 
-    it('should call home state when authorization is successful', inject(function($state) {
-        passPromise = true;
-        ctrl.login(validUser);
-        scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('home');
-    }));
+    describe('When authorization is successful', function() {
+        describe('When the user belongs to a team', function() {
 
-    it('should set an invalid property when authorization is unsuccessful', inject(function($state) {
-        passPromise = false;
-        ctrl.login(validUser);
-        scope.$digest();
-        expect($state.go).not.toHaveBeenCalled();
-        expect(ctrl.formInvalid).toBe(true);
-    }));
+            it('it should navigate to home', inject(function($state) {
+                passPromise = true;
+                userInTeam = true;
+                ctrl.login(validUser);
+                scope.$digest();
+                expect($state.go).toHaveBeenCalledWith('home.home');
+            }));
+
+            it('it should store user details', inject(function() {
+                localStorageService.remove('userDetails');
+                passPromise = true;
+                userInTeam = true;
+                ctrl.login(validUser);
+                scope.$digest();
+                let user = localStorageService.get('userDetails');
+                expect(user.Name).toEqual('foo');
+            }));
+        });
+
+        describe('When the user does not belong to a team', function() {
+
+            it('it should navigate to teamSelection', inject(function($state) {
+                passPromise = true;
+                userInTeam = false;
+                ctrl.login(validUser);
+                scope.$digest();
+                expect($state.go).toHaveBeenCalledWith('teamSelection');
+            }));
+        });
+    });
+
+    describe('When authorization is unsuccessful', function() {
+        it('should set an invalid property', inject(function($state) {
+            passPromise = false;
+            ctrl.login(validUser);
+            scope.$digest();
+            expect($state.go).not.toHaveBeenCalled();
+            expect(ctrl.formInvalid).toBe(true);
+        }));
+    });
 
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();

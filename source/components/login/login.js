@@ -9,7 +9,7 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, authService, localStorageService) {
+            controller: /*@ngInject*/function controller($state, authService, localStorageService, userService) {
                 localStorageService.clearAll();
 
                 this.setTouched = () => {
@@ -22,8 +22,17 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
 
                     this.loading = true;
                     return authService.login(data).then((response) => {
-                            this.loading = false;
-                            $state.go('home.home');
+                            userService.query((user) => {
+                                if (user.Teams.length > 0) {
+                                    localStorageService.set('userDetails', user);
+                                    //mediatorService.notify('UserDetailsLoaded');
+                                    this.loading = false;
+                                    $state.go('home.home');
+                                } else {
+                                    this.loading = false;
+                                    $state.go('teamSelection');
+                                }
+                            });
                         },
                         (err) => {
                             this.errorMessage = err.error_description ? err.error_description : 'An error occurred';

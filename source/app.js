@@ -71,7 +71,7 @@ angular.module('Continuum', [
         $mdThemingProvider.theme('continuumDialog')
             .backgroundPalette('continuumDialog');
 
-        hostNameProvider.setHost('~~ENVIRONMENT.DEV');
+        hostNameProvider.setHost('~~ENVIRONMENT.REMOTE');
 
         $urlRouterProvider.otherwise('/login');
 
@@ -87,6 +87,10 @@ angular.module('Continuum', [
             .state('forgotPassword', {
                 url: '/forgotPassword',
                 template: '<cn-forgot-password flex layout></cn-forgot-password>'
+            })
+            .state('resetPassword', {
+                url: '/resetPassword',
+                template: '<cn-reset-password flex layout></cn-reset-password>'
             })
             .state('confirmation', {
                 url: '/confirmation',

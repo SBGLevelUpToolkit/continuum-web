@@ -13,6 +13,7 @@ import './assessment/assessment';
 import './moderateAssessment/moderateAssessment';
 import './dimension/dimension';
 import './forgotPassword/forgotPassword';
+import './resetPassword/resetPassword';
 import './renderComplete/renderComplete';
 
 var app = angular.module('cn.components', [
@@ -28,6 +29,7 @@ var app = angular.module('cn.components', [
     'cn.moderateAssessment',
     'cn.dimension',
     'cn.forgotPassword',
+    'cn.resetPassword',
     'cn.onRenderComplete'
 ]);
 

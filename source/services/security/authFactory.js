@@ -64,6 +64,21 @@ app.factory('authService', [
             });
         };
 
+        var _resetPassword = function(userId, code) {
+            return $http.post(
+                `${serviceBase}api/account/ResetPassword?emailAddress=${userId}`).then(function(response) {
+                return response;
+            });
+        };
+
+        var _confirmResetPassword = function(userId, code, password) {
+            return $http.post(
+                `${serviceBase}api/account/ConfirmResetPassword?emailAddress=${userId}&code=${code}&password=${password}`)
+                .then(function(response) {
+                    return response;
+                });
+        };
+
         var _fillAuthData = function() {
 
             var authData = localStorageService.get('authorizationData');
@@ -76,6 +91,8 @@ app.factory('authService', [
         authServiceFactory.saveRegistration = _saveRegistration;
         authServiceFactory.login = _login;
         authServiceFactory.confirmEmail = _confirmEmail;
+        authServiceFactory.resetPassword = _resetPassword;
+        authServiceFactory.confirmResetPassword = _confirmResetPassword;
         authServiceFactory.logOut = _logOut;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;

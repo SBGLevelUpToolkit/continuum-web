@@ -12,12 +12,12 @@ var app = angular.module('cn.header', [ 'cn.auth', 'ui.router' ])
             controller: /*@ngInject*/function(authService, assessmentService, $state, localStorageService, mediatorService) {
                 let levelNames = [ 'traveller', 'artisan', 'professional', 'expert', 'master' ];
 
-                mediatorService.listen('UserDetailsLoaded', () => {
+                //mediatorService.listen('UserDetailsLoaded', () => {
                     let user = localStorageService.get('userDetails');
                     this.team = user.Teams[ 0 ].Name;
                     let gender = user.Teams[ 0 ].AvatarName === 'Barbarian' ? 'male' : 'female';
                     this.avatarType = `images/menu_${levelNames[ user.Teams[ 0 ].CurrentLevel ]}_${gender}_avatar_icon.png`;
-                });
+                //});
 
                 this.signOut = function() {
                     authService.logOut();

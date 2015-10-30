@@ -6,7 +6,7 @@ import 'lodash';
 import '../../services/createFactories';
 import '../../services/mediator';
 
-fdescribe('Moderate Assessment Directive', function() {
+describe('Moderate Assessment Directive', function() {
 
     let scope,
         elm,
@@ -143,7 +143,7 @@ fdescribe('Moderate Assessment Directive', function() {
         });
 
         describe('When an assessment is in a moderated state ', function() {
-            fdescribe('When the logged in user is an admin', function() {
+            describe('When the logged in user is an admin', function() {
 
                 it('it should show the reopen and close buttons', function() {
                     expect(elm.find('#setStatus').hasClass('ng-hide')).toBeFalsy();

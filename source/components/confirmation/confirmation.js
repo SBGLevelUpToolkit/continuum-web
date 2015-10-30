@@ -9,7 +9,7 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, authService, $location, localStorageService) {
+            controller: /*@ngInject*/function controller($state, authService, $location, localStorageService, userService) {
                 let code = encodeURIComponent($location.search().code),
                     userId = $location.search().userId,
                     loginData = localStorageService.get('confirmationDetails');
@@ -18,8 +18,12 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
 
                         localStorageService.remove('confirmationDetails');
                         authService.login(loginData).then((response) => {
+                                userService.query((user) => {
+                                    localStorageService.set('userDetails', user);
+                                    //mediatorService.notify('UserDetailsLoaded');
+                                });
                                 this.loading = false;
-                                $state.go('home.home');
+                                $state.go('teamSelection');
                             },
                             (err) => {
                                 //TODO possibly use a toast then redirect to login so they can try again
