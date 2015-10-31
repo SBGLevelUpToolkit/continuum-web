@@ -1,4 +1,5 @@
 import template from './login.html!text';
+import toastTemplate from './toast-template.html!text';
 import 'angular-ui-router';
 import '../../services/security/authFactory';
 
@@ -9,9 +10,16 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($state, authService, localStorageService, userService) {
+            controller: /*@ngInject*/function controller($state, $stateParams, $mdToast, authService, localStorageService, userService) {
                 localStorageService.clearAll();
-
+                if ($stateParams.confirmation) {
+                    $mdToast.show({
+                        template: toastTemplate,
+                        parent: document.querySelector('.form-panel'),
+                        position: 'top left',
+                        hideDelay: 4000
+                    });
+                }
                 this.setTouched = () => {
                     angular.forEach(this.form.$error.required, function(field) {
                         field.$setTouched();

@@ -58,8 +58,8 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                                     this.loading = false;
                                     $state.go('home');
                                 },
-                                (response) => {
-                                    showMessage(response);
+                                (err) => {
+                                    showMessage(err.data.Message);
                                 });
                         }
                     }

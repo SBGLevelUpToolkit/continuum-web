@@ -77,7 +77,7 @@ angular.module('Continuum', [
 
         $stateProvider
             .state('login', {
-                url: '/login',
+                url: '/login?confirmation',
                 template: '<cn-login flex layout></cn-login>'
             })
             .state('register', {

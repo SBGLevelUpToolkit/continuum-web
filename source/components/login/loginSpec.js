@@ -58,64 +58,68 @@ fdescribe('Login Directive', function() {
         spyOn($state, 'go');
     }));
 
-    it('should bind the content', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
+    describe('When the directive compiles', function() {
+        it('should bind the content', function() {
+            var userName = elm.find('#userName'),
+                password = elm.find('#password');
 
-        expect(userName.text()).toBe('');
-        expect(password.text()).toBe('');
+            expect(userName.text()).toBe('');
+            expect(password.text()).toBe('');
 
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme'
-            };
+            scope.$apply(function() {
+                ctrl.user = {
+                    userName: 'br@ders.co.za',
+                    password: 'kensentme'
+                };
+            });
+
+            expect(userName.val()).toBe('br@ders.co.za');
+            expect(password.val()).toBe('kensentme');
         });
-
-        expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('kensentme');
     });
 
-    it('should not call login when userName is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                password: 'kensentme!'
-            };
-        });
+    describe('When login details are submitted', function() {
+        it('it should not call login when userName is invalid', inject(function() {
+            scope.$apply(function() {
+                ctrl.user = {
+                    password: 'kensentme!'
+                };
+            });
 
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
+            var mySpy = spyOn(elm.scope().ctrl, 'login');
+            var submitButton = elm.find('md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
 
-        ctrl.user.userName = 'brders.co.za';
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
+            ctrl.user.userName = 'brders.co.za';
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
+        }));
 
-    it('should not call login when password is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za'
-            };
-        });
+        it('it should not call login when password is invalid', inject(function() {
+            scope.$apply(function() {
+                ctrl.user = {
+                    userName: 'br@ders.co.za'
+                };
+            });
 
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
+            var mySpy = spyOn(elm.scope().ctrl, 'login');
+            var submitButton = elm.find('md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
+        }));
 
-    it('should pass a valid object to login', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = validUser;
-        });
+        it('it should call login when form data is valid', inject(function() {
+            scope.$apply(function() {
+                ctrl.user = validUser;
+            });
 
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).toHaveBeenCalled();
-    }));
+            var mySpy = spyOn(elm.scope().ctrl, 'login');
+            var submitButton = elm.find('md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).toHaveBeenCalled();
+        }));
+    });
 
     describe('When authorization is successful', function() {
         describe('When the user belongs to a team', function() {
@@ -152,7 +156,7 @@ fdescribe('Login Directive', function() {
     });
 
     describe('When authorization is unsuccessful', function() {
-        it('should set an invalid property', inject(function($state) {
+        it('it should set an invalid property', inject(function($state) {
             passPromise = false;
             ctrl.login(validUser);
             scope.$digest();
