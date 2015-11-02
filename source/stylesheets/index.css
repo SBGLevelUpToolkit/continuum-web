@@ -294,10 +294,14 @@ cn-header md-toolbar .logo-img {
     z-index: 0 !important;
 }
 
+.light-text {
+    color: #FFFFFF;
+}
+
 md-input-container.light-text input {
     color: #FFFFFF;
     border-radius: 2px !important;
-/ / background-color : rgba(255, 255, 255, .5) !important;
+/ / background-color: rgba(255, 255, 255, .5) !important;
 }
 
 /*.md-button.md-primary {*/

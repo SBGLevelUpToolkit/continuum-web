@@ -13,10 +13,9 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
                 let code = encodeURIComponent($location.search().code),
                     userId = $location.search().userId;
                 this.loading = true;
-                $state.go('login');
                 return authService.confirmEmail(userId, code).then((response) => {
-                    this.loading = false;
-                        $state.go('login?confirmation=true');
+                        this.loading = false;
+                        $state.go('login', { confirmation: true });
                     },
                     (err) => {
                         this.errorMessage = err.error_description ? err.error_description : 'Error while logging in';

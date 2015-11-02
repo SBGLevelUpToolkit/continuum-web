@@ -1,6 +1,7 @@
 import template from './register.html!text';
 import 'angular-ui-router';
 import '../../services/security/authFactory';
+import '../matchPassword/matchPassword';
 
 var app = angular.module('cn.register', [ 'cn.auth', 'ui.router' ])
     .directive('cnRegister', function() {
@@ -9,7 +10,7 @@ var app = angular.module('cn.register', [ 'cn.auth', 'ui.router' ])
             template: template,
             controllerAs: 'ctrl',
             bindToController: true,
-            controller: /*@ngInject*/function controller($scope, $state, authService) {
+            controller: /*@ngInject*/function controller($state, authService) {
                 this.showConfirmationMessage = false;
 
                 this.register = (data) => {

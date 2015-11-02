@@ -15,6 +15,7 @@ import './dimension/dimension';
 import './forgotPassword/forgotPassword';
 import './resetPassword/resetPassword';
 import './renderComplete/renderComplete';
+import './matchPassword/matchPassword';
 
 var app = angular.module('cn.components', [
     'cn.container',
@@ -30,7 +31,8 @@ var app = angular.module('cn.components', [
     'cn.dimension',
     'cn.forgotPassword',
     'cn.resetPassword',
-    'cn.onRenderComplete'
+    'cn.onRenderComplete',
+    'cn.matchPassword'
 ]);
 
 export default app;

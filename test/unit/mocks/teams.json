@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Team 1",
+    "TeamLeadName": "Foo 1",
+    "AvatarUrl": "images/ll.png",
+    "Id": 1
+  },
+  {
+    "Name": "Team 2",
+    "TeamLeadName": "Foo 2",
+    "AvatarUrl": "images/ll.png",
+    "Id": 1
+  },
+  {
+    "Name": "Team 3",
+    "TeamLeadName": "Foo 3",
+    "AvatarUrl": "images/ll.png",
+    "Id": 1
+  },
+  {
+    "Name": "Team 4",
+    "TeamLeadName": "Foo 4",
+    "AvatarUrl": "images/ll.png",
+    "Id": 2
+  },
+  {
+    "Name": "Team 5",
+    "TeamLeadName": "Foo 5",
+    "AvatarUrl": "images/ll.png",
+    "Id": 3
+  }
+]

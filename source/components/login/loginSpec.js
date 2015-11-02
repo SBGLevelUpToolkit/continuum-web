@@ -1,12 +1,11 @@
 import 'angular-mocks';
+import helper from '../../../test/unit/specHelper';
 import './login';
 import '../../services/createFactories';
 
-fdescribe('Login Directive', function() {
+describe('Login Directive', function() {
 
-    var scope,
-        elm,
-        ctrl,
+    var directive,
         passPromise,
         userInTeam,
         $httpBackend,
@@ -19,15 +18,19 @@ fdescribe('Login Directive', function() {
         };
 
     beforeEach(function() {
+        angular.mock.module('ngMaterial');
         angular.mock.module('LocalStorageModule');
         angular.mock.module('cn.userFactory');
         angular.mock.module('cn.login');
     });
 
-    beforeEach(inject(function(_authService_, _userService_, _localStorageService_, $q) {
+    beforeEach(inject(function(_authService_, _userService_, _$httpBackend_, _localStorageService_, $q, $state) {
+        directive = helper.compileDirective('cn-login');
+        $httpBackend = _$httpBackend_;
         authService = _authService_;
         userService = _userService_;
         localStorageService = _localStorageService_;
+        spyOn($state, 'go');
         spyOn(authService, 'login').and.callFake(function() {
             return (passPromise) ? $q.when() : $q.reject({
                 error_description: 'oh noze'
@@ -43,31 +46,16 @@ fdescribe('Login Directive', function() {
         });
     }));
 
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
-        var compile = _$compile_;
-        scope = _$rootScope_.$new();
-        $httpBackend = _$httpBackend_;
-
-        elm = angular.element('<cn-login></cn-login>');
-        compile(elm)(scope);
-        scope.$digest();
-        ctrl = elm.scope().ctrl;
-    }));
-
-    beforeEach(inject(function($state) {
-        spyOn($state, 'go');
-    }));
-
     describe('When the directive compiles', function() {
         it('should bind the content', function() {
-            var userName = elm.find('#userName'),
-                password = elm.find('#password');
+            var userName = directive.elm.find('#userName'),
+                password = directive.elm.find('#password');
 
             expect(userName.text()).toBe('');
             expect(password.text()).toBe('');
 
-            scope.$apply(function() {
-                ctrl.user = {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = {
                     userName: 'br@ders.co.za',
                     password: 'kensentme'
                 };
@@ -79,46 +67,46 @@ fdescribe('Login Directive', function() {
     });
 
     describe('When login details are submitted', function() {
-        it('it should not call login when userName is invalid', inject(function() {
-            scope.$apply(function() {
-                ctrl.user = {
+        it('it should call login when form data is valid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = validUser;
+            });
+
+            var mySpy = spyOn(directive.ctrl, 'login');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).toHaveBeenCalled();
+        });
+
+        it('it should not call login when userName is invalid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = {
                     password: 'kensentme!'
                 };
             });
 
-            var mySpy = spyOn(elm.scope().ctrl, 'login');
-            var submitButton = elm.find('md-button')[ 0 ];
+            var mySpy = spyOn(directive.ctrl, 'login');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
             submitButton.click();
             expect(mySpy).not.toHaveBeenCalled();
 
-            ctrl.user.userName = 'brders.co.za';
+            directive.ctrl.user.userName = 'brders.co.za';
             submitButton.click();
             expect(mySpy).not.toHaveBeenCalled();
-        }));
+        });
 
-        it('it should not call login when password is invalid', inject(function() {
-            scope.$apply(function() {
-                ctrl.user = {
+        it('it should not call login when password is invalid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = {
                     userName: 'br@ders.co.za'
                 };
             });
 
-            var mySpy = spyOn(elm.scope().ctrl, 'login');
-            var submitButton = elm.find('md-button')[ 0 ];
+            var mySpy = spyOn(directive.ctrl, 'login');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
             submitButton.click();
             expect(mySpy).not.toHaveBeenCalled();
-        }));
-
-        it('it should call login when form data is valid', inject(function() {
-            scope.$apply(function() {
-                ctrl.user = validUser;
-            });
-
-            var mySpy = spyOn(elm.scope().ctrl, 'login');
-            var submitButton = elm.find('md-button')[ 0 ];
-            submitButton.click();
-            expect(mySpy).toHaveBeenCalled();
-        }));
+        });
     });
 
     describe('When authorization is successful', function() {
@@ -127,8 +115,8 @@ fdescribe('Login Directive', function() {
             it('it should navigate to home', inject(function($state) {
                 passPromise = true;
                 userInTeam = true;
-                ctrl.login(validUser);
-                scope.$digest();
+                directive.ctrl.login(validUser);
+                directive.scope.$digest();
                 expect($state.go).toHaveBeenCalledWith('home.home');
             }));
 
@@ -136,8 +124,8 @@ fdescribe('Login Directive', function() {
                 localStorageService.remove('userDetails');
                 passPromise = true;
                 userInTeam = true;
-                ctrl.login(validUser);
-                scope.$digest();
+                directive.ctrl.login(validUser);
+                directive.scope.$digest();
                 let user = localStorageService.get('userDetails');
                 expect(user.Name).toEqual('foo');
             }));
@@ -148,8 +136,8 @@ fdescribe('Login Directive', function() {
             it('it should navigate to teamSelection', inject(function($state) {
                 passPromise = true;
                 userInTeam = false;
-                ctrl.login(validUser);
-                scope.$digest();
+                directive.ctrl.login(validUser);
+                directive.scope.$digest();
                 expect($state.go).toHaveBeenCalledWith('teamSelection');
             }));
         });
@@ -158,10 +146,10 @@ fdescribe('Login Directive', function() {
     describe('When authorization is unsuccessful', function() {
         it('it should set an invalid property', inject(function($state) {
             passPromise = false;
-            ctrl.login(validUser);
-            scope.$digest();
+            directive.ctrl.login(validUser);
+            directive.scope.$digest();
             expect($state.go).not.toHaveBeenCalled();
-            expect(ctrl.formInvalid).toBe(true);
+            expect(directive.ctrl.formInvalid).toBe(true);
         }));
     });
 

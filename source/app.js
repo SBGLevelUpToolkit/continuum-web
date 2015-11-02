@@ -97,6 +97,7 @@ angular.module('Continuum', [
                 template: '<cn-confirmation flex layout></cn-confirmation>'
             })
             .state('home', {
+                abstract: true,
                 template: '<cn-container flex layout="column" fill-defined-flex></cn-container>'
             })
             .state('home.home', {

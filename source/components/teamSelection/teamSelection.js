@@ -1,5 +1,6 @@
 import template from './teamSelection.html!text';
 import 'angular-ui-router';
+import '../../services/createFactories';
 
 var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamFactory' ])
     .directive('cnTeamSelection', function() {
@@ -42,8 +43,6 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                                     localStorageService.set('userDetails', user);
                                     this.loading = false;
                                     $state.go('home.home');
-                                    this.loading = false;
-                                    $state.go('home.home');
                                 });
                             },
                             (err) => {
@@ -55,8 +54,11 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                         } else {
                             let avatar = this.amazon.indexOf('selected') > -1 ? 'Amazon' : 'Barbarian';
                             teamService.save({ Name: item, AvatarName: avatar }, (response) => {
-                                    this.loading = false;
-                                    $state.go('home');
+                                    userService.query((user) => {
+                                        localStorageService.set('userDetails', user);
+                                        this.loading = false;
+                                        $state.go('home.home');
+                                    });
                                 },
                                 (err) => {
                                     showMessage(err.data.Message);

@@ -1,120 +1,116 @@
 import 'angular-mocks';
+import helper from '../../../test/unit/specHelper';
 import './register';
 
 describe('Register Directive', function() {
 
-    var scope,
-        elm,
-        ctrl,
+    var directive,
         passPromise,
         authService,
         $httpBackend,
+        $mdToast,
         validUser = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
+            email: 'br@ders.co.za',
+            password: 'kensentme!',
+            confirmPassword: 'kensentme!'
         };
 
     beforeEach(function() {
+        angular.mock.module('ngMaterial');
         angular.mock.module('cn.register');
+        angular.mock.module('cn.matchPassword');
     });
 
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
-        var compile = _$compile_;
-        scope = _$rootScope_.$new();
+    beforeEach(inject(function(_$httpBackend_, _authService_, $q) {
+        directive = helper.compileDirective('cn-register');
         $httpBackend = _$httpBackend_;
-
-        elm = angular.element('<cn-register></cn-register>');
-        compile(elm)(scope);
-        scope.$digest();
-        ctrl = elm.scope().ctrl;
-    }));
-
-    beforeEach(inject(function($state) {
-        spyOn($state, 'go');
-    }));
-
-    beforeEach(inject(function(_authService_, $q) {
         authService = _authService_;
         spyOn(authService, 'saveRegistration').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject();
+            return (passPromise) ? $q.when() : $q.reject({
+                data: {
+                    Message: 'OH NOZE'
+                }
+            });
         });
     }));
 
-    it('should bind the content', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
+    describe('When the directive compiles', function() {
+        it('it should bind the content', function() {
+            var userName = directive.elm.find('#userName'),
+                password = directive.elm.find('#password');
 
-        expect(userName.val()).toBe('');
-        expect(password.val()).toBe('');
+            expect(userName.val()).toBe('');
+            expect(password.val()).toBe('');
 
-        scope.$apply(function() {
-            ctrl.user = {
-                email: 'br@ders.co.za',
-                password: 'kensentme!'
-            };
+            directive.scope.$apply(function() {
+                directive.ctrl.user = validUser;
+            });
+
+            expect(userName.val()).toBe('br@ders.co.za');
+            expect(password.val()).toBe('kensentme!');
         });
-
-        expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('kensentme!');
     });
 
-    it('should not call register when userName is invalid', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
+    describe('When registration details are submitted', function() {
+        it('it should call register when the form data is valid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = validUser;
+            });
 
-        scope.$apply(function() {
-            ctrl.user = {
-                password: 'kensentme!'
-            };
+            var mySpy = spyOn(directive.ctrl, 'register');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).toHaveBeenCalled();
         });
 
-        expect(userName.val()).toBe('');
-        expect(password.val()).toBe('kensentme!');
+        it('it should not call register when the userName is invalid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = {
+                    password: 'kensentme!'
+                };
+            });
 
-        var mySpy = spyOn(elm.scope().ctrl, 'register');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
+            var mySpy = spyOn(directive.ctrl, 'register');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
 
-        scope.$apply(function() {
-            ctrl.user.email = 'brders.co.za';
+            directive.scope.$apply(function() {
+                directive.ctrl.user.email = 'brders.co.za';
+            });
+
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
         });
 
-        expect(userName.val()).toBe('brders.co.za');
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    });
+        it('it should not call register when the password is invalid', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = {
+                    email: 'br@ders.co.za'
+                };
+            });
 
-    it('should not call register when password is invalid', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
-
-        scope.$apply(function() {
-            ctrl.user = {
-                email: 'br@ders.co.za'
-            };
+            var mySpy = spyOn(directive.elm.scope().ctrl, 'register');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
         });
 
-        expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('');
+        it('it should not call register when the confirm password does not match', function() {
+            directive.scope.$apply(function() {
+                directive.ctrl.user = validUser;
+                directive.ctrl.user.confirmPassword = 'adfdf';
+            });
 
-        var mySpy = spyOn(elm.scope().ctrl, 'register');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
+            var mySpy = spyOn(directive.ctrl, 'register');
+            var submitButton = directive.elm.find('.md-button')[ 0 ];
+            submitButton.click();
+            expect(mySpy).not.toHaveBeenCalled();
+        });
     });
 
     describe('When registration is successful', function() {
-
-        let loginPassPromise;
-
-        beforeEach(inject(function($q) {
-            spyOn(authService, 'login').and.callFake(function() {
-                return (loginPassPromise) ? $q.when() : $q.reject();
-            });
-        }));
-
-        it('should call login', function() {
+        it('it should show a confirmation message', function() {
             passPromise = true;
 
             var user = {
@@ -122,42 +118,14 @@ describe('Register Directive', function() {
                 password: 'kensentme!'
             };
 
-            ctrl.register(user);
-            scope.$digest();
-            expect(authService.login).toHaveBeenCalled();
+            directive.ctrl.register(user);
+            directive.scope.$digest();
+            expect(directive.ctrl.showConfirmationMessage).toEqual(true);
         });
-
-        it('should call teamSelection state when login is successful', inject(function($state) {
-            passPromise = true;
-            loginPassPromise = true;
-
-            var user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme!'
-            };
-
-            ctrl.register(user);
-            scope.$digest();
-            expect($state.go).toHaveBeenCalledWith('teamSelection');
-        }));
-
-        it('should set an invalid property when login is unsuccessful', inject(function($state) {
-            loginPassPromise = false;
-
-            var user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme!'
-            };
-
-            ctrl.register(user);
-            scope.$digest();
-            expect($state.go).not.toHaveBeenCalled();
-            expect(ctrl.formInvalid).toBe(true);
-        }));
     });
 
     describe('When registration is unsuccessful', function() {
-        it('it should set an invalid property for general errors', inject(function($state) {
+        it('it should set an invalid property for general errors', function() {
             passPromise = false;
 
             var user = {
@@ -165,31 +133,14 @@ describe('Register Directive', function() {
                 password: 'kensentme!'
             };
 
-            ctrl.register(user);
-            scope.$digest();
-            expect($state.go).not.toHaveBeenCalled();
-            expect(ctrl.formInvalid).toBe(true);
-        }));
-
-        describe('When the password does not meet the requirements', function() {
-            it('it should show specific invalid password requirements messages', inject(function($state) {
-                passPromise = false;
-
-                var user = {
-                    email: 'br@ders.co.za',
-                    password: 'kensentme!'
-                };
-
-                ctrl.register(user);
-                scope.$digest();
-                expect($state.go).not.toHaveBeenCalled();
-                expect(ctrl.formInvalid).toBe(true);
-            }));
-
-            afterEach(function() {
-                $httpBackend.verifyNoOutstandingExpectation();
-                $httpBackend.verifyNoOutstandingRequest();
-            });
+            directive.ctrl.register(user);
+            directive.scope.$digest();
+            expect(directive.ctrl.formInvalid).toBe(true);
         });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 });
