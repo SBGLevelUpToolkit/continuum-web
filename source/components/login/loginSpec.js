@@ -1,16 +1,15 @@
 import 'angular-mocks';
 import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import './login';
 import '../../services/createFactories';
 
 describe('Login Directive', function() {
 
     var directive,
-        passPromise,
-        userInTeam,
+        authSpy,
+        userSpy,
         $httpBackend,
-        authService,
-        userService,
         localStorageService,
         validUser = {
             userName: 'br@ders.co.za',
@@ -24,30 +23,17 @@ describe('Login Directive', function() {
         angular.mock.module('cn.login');
     });
 
-    beforeEach(inject(function(_authService_, _userService_, _$httpBackend_, _localStorageService_, $q, $state) {
+    beforeEach(inject(function(_authService_, _userService_, _$httpBackend_, _localStorageService_, $state) {
         directive = helper.compileDirective('cn-login');
         $httpBackend = _$httpBackend_;
-        authService = _authService_;
-        userService = _userService_;
         localStorageService = _localStorageService_;
         spyOn($state, 'go');
-        spyOn(authService, 'login').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject({
-                error_description: 'oh noze'
-            });
-        });
-        spyOn(userService, 'query').and.callFake(function(cb) {
-            let teams = (userInTeam) ? [ 1 ] : [];
-            let user = {
-                Name: 'foo',
-                Teams: teams
-            };
-            cb(user);
-        });
+        authSpy = serviceSpy.auth.bind(this, _authService_); //auth needs this injector
+        userSpy = serviceSpy.user.bind(null, _userService_);
     }));
 
     describe('When the directive compiles', function() {
-        it('should bind the content', function() {
+        it('it should bind the content', function() {
             var userName = directive.elm.find('#userName'),
                 password = directive.elm.find('#password');
 
@@ -110,42 +96,53 @@ describe('Login Directive', function() {
     });
 
     describe('When authorization is successful', function() {
+        beforeEach(function() {
+            authSpy().login();
+        });
+
         describe('When the user belongs to a team', function() {
-
-            it('it should navigate to home', inject(function($state) {
-                passPromise = true;
-                userInTeam = true;
-                directive.ctrl.login(validUser);
-                directive.scope.$digest();
-                expect($state.go).toHaveBeenCalledWith('home.home');
-            }));
-
             it('it should store user details', inject(function() {
+                userSpy().query();
                 localStorageService.remove('userDetails');
-                passPromise = true;
-                userInTeam = true;
                 directive.ctrl.login(validUser);
                 directive.scope.$digest();
                 let user = localStorageService.get('userDetails');
                 expect(user.Name).toEqual('foo');
+            }));
+
+            it('it should navigate to home', inject(function($state) {
+                userSpy().query();
+                directive.ctrl.login(validUser);
+                directive.scope.$digest();
+                expect($state.go).toHaveBeenCalledWith('home.home');
             }));
         });
 
         describe('When the user does not belong to a team', function() {
 
             it('it should navigate to teamSelection', inject(function($state) {
-                passPromise = true;
-                userInTeam = false;
+                userSpy().query(false);
                 directive.ctrl.login(validUser);
                 directive.scope.$digest();
                 expect($state.go).toHaveBeenCalledWith('teamSelection');
+            }));
+        });
+
+        // TODO write the code to pass this test
+        describe('When retrieving user details fails', function() {
+
+            it('it should set an invalid state', inject(function($state) {
+                userSpy(false).query();
+                directive.ctrl.login(validUser);
+                directive.scope.$digest();
+                expect(directive.ctrl.formInvalid).toEqual(true);
             }));
         });
     });
 
     describe('When authorization is unsuccessful', function() {
         it('it should set an invalid property', inject(function($state) {
-            passPromise = false;
+            authSpy(false).login();
             directive.ctrl.login(validUser);
             directive.scope.$digest();
             expect($state.go).not.toHaveBeenCalled();

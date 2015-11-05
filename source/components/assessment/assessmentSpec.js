@@ -1,94 +1,24 @@
 import 'angular-mocks';
 import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import './assessment';
 import '../dimension/dimension';
-import 'lodash';
 import '../../services/createFactories';
+import '../../services/mediator';
 
 describe('Assessment Directive', function() {
 
-    let scope,
-        elm,
-        ctrl,
-        compile,
+    let directive,
+        assessmentSpy,
+        dimensionSpy,
         $httpBackend,
-        assessmentService,
         localStorageService,
-        dimensions,
-        capabilities;
-
-    let dimensionServiceSpy = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]);
-
-    let adminUser = {
-        'UserId': 'foo.bar@gmail.com',
-        'Teams': [
-            {
-                'TeamMembers': null,
-                'Name': 'Teen Titans',
-                'TeamLeadName': 'foo.bar@gmail.com',
-                'AvatarName': 'Barbarian',
-                'Id': 14
-            }
-        ],
-        'IsAdmin': true
-    };
-
-    let user = {
-        'UserId': 'foo.bar@gmail.com',
-        'Teams': [
-            {
-                'TeamMembers': null,
-                'Name': 'Teen Titans',
-                'TeamLeadName': 'foo.bar@gmail.com',
-                'AvatarName': 'Barbarian',
-                'Id': 14
-            }
-        ],
-        'IsAdmin': false
-    };
-
-    beforeAll(function() {
-        dimensions = helper.getDimensions();
-        capabilities = helper.getDimension();
-    });
-
-    let assessments = {
-        'Id': 1,
-        'Status': 'Closed',
-        'AssessmentItems': [
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 254,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 255,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 256,
-                'CapabilityAchieved': false
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 257,
-                'CapabilityAchieved': true
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 293,
-                'CapabilityAchieved': true
-            },
-            {
-                'AssesmentId': 1,
-                'CapabilityId': 357,
-                'CapabilityAchieved': false
-            }
-        ],
-        'AssessmentResults': []
-    };
+        dimensionService = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]),
+        dimensions = helper.getDimensions(),
+        capabilities = helper.getDimension(),
+        assessments = helper.getAssessments()[ 1 ],
+        user = helper.getUsers()[ 1 ],
+        adminUser = helper.getUsers()[ 0 ];
 
     beforeEach(function() {
         angular.mock.module('LocalStorageModule');
@@ -96,99 +26,77 @@ describe('Assessment Directive', function() {
         angular.mock.module('cn.dimension');
         angular.mock.module('cn.assessmentFactory');
         angular.mock.module('cn.dimensionFactory');
+        angular.mock.module('cn.mediatorFactory');
         angular.mock.module(function($provide) {
-            $provide.value('dimensionService', dimensionServiceSpy);
+            $provide.value('dimensionService', dimensionService);
         });
     });
 
-    beforeEach(inject(function($controller, _assessmentService_, _localStorageService_) {
-        assessmentService = _assessmentService_;
+    beforeEach(inject(function($controller, _assessmentService_, _localStorageService_, _$httpBackend_) {
         localStorageService = _localStorageService_;
-
-        let mockedDimensionService = {
-            query: function(successCb) {
-                successCb(dimensions);
-            },
-            get: function(params, successCb) {
-                successCb(capabilities);
-                return {
-                    $promise: {
-                        then: function(callback) {
-                            return callback();
-                        }
-                    }
-                };
-            }
-        };
-
-        localStorageService.set('userDetails', adminUser);
-
-        dimensionServiceSpy.query.and.callFake(mockedDimensionService.query);
-        dimensionServiceSpy.get.and.callFake(mockedDimensionService.get);
-
-        spyOn(assessmentService, 'query').and.callFake(function(successCb) {
-            successCb(assessments);
-        });
-
-        spyOn(assessmentService, 'create').and.callFake(function(successCb) {
-            successCb();
-        });
-
-        spyOn(assessmentService, 'moderate').and.stub();
-    }));
-
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
-        compile = _$compile_;
-        scope = _$rootScope_.$new();
         $httpBackend = _$httpBackend_;
-        elm = angular.element('<cn-assessment></cn-assessment>');
-    }));
 
-    function compileCtrl() {
-        compile(elm)(scope);
-        scope.$digest();
-        ctrl = elm.isolateScope().ctrl;
-    }
+        assessmentSpy = serviceSpy.assessment.bind(null, _assessmentService_);
+        dimensionSpy = serviceSpy.dimension.bind(null, dimensionService);
+
+        // Must be available when the directive compiles
+        dimensionSpy().query(dimensions);
+        dimensionSpy().get(capabilities);
+    }));
 
     describe('When the directive compiles', function() {
+
+        beforeEach(function() {
+            assessmentSpy().query(assessments);
+        });
 
         describe('When there are no assessments in an open or moderated state ', function() {
 
             it('it should set the assessment action to create', function() {
-                compileCtrl();
-                expect(ctrl.assessmentAction).toEqual('Create');
+                localStorageService.set('userDetails', adminUser);
+                directive = helper.compileDirective('cn-assessment');
+                expect(directive.ctrl.assessmentAction).toEqual('Create');
             });
 
             it('it should show a message', function() {
-                compileCtrl();
-                expect(elm.find('#assessmentMessage').hasClass('ng-hide')).toBeFalsy();
+                localStorageService.set('userDetails', adminUser);
+                directive = helper.compileDirective('cn-assessment');
+                expect(directive.elm.find('#assessmentMessage').hasClass('ng-hide')).toBeFalsy();
             });
 
             describe('When the logged in user is an admin', function() {
 
                 beforeEach(function() {
-                    compileCtrl();
+                    localStorageService.set('userDetails', adminUser);
+                    directive = helper.compileDirective('cn-assessment');
                 });
 
                 it('it should display the correct status button text', function() {
-                    expect(elm.find('#setStatus md-button').text()).toEqual('Create');
+                    expect(directive.elm.find('#setStatus md-button').text().trim()).toEqual('Create');
                 });
 
                 it('it should display the correct help text', function() {
                     let message = 'There is no active assessment. Click Create to create an assessment.';
-                    expect(elm.find('#assessmentMessage').text()).toEqual(message);
+                    expect(directive.elm.find('#assessmentMessage').text()).toEqual(message);
                 });
 
                 describe('When the Create button is clicked', function() {
+
+                    let assessmentCreateSpy;
+
+                    beforeEach(function() {
+                        assessmentCreateSpy = assessmentSpy().create();
+                    });
+
                     it('it should call a service to create an assessment', function() {
-                        elm.find('#setStatus md-button').click();
-                        expect(assessmentService.create).toHaveBeenCalled();
+                        directive.elm.find('#setStatus md-button').click();
+                        expect(assessmentCreateSpy).toHaveBeenCalled();
                     });
 
                     it('it should change the view to create mode', function() {
                         assessments.Status = 'Open';
-                        elm.find('#setStatus md-button').click();
-                        expect(elm.find('#setStatus md-button').text()).toEqual('Moderate');
+                        directive.elm.find('#setStatus md-button').click();
+                        expect(directive.elm.find('#setStatus md-button').text().trim()).toEqual('Moderate');
                         assessments.Status = 'Closed';
                     });
                 });
@@ -198,16 +106,16 @@ describe('Assessment Directive', function() {
 
                 beforeEach(function() {
                     localStorageService.set('userDetails', user);
-                    compileCtrl();
+                    directive = helper.compileDirective('cn-assessment');
                 });
 
-                it('it should hide the status button', function() {
-                    expect(elm.find('#setStatus').hasClass('ng-hide')).toBeTruthy();
+                it('it should hide the assessment action button', function() {
+                    expect(directive.elm.find('#setStatus').hasClass('ng-hide')).toBeTruthy();
                 });
 
                 it('it should display the correct help text', function() {
                     let message = 'There is no active assessment.';
-                    expect(elm.find('#assessmentMessage').text()).toEqual(message);
+                    expect(directive.elm.find('#assessmentMessage').text()).toEqual(message);
                 });
             });
         });
@@ -218,45 +126,93 @@ describe('Assessment Directive', function() {
                 assessments.Status = 'Open';
             });
 
-            it('it should get the saved ratings for the current assessment', function() {
-                compileCtrl();
-                expect(ctrl.selectedCapabilities.length).toEqual(2);
-            });
+            describe('For all users', function() {
 
-            it('it should set the assessment action to moderate', function() {
-                compileCtrl();
-                expect(ctrl.assessmentAction).toEqual('Moderate');
-            });
+                beforeEach(function() {
+                    localStorageService.set('userDetails', user);
+                    directive = helper.compileDirective('cn-assessment');
+                });
 
-            it('it should not show a message', function() {
-                compileCtrl();
-                expect(elm.find('#assessmentMessage').hasClass('ng-hide')).toBeTruthy();
+                it('it should get the saved ratings for the current assessment', function() {
+                    expect(directive.ctrl.selectedCapabilities.length).toEqual(2);
+                });
+
+                it('it should set the assessment action to moderate', function() {
+                    expect(directive.ctrl.assessmentAction).toEqual('Moderate');
+                });
+
+                it('it should set the correct assessment action button text', function() {
+                    expect(directive.elm.find('#setStatus md-button').text().trim()).toEqual('Moderate');
+                });
+
+                it('it should not show a message', function() {
+                    expect(directive.elm.find('#assessmentMessage').hasClass('ng-hide')).toBeTruthy();
+                });
+
+                describe('When a rating is selected', function() {
+
+                    beforeEach(function() {
+                        assessmentSpy().save();
+                    });
+
+                    it('it should call the save function', function() {
+                        spyOn(directive.ctrl, 'saveRating');
+                        var checkboxes = directive.elm.find('md-checkbox');
+                        checkboxes[ 0 ].click();
+                        expect(directive.ctrl.saveRating).toHaveBeenCalled();
+                    });
+
+                    it('it should set the correct rating state', function() {
+                        var checkboxes = directive.elm.find('md-checkbox');
+                        checkboxes[ 0 ].click();
+                        expect(directive.ctrl.selectedCapabilities.indexOf(254) > -1).toBe(true);
+                        checkboxes[ 0 ].click();
+                        expect(directive.ctrl.selectedCapabilities.indexOf(254) > -1).toBe(false);
+                    });
+                    //
+                    //// Should we leave integration tests here?
+                    //it('it should set the correct rating object', inject(function(_assessmentService_) {
+                    //    $httpBackend.expect('POST', 'undefined/api/assessment',
+                    //        { 'AssessmentId': 1, 'CapabilityId': 254, 'CapabilityAchieved': true }).respond(200);
+                    //    var checkboxes = directive.elm.find('md-checkbox');
+                    //    checkboxes[ 0 ].click();
+                    //    $httpBackend.flush();
+                    //}));
+                });
             });
 
             describe('When the logged in user is an admin', function() {
 
-                beforeEach(inject(function($state) {
-                    spyOn($state, 'go');
-                    compileCtrl();
-                }));
-
-                it('it should display the correct status button text', function() {
-                    expect(elm.find('#setStatus md-button').text()).toEqual('Moderate');
+                beforeEach(function() {
+                    localStorageService.set('userDetails', adminUser);
+                    directive = helper.compileDirective('cn-assessment');
                 });
 
-                it('it should hide the help text', function() {
+                it('it should show the assessment action button text', function() {
+                    expect(directive.elm.find('#setStatus').hasClass('ng-hide')).toEqual(false);
+                });
+
+                it('it should show the help text', function() {
                     let message = 'There is no active assessment. Click Create to create an assessment.';
-                    expect(elm.find('#assessmentMessage').hasClass('ng-hide')).toBeTruthy();
+                    expect(directive.elm.find('#assessmentMessage').hasClass('ng-hide')).toEqual(true);
                 });
 
                 describe('When the Moderate button is clicked', function() {
+
+                    let assessmentModerateSpy;
+
+                    beforeEach(inject(function($state) {
+                        assessmentModerateSpy = assessmentSpy().moderate();
+                        spyOn($state, 'go');
+                    }));
+
                     it('it should call a service to update the assessment status', function() {
-                        elm.find('#setStatus md-button').click();
-                        expect(assessmentService.moderate).toHaveBeenCalled();
+                        directive.elm.find('#setStatus md-button').click();
+                        expect(assessmentModerateSpy).toHaveBeenCalled();
                     });
 
                     it('it should route to assessment moderation', inject(function($state) {
-                        elm.find('#setStatus md-button').click();
+                        directive.elm.find('#setStatus md-button').click();
                         expect($state.go).toHaveBeenCalledWith('home.moderateAssessment');
                     }));
                 });
@@ -266,50 +222,17 @@ describe('Assessment Directive', function() {
 
                 beforeEach(function() {
                     localStorageService.set('userDetails', user);
-                    compileCtrl();
+                    directive = helper.compileDirective('cn-assessment');
                 });
 
                 it('it should hide the status button', function() {
-                    expect(elm.find('#setStatus').hasClass('ng-hide')).toBeTruthy();
+                    expect(directive.elm.find('#setStatus').hasClass('ng-hide')).toBeTruthy();
                 });
 
                 it('it should hide the help text', function() {
-                    expect(elm.find('#assessmentMessage').hasClass('ng-hide')).toBeTruthy();
+                    expect(directive.elm.find('#assessmentMessage').hasClass('ng-hide')).toBeTruthy();
                 });
             });
-        });
-
-        describe('When a rating is selected', function() {
-
-            beforeEach(function() {
-                assessments.Status = 'Open';
-                spyOn(assessmentService, 'save').and.stub();
-                compileCtrl();
-            });
-
-            it('it should call the save function', function() {
-                spyOn(ctrl, 'saveRating');
-                var checkboxes = elm.find('md-checkbox');
-                checkboxes[ 0 ].click();
-                expect(ctrl.saveRating).toHaveBeenCalled();
-            });
-
-            it('it should set the correct rating state', function() {
-                var checkboxes = elm.find('md-checkbox');
-                checkboxes[ 0 ].click();
-                expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(true);
-                checkboxes[ 0 ].click();
-                expect(ctrl.selectedCapabilities.indexOf(254) > -1).toBe(false);
-            });
-            //
-            //// Should we leave integration tests here?
-            //it('it should set the correct rating object', inject(function(_assessmentService_) {
-            //    $httpBackend.expect('POST', 'undefined/api/assessment',
-            //        { 'AssessmentId': 1, 'CapabilityId': 254, 'CapabilityAchieved': true }).respond(200);
-            //    var checkboxes = elm.find('md-checkbox');
-            //    checkboxes[ 0 ].click();
-            //    $httpBackend.flush();
-            //}));
         });
 
         afterEach(function() {

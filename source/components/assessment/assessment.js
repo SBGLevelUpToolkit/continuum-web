@@ -32,10 +32,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                     }
                 };
 
-                //mediatorService.listen('UserDetailsLoaded', () => {
-                    this.user = localStorageService.get('userDetails');
-                    setAvatar();
-                //});
+                setAvatar();
 
                 mediatorService.listen('DimensionsAvailable', function(dimensionCtrl) {
                     dimensionCtrl.selectDimension(dimensionCtrl.dimensions[ 0 ]);

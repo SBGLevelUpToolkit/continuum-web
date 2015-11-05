@@ -1,37 +1,76 @@
-{
-  "Id": 1,
-  "Status": "Moderating",
-  "AssessmentItems": [
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 254,
-      "CapabilityAchieved": false
-    },
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 255,
-      "CapabilityAchieved": false
-    },
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 256,
-      "CapabilityAchieved": false
-    },
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 257,
-      "CapabilityAchieved": true
-    },
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 293,
-      "CapabilityAchieved": true
-    },
-    {
-      "AssesmentId": 1,
-      "CapabilityId": 357,
-      "CapabilityAchieved": false
-    }
-  ],
-  "AssessmentResults": []
-}
+[
+  {
+    "Id": 1,
+    "Status": "Moderating",
+    "AssessmentItems": [
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 254,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 255,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 256,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 257,
+        "CapabilityAchieved": true
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 293,
+        "CapabilityAchieved": true
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 357,
+        "CapabilityAchieved": false
+      }
+    ],
+    "AssessmentResults": []
+  },
+  {
+    "Id": 1,
+    "Status": "Closed",
+    "AssessmentItems": [
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 254,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 255,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 256,
+        "CapabilityAchieved": false
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 257,
+        "CapabilityAchieved": true
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 293,
+        "CapabilityAchieved": true
+      },
+      {
+        "AssesmentId": 1,
+        "CapabilityId": 357,
+        "CapabilityAchieved": false
+      }
+    ],
+    "AssessmentResults": []
+  }
+]

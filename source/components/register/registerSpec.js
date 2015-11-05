@@ -1,14 +1,13 @@
 import 'angular-mocks';
 import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import './register';
 
 describe('Register Directive', function() {
 
     var directive,
-        passPromise,
-        authService,
+        authSpy,
         $httpBackend,
-        $mdToast,
         validUser = {
             email: 'br@ders.co.za',
             password: 'kensentme!',
@@ -24,14 +23,7 @@ describe('Register Directive', function() {
     beforeEach(inject(function(_$httpBackend_, _authService_, $q) {
         directive = helper.compileDirective('cn-register');
         $httpBackend = _$httpBackend_;
-        authService = _authService_;
-        spyOn(authService, 'saveRegistration').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject({
-                data: {
-                    Message: 'OH NOZE'
-                }
-            });
-        });
+        authSpy = serviceSpy.auth.bind(this, _authService_);
     }));
 
     describe('When the directive compiles', function() {
@@ -111,8 +103,7 @@ describe('Register Directive', function() {
 
     describe('When registration is successful', function() {
         it('it should show a confirmation message', function() {
-            passPromise = true;
-
+            authSpy().saveRegistration();
             var user = {
                 userName: 'br@ders.co.za',
                 password: 'kensentme!'
@@ -126,8 +117,7 @@ describe('Register Directive', function() {
 
     describe('When registration is unsuccessful', function() {
         it('it should set an invalid property for general errors', function() {
-            passPromise = false;
-
+            authSpy(false).saveRegistration();
             var user = {
                 email: 'br@ders.co.za',
                 password: 'kensentme!'

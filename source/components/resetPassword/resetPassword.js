@@ -2,7 +2,11 @@ import template from './resetPassword.html!text';
 import 'angular-ui-router';
 import '../../services/security/authFactory';
 
-var app = angular.module('cn.resetPassword', [ 'cn.auth', 'ui.router' ])
+var app = angular.module('cn.resetPassword', [
+        'ngMaterial',
+        'cn.auth',
+        'ui.router'
+    ])
     .directive('cnResetPassword', function() {
         return {
             restrict: 'E',

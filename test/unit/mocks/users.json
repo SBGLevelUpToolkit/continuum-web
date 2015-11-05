@@ -1,0 +1,28 @@
+[
+  {
+    "UserId": "foo.bar@gmail.com",
+    "Teams": [
+      {
+        "TeamMembers": null,
+        "Name": "Teen Titans",
+        "TeamLeadName": "foo.bar@gmail.com",
+        "AvatarName": "Barbarian",
+        "Id": 14
+      }
+    ],
+    "IsAdmin": true
+  },
+  {
+    "UserId": "foo.bar@gmail.com",
+    "Teams": [
+      {
+        "TeamMembers": null,
+        "Name": "Teen Titans",
+        "TeamLeadName": "foo.bar@gmail.com",
+        "AvatarName": "Barbarian",
+        "Id": 14
+      }
+    ],
+    "IsAdmin": false
+  }
+]

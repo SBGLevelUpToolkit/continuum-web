@@ -98,8 +98,8 @@ module.exports = function(config) {
 
         browsers: [ 'Chrome' ],
 
-        captureTimeout: 30000,
+        captureTimeout: 30000
 
-        singleRun: true
+        //singleRun: true
     });
 };

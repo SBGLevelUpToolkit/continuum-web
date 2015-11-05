@@ -60,5 +60,9 @@ export default {
 
     getTeams: function() {
         return load('base/test/unit/mocks/teams.json');
+    },
+
+    getUsers: function() {
+        return load('base/test/unit/mocks/users.json');
     }
 };

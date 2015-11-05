@@ -40,10 +40,13 @@ var app = angular.module('cn.teamSelection', [ 'cn.auth', 'ui.router', 'cn.teamF
                     if (typeof item === 'object') {
                         teamService.join(item, (response) => {
                                 userService.query((user) => {
-                                    localStorageService.set('userDetails', user);
-                                    this.loading = false;
-                                    $state.go('home.home');
-                                });
+                                        localStorageService.set('userDetails', user);
+                                        this.loading = false;
+                                        $state.go('home.home');
+                                    },
+                                    (err) => {
+                                        showMessage(err.data.Message);
+                                    });
                             },
                             (err) => {
                                 showMessage(err.data.Message);

@@ -19,8 +19,7 @@
                 </div>
                 <div flex="30" layout layout-align="end">
                     <div id="setStatus" ng-show="ctrl.user.IsAdmin">
-                        <md-button class="md-raised" ng-click="ctrl.setStatus()"
-                                   style="font-weight: bold">{{ctrl.assessmentAction}}
+                        <md-button class="md-raised" ng-click="ctrl.setStatus()" style="font-weight: bold">{{ctrl.assessmentAction}}
                         </md-button>
                     </div>
                 </div>
@@ -41,12 +40,12 @@
                 <div flex="90" style="overflow: auto; padding-bottom: 20px">
                     <div id="assessmentMessage" ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
                     <div ng-show="ctrl.activeAssessment">
-                    <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
-                        <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
-                                     aria-label="Rating checkbox">
-                            {{capability.Description}}
-                        </md-checkbox>
-                    </div>
+                        <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">
+                            <md-checkbox ng-checked="ctrl.capabilityIsSelected(capability)" ng-click="ctrl.saveRating(capability)"
+                                         aria-label="Rating checkbox">
+                                {{capability.Description}}
+                            </md-checkbox>
+                        </div>
                     </div>
                 </div>
             </div>
