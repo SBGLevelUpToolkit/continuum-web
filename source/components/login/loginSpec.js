@@ -4,7 +4,7 @@ import serviceSpy from '../../../test/unit/mocks/services';
 import './login';
 import '../../services/createFactories';
 
-fdescribe('Login Directive', function() {
+describe('Login Directive', function() {
 
     var directive,
         authSpy,

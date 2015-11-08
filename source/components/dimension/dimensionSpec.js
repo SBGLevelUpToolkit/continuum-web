@@ -1,99 +1,80 @@
 import 'angular-mocks';
 import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import './dimension';
 import 'lodash';
 import '../../services/createFactories';
+import '../../services/mediator';
 
 describe('Dimension Directive', function() {
-
-    let scope,
-        elm,
-        ctrl,
-        compile,
+    let directive,
+        dimensionSpy,
         $httpBackend,
-        dimensions,
-        capabilities;
-
-    let dimensionServiceSpy = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]);
-
-    beforeAll(function() {
-        dimensions = helper.getDimensions();
+        dimensionService = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]),
+        dimensions = helper.getDimensions(),
         capabilities = helper.getDimension();
-    });
 
     beforeEach(function() {
         angular.mock.module('cn.dimensionFactory');
+        angular.mock.module('cn.mediatorFactory');
         angular.mock.module('cn.dimension');
         angular.mock.module(function($provide) {
-            $provide.value('dimensionService', dimensionServiceSpy);
+            $provide.value('dimensionService', dimensionService);
         });
     });
 
-    beforeEach(inject(function(_$q_) {
-        ctrl = {};
-        var mockedApiService = {
-            query: function(successCb) {
-                successCb(dimensions);
-            },
-            get: function(params, successCb) {
-                successCb(capabilities);
-                return {
-                    $promise: {
-                        then: function(callback) {
-                            return callback();
-                        }
-                    }
-                };
-            }
-        };
-
-        dimensionServiceSpy.query.and.callFake(mockedApiService.query);
-        dimensionServiceSpy.get.and.callFake(mockedApiService.get);
-    }));
-
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
-        compile = _$compile_;
-        scope = _$rootScope_.$new();
+    beforeEach(inject(function($controller, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
-        elm = angular.element('<cn-dimension></cn-dimension>');
-        compile(elm)(scope);
-        scope.$digest();
-        ctrl = elm.isolateScope().ctrlDimension;
+        dimensionSpy = serviceSpy.dimension.bind(null, dimensionService);
+
+        // Must be available when the directive compiles
+        dimensionSpy().query(dimensions);
+        dimensionSpy().get(capabilities);
+        directive = helper.compileDirective('cn-dimension', 'ctrlDimension');
     }));
 
     describe('When the directive compiles', function() {
 
         it('it should get all dimensions', function() {
-            expect(ctrl.dimensions.length).toEqual(3);
+            expect(directive.ctrl.dimensions.length).toEqual(3);
         });
 
-        it('it should sort the dimensions by displayOrder', function() {
-            let orderedDimensions = _.pluck(ctrl.dimensions, 'DisplayOrder');
-            expect(orderedDimensions).toEqual([ 1, 2, 3 ]);
-        });
-    });
+        describe('When dimensions have been successfully retrieved', function() {
 
-    describe('When a dimension is selected', function() {
-        beforeEach(function() {
-            //$httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
-            ctrl.selectDimension({});
+            it('it should sort the dimensions by displayOrder', function() {
+                let orderedDimensions = _.pluck(directive.ctrl.dimensions, 'DisplayOrder');
+                expect(orderedDimensions).toEqual([ 1, 2, 3 ]);
+            });
+
+            describe('When a dimension is selected', function() {
+                beforeEach(function() {
+                    //$httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
+                    directive.ctrl.selectDimension({});
+                });
+
+                it('it should get all capabilities for the first dimension', function() {
+                    expect(directive.ctrl.fullDimension.Capabilities.length).toEqual(13);
+                });
+
+                it('it should find the minimum level for all the capabilities', function() {
+                    expect(directive.ctrl.minLevel).toEqual(1);
+                });
+
+                it('it should find the maximum level for all the capabilities', function() {
+                    expect(directive.ctrl.maxLevel).toEqual(5);
+                });
+
+                it('it should filter all capabilities to the minimum level', function() {
+                    expect(directive.ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
+                    expect(directive.ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
+                });
+            });
         });
 
-        it('it should get all capabilities for the first dimension', function() {
-            expect(ctrl.fullDimension.Capabilities.length).toEqual(13);
-        });
-
-        it('it should find the minimum level for all the capabilities', function() {
-            expect(ctrl.minLevel).toEqual(1);
-        });
-
-        it('it should find the maximum level for all the capabilities', function() {
-            expect(ctrl.maxLevel).toEqual(5);
-        });
-
-        it('it should filter all capabilities to the minimum level', function() {
-            expect(ctrl.capabilitiesAtSelectedLevel[ 0 ].Level).toEqual(1);
-            expect(ctrl.capabilitiesAtSelectedLevel.length).toEqual(1);
+        describe('When dimensions are not successfully retrieved', function() {
+            it('it should throw an error', function() {
+                // TODO Figure out how we want to return errors to the parent directive
+            });
         });
     });
 

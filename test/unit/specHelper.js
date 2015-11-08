@@ -19,7 +19,7 @@ function load(url) {
 }
 
 export default {
-    compileDirective: function(directive) {
+    compileDirective: function(directive, ctrlName = 'ctrl') {
         var scope,
             elm,
             ctrl;
@@ -29,9 +29,9 @@ export default {
             elm = angular.element('<' + directive + '></' + directive + '>');
             $compile(elm)(scope);
             scope.$digest();
-            ctrl = elm.scope().ctrl;
+            ctrl = elm.scope()[ctrlName];
             if (!ctrl) {
-                ctrl = elm.isolateScope().ctrl;
+                ctrl = elm.isolateScope()[ctrlName];
             }
         });
 

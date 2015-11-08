@@ -33,10 +33,21 @@ export default {
             });
         }
 
+        function _resetPassword() {
+            spyOn(authService, 'resetPassword').and.callFake(function() {
+                return (passPromise) ? $q.when() : $q.reject({
+                    data: {
+                        Message: 'oh noze'
+                    }
+                });
+            });
+        }
+
         return {
             login: _login,
             saveRegistration: _saveRegistration,
-            confirmEmail: _confirmEmail
+            confirmEmail: _confirmEmail,
+            resetPassword: _resetPassword
         };
     },
 
