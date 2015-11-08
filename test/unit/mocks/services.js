@@ -23,9 +23,20 @@ export default {
             });
         }
 
+        function _confirmEmail() {
+            spyOn(authService, 'confirmEmail').and.callFake(function() {
+                return (passPromise) ? $q.when() : $q.reject({
+                    data: {
+                        Message: 'oh noze'
+                    }
+                });
+            });
+        }
+
         return {
             login: _login,
-            saveRegistration: _saveRegistration
+            saveRegistration: _saveRegistration,
+            confirmEmail: _confirmEmail
         };
     },
 

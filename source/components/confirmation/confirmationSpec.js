@@ -1,118 +1,53 @@
 import 'angular-mocks';
+import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import './confirmation';
 
 describe('Confirmation Directive', function() {
 
-    var scope,
-        elm,
-        ctrl,
-        passPromise,
+    let directive,
+        authSpy,
         $httpBackend,
-        authService,
-        validUser = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
+        $location,
+        confirmationParams = '/confirmation?userId=foo@bar.co.za&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi&action=ConfirmEmail';
 
     beforeEach(function() {
-        angular.mock.module('cn.login');
+        angular.mock.module('ngMaterial');
+        angular.mock.module('cn.confirmation');
     });
 
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
-        var compile = _$compile_;
-        scope = _$rootScope_.$new();
+    beforeEach(inject(function(_$location_, _$httpBackend_, _authService_, $state) {
+        $location = _$location_;
         $httpBackend = _$httpBackend_;
-
-        elm = angular.element('<cn-login></cn-login>');
-        compile(elm)(scope);
-        scope.$digest();
-        ctrl = elm.scope().ctrl;
-    }));
-
-    beforeEach(inject(function($state) {
+        authSpy = serviceSpy.auth.bind(this, _authService_);
         spyOn($state, 'go');
     }));
 
-    beforeEach(inject(function(_authService_, $q) {
-        authService = _authService_;
-        spyOn(authService, 'login').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject();
-        });
-    }));
-
-    it('should bind the content', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
-
-        expect(userName.text()).toBe('');
-        expect(password.text()).toBe('');
-
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme'
-            };
+    describe('When the directive compiles', function() {
+        it('it should call a service with the correct confirmation details', function() {
+            $location.url(confirmationParams);
+            $httpBackend.expect('POST',
+                `undefined/api/account/ConfirmEmail?userId=foo@bar.co.za&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi`).respond(200);
+            directive = helper.compileDirective('cn-confirmation');
+            $httpBackend.flush();
         });
 
-        expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('kensentme');
+        describe('When the details are successfully confirmed', function() {
+            it('it should navigate to login', inject(function($state) {
+                authSpy().confirmEmail();
+                directive = helper.compileDirective('cn-confirmation');
+                expect($state.go).toHaveBeenCalled();
+            }));
+        });
+
+        describe('When the details are not successfully confirmed', function() {
+            it('it should set an invalid state', function() {
+                authSpy(false).confirmEmail();
+                directive = helper.compileDirective('cn-confirmation');
+                expect(directive.ctrl.formInvalid).toEqual(true);
+            });
+        });
     });
-
-    it('should not call login when userName is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                password: 'kensentme!'
-            };
-        });
-
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-
-        ctrl.user.userName = 'brders.co.za';
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
-
-    it('should not call login when password is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za'
-            };
-        });
-
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
-
-    it('should pass a valid object to login', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = validUser;
-        });
-
-        var mySpy = spyOn(elm.scope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).toHaveBeenCalled();
-    }));
-
-    it('should call home state when authorization is successful', inject(function($state) {
-        passPromise = true;
-        ctrl.login(validUser);
-        scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('home');
-    }));
-
-    it('should set an invalid property when authorization is unsuccessful', inject(function($state) {
-        passPromise = false;
-        ctrl.login(validUser);
-        scope.$digest();
-        expect($state.go).not.toHaveBeenCalled();
-        expect(ctrl.formInvalid).toBe(true);
-    }));
 
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();

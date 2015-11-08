@@ -31,16 +31,21 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
                     this.loading = true;
                     return authService.login(data).then((response) => {
                             userService.query((user) => {
-                                if (user.Teams.length > 0) {
-                                    localStorageService.set('userDetails', user);
-                                    //mediatorService.notify('UserDetailsLoaded');
+                                    if (user.Teams.length > 0) {
+                                        localStorageService.set('userDetails', user);
+                                        //mediatorService.notify('UserDetailsLoaded');
+                                        this.loading = false;
+                                        $state.go('home.home');
+                                    } else {
+                                        this.loading = false;
+                                        $state.go('teamSelection');
+                                    }
+                                },
+                                (err) => {
+                                    this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
                                     this.loading = false;
-                                    $state.go('home.home');
-                                } else {
-                                    this.loading = false;
-                                    $state.go('teamSelection');
-                                }
-                            });
+                                    this.formInvalid = true;
+                                });
                         },
                         (err) => {
                             this.errorMessage = err.error_description ? err.error_description : 'An error occurred';

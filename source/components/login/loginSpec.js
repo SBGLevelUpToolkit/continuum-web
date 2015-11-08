@@ -4,12 +4,11 @@ import serviceSpy from '../../../test/unit/mocks/services';
 import './login';
 import '../../services/createFactories';
 
-describe('Login Directive', function() {
+fdescribe('Login Directive', function() {
 
     var directive,
         authSpy,
         userSpy,
-        $httpBackend,
         localStorageService,
         validUser = {
             userName: 'br@ders.co.za',
@@ -23,9 +22,8 @@ describe('Login Directive', function() {
         angular.mock.module('cn.login');
     });
 
-    beforeEach(inject(function(_authService_, _userService_, _$httpBackend_, _localStorageService_, $state) {
+    beforeEach(inject(function(_authService_, _userService_, _localStorageService_, $state) {
         directive = helper.compileDirective('cn-login');
-        $httpBackend = _$httpBackend_;
         localStorageService = _localStorageService_;
         spyOn($state, 'go');
         authSpy = serviceSpy.auth.bind(this, _authService_); //auth needs this injector
@@ -128,15 +126,14 @@ describe('Login Directive', function() {
             }));
         });
 
-        // TODO write the code to pass this test
         describe('When retrieving user details fails', function() {
 
-            it('it should set an invalid state', inject(function($state) {
+            it('it should set an invalid state', function() {
                 userSpy(false).query();
                 directive.ctrl.login(validUser);
                 directive.scope.$digest();
                 expect(directive.ctrl.formInvalid).toEqual(true);
-            }));
+            });
         });
     });
 
@@ -150,8 +147,8 @@ describe('Login Directive', function() {
         }));
     });
 
-    afterEach(function() {
+    afterEach(inject(function($httpBackend) {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
-    });
+    }));
 });

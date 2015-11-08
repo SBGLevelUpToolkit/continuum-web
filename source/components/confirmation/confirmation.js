@@ -13,7 +13,8 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
                 let code = encodeURIComponent($location.search().code),
                     userId = $location.search().userId;
                 this.loading = true;
-                return authService.confirmEmail(userId, code).then((response) => {
+
+                authService.confirmEmail(userId, code).then((response) => {
                         this.loading = false;
                         $state.go('login', { confirmation: true });
                     },
