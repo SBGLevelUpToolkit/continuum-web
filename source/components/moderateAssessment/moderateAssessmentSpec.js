@@ -55,8 +55,8 @@ describe('Moderate Assessment Directive', function() {
     beforeAll(function() {
         dimensions = helper.getDimensions();
         capabilities = helper.getDimension();
-        score = helper.getScore();
-        assessments = helper.getAssessments();
+        score = helper.getMock('score');
+        assessments = helper.getMock('assessments');
     });
 
     var queryDeferred;

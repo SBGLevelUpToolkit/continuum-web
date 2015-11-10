@@ -158,5 +158,28 @@ export default {
             query: _query,
             get: _get
         };
+    },
+
+    goal: function(goalService, passPromise = true) {
+        function _query(goals) {
+            return spyOn(goalService, 'query').and.callFake(function(successCb) {
+                successCb(goals);
+            });
+        }
+
+        function _update() {
+            return spyOn(goalService, 'update').and.callFake(function(x, successCb, failureCb) {
+                return (passPromise) ? successCb() : failureCb({
+                    data: {
+                        Message: 'oh noze'
+                    }
+                });
+            });
+        }
+
+        return {
+            query: _query,
+            update: _update
+        };
     }
 };

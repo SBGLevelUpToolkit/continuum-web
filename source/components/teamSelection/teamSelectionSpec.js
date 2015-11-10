@@ -13,7 +13,7 @@ describe('TeamSelection Directive', function() {
         userSpy,
         localStorageService;
 
-    var teams = helper.getTeams();
+    var teams = helper.getMock('team');
 
     beforeEach(function() {
         angular.mock.module('ngMaterial');

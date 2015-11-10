@@ -3,7 +3,7 @@ import 'angular-local-storage';
 
 var app = angular.module('cn.authInterceptor', [ 'LocalStorageModule' ]);
 app.factory('authInterceptorService', [
-        '$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
+        '$q', '$location', 'localStorageService', 'mediatorService', function($q, $location, localStorageService, mediatorService) {
 
             var authInterceptorServiceFactory = {};
 
@@ -26,6 +26,15 @@ app.factory('authInterceptorService', [
                         $location.path('/login');
                     }
                 }
+
+                let errorDetails = {
+                    status: rejection.status,
+                    statusText: rejection.statusText,
+                    error: rejection.data.error,
+                    errorDescription: rejection.data.error_description
+                };
+
+                mediatorService.notify('ServiceError', errorDetails);
                 return $q.reject(rejection);
             };
 

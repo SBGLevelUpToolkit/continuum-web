@@ -16,6 +16,7 @@ import './forgotPassword/forgotPassword';
 import './resetPassword/resetPassword';
 import './renderComplete/renderComplete';
 import './matchPassword/matchPassword';
+import './error/error';
 
 var app = angular.module('cn.components', [
     'cn.container',
@@ -32,7 +33,8 @@ var app = angular.module('cn.components', [
     'cn.forgotPassword',
     'cn.resetPassword',
     'cn.onRenderComplete',
-    'cn.matchPassword'
+    'cn.matchPassword',
+    'cn.error'
 ]);
 
 export default app;

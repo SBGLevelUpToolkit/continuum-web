@@ -3,7 +3,7 @@ import helper from '../../../test/unit/specHelper';
 import serviceSpy from '../../../test/unit/mocks/services';
 import './forgotPassword';
 
-fdescribe('ResetPassword Directive', function() {
+describe('ResetPassword Directive', function() {
 
     let directive,
         authSpy,

@@ -2,113 +2,22 @@ import 'angular-mocks';
 import 'angular-animate';
 import 'angular-aria';
 import 'angular-material';
+import helper from '../../../test/unit/specHelper';
+import serviceSpy from '../../../test/unit/mocks/services';
 import ctrlDialog from './createGoalDialog';
 import '../../services/createFactories';
 
 describe('Create Goals Dialog', function() {
 
-    var scope,
-        elm,
-        ctrl,
+    let directive,
         $filter,
         $mdDialog,
         $httpBackend,
         goalService,
         dimensionService,
-        createDialog;
-
-    var goals = [
-        {
-            'Dimension': 'Strategy',
-            'Capability': 'Be the best I can be',
-            'Notes': 'Use fear and terror',
-            'DueDate': '10 Aug 2015',
-            'Completed': false
-        },
-        {
-            'Dimension': 'Testing',
-            'Capability': 'Be the worst I can be',
-            'Notes': 'Use fear and loathing',
-            'DueDate': '15 Aug 2015',
-            'Completed': false
-        },
-        {
-            'Dimension': 'Teamwork',
-            'Capability': 'Be all I can be',
-            'Notes': 'Use group hugs',
-            'DueDate': '20 Aug 2015',
-            'Completed': false
-        },
-        {
-            'Dimension': 'Alignment',
-            'Capability': 'Be someone else',
-            'Notes': 'Improve impersonation skills',
-            'DueDate': '25 Aug 2015',
-            'Completed': false
-        }
-    ];
-
-    var dimensions = [
-        {
-            'Id': 1,
-            'Capabilities': null,
-            'Name': 'Strategy Alignment',
-            'DisplayOrder': 1,
-            'ImageName': 'icon_strategy_alignment_small.png'
-        },
-        {
-            'Id': 2,
-            'Capabilities': null,
-            'Name': 'Planning and Requirements',
-            'DisplayOrder': 2,
-            'ImageName': 'icon_planning_requirements_small.png'
-        },
-        {
-            'Id': 3,
-            'Capabilities': null,
-            'Name': 'Number 2',
-            'DisplayOrder': 3,
-            'ImageName': 'icon_planning_requirements_small.png'
-        }
-    ];
-
-    var capabilities = {
-        'Id': 1,
-        'Capabilities': [
-            {
-                'Description': 'Any alignment to Strategy is coincidental or opportunistic',
-                'Level': 1,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 254,
-                'RequiredCapabilities': []
-            }, {
-                'Description': 'Upfront engagement with stakeholders to ensure Business and Technical Alignment',
-                'Level': 2,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 255,
-                'RequiredCapabilities': [ 254 ]
-            }, {
-                'Description': 'The product/project vision is explicitly aligned to strategy',
-                'Level': 2,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 256,
-                'RequiredCapabilities': [ 254 ]
-            }, {
-                'Description': 'Post implementation view to confirm strategy alignment',
-                'Level': 2,
-                'Predecessors': null,
-                'DisplayOrder': 0,
-                'Id': 257,
-                'RequiredCapabilities': [ 254 ]
-            }
-        ],
-        'Name': 'Strategy Alignment',
-        'DisplayOrder': 0,
-        'ImageName': 'icon_strategy_alignment_small.png'
-    };
+        goals = helper.getMock('goals'),
+        dimensions = helper.getMock('dimensions'),
+        capabilities = helper.getMock('dimension');
 
     beforeEach(function() {
         angular.mock.module('ngMaterial');
@@ -124,9 +33,13 @@ describe('Create Goals Dialog', function() {
         $filter = _$filter_;
         $mdDialog = _$mdDialog_;
 
-        spyOn(dimensionService, 'query').and.callFake(function(successCb) {
-            successCb(dimensions);
-        });
+        dimensionSpy = serviceSpy.dimension.bind(null, dimensionService);
+
+        //spyOn(dimensionService, 'query').and.callFake(function(successCb) {
+        //    successCb(dimensions);
+        //});
+
+        directive = helper.compileDirective('cn-goals');
 
         ctrl = {};
         ctrlDialog.call(ctrl, $filter, $mdDialog, goalService, dimensionService);

@@ -20,7 +20,7 @@ function load(url) {
 
 export default {
     compileDirective: function(directive, ctrlName = 'ctrl') {
-        var scope,
+        let scope,
             elm,
             ctrl;
 
@@ -42,27 +42,7 @@ export default {
         };
     },
 
-    getDimensions: function() {
-        return load('base/test/unit/mocks/dimensions.json').dimensions;
-    },
-
-    getDimension: function() {
-        return load('base/test/unit/mocks/dimension.json').dimension;
-    },
-
-    getScore: function() {
-        return load('base/test/unit/mocks/score.json');
-    },
-
-    getAssessments: function() {
-        return load('base/test/unit/mocks/assessments.json');
-    },
-
-    getTeams: function() {
-        return load('base/test/unit/mocks/teams.json');
-    },
-
-    getUsers: function() {
-        return load('base/test/unit/mocks/users.json');
+    getMock: function(fileName) {
+        return load(`base/test/unit/mocks/${fileName}.json`);
     }
 };

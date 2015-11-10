@@ -14,11 +14,11 @@ describe('Assessment Directive', function() {
         $httpBackend,
         localStorageService,
         dimensionService = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]),
-        dimensions = helper.getDimensions(),
-        capabilities = helper.getDimension(),
-        assessments = helper.getAssessments()[ 1 ],
-        user = helper.getUsers()[ 1 ],
-        adminUser = helper.getUsers()[ 0 ];
+        dimensions = helper.getMock('dimensions').dimensions,
+        capabilities = helper.getMock('dimension').dimension,
+        assessments = helper.getMock('assessments')[ 1 ],
+        user = helper.getMock('users')[ 1 ],
+        adminUser = helper.getMock('users')[ 0 ];
 
     beforeEach(function() {
         angular.mock.module('LocalStorageModule');

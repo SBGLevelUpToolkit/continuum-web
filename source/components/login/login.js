@@ -11,6 +11,7 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
             controllerAs: 'ctrl',
             bindToController: true,
             controller: /*@ngInject*/function controller($state, $stateParams, $mdToast, authService, localStorageService, userService) {
+                this.loading = false;
                 localStorageService.clearAll();
                 if ($stateParams.confirmation) {
                     $mdToast.show({
@@ -33,24 +34,23 @@ var app = angular.module('cn.login', [ 'cn.auth', 'ui.router' ])
                             userService.query((user) => {
                                     if (user.Teams.length > 0) {
                                         localStorageService.set('userDetails', user);
-                                        //mediatorService.notify('UserDetailsLoaded');
-                                        this.loading = false;
+                                        //this.loading = false;
                                         $state.go('home.home');
                                     } else {
-                                        this.loading = false;
+                                        //this.loading = false;
                                         $state.go('teamSelection');
                                     }
                                 },
                                 (err) => {
-                                    this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
-                                    this.loading = false;
-                                    this.formInvalid = true;
+                                    //this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
+                                    //this.loading = false;
+                                    //this.formInvalid = true;
                                 });
                         },
                         (err) => {
-                            this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
-                            this.loading = false;
-                            this.formInvalid = true;
+                            //this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
+                            //this.loading = false;
+                            //this.formInvalid = true;
                         });
                 };
             }

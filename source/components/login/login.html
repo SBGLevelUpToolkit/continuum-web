@@ -33,7 +33,8 @@
                     </div>
                 </md-input-container>
 
-                <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.errorMessage}}</div>
+                <cn-error></cn-error>
+                <!--<div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.errorMessage}}</div>-->
 
                 <div layout="row" layout-align="center center">
                     <md-button class="md-raised" ng-click="(ctrl.form.$valid) ? ctrl.login(ctrl.user) : ctrl.setTouched()">SIGN IN

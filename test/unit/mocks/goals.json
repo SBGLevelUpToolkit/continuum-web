@@ -1,0 +1,30 @@
+[
+  {
+    "Dimension": "Strategy",
+    "Capability": "Be the best I can be",
+    "Notes": "Use fear and terror",
+    "DueDate": "10 Aug 2015",
+    "Completed": false
+  },
+  {
+    "Dimension": "Testing",
+    "Capability": "Be the worst I can be",
+    "Notes": "Use fear and loathing",
+    "DueDate": "15 Aug 2015",
+    "Completed": false
+  },
+  {
+    "Dimension": "Teamwork",
+    "Capability": "Be all I can be",
+    "Notes": "Use group hugs",
+    "DueDate": "20 Aug 2015",
+    "Completed": true
+  },
+  {
+    "Dimension": "Alignment",
+    "Capability": "Be someone else",
+    "Notes": "Improve impersonation skills",
+    "DueDate": "25 Aug 2015",
+    "Completed": false
+  }
+]

@@ -11,8 +11,8 @@ describe('Dimension Directive', function() {
         dimensionSpy,
         $httpBackend,
         dimensionService = jasmine.createSpyObj('dimensionService', [ 'query', 'get' ]),
-        dimensions = helper.getDimensions(),
-        capabilities = helper.getDimension();
+        dimensions = helper.getMock('dimensions').dimensions,
+        capabilities = helper.getMock('dimension').dimension;
 
     beforeEach(function() {
         angular.mock.module('cn.dimensionFactory');
