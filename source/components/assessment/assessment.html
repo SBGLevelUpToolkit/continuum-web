@@ -38,6 +38,7 @@
                 </div>
 
                 <div flex="90" style="overflow: auto; padding-bottom: 20px">
+                    <cn-error></cn-error>
                     <div id="assessmentMessage" ng-hide="ctrl.activeAssessment">{{ctrl.assessmentMessage}}</div>
                     <div ng-show="ctrl.activeAssessment">
                         <div ng-repeat="capability in ctrl.dimension.capabilitiesAtSelectedLevel">

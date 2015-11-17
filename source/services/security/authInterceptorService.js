@@ -20,11 +20,23 @@ app.factory('authInterceptorService', [
                 return config;
             };
 
-            var _responseError = function(rejection) {
+            let _responseError = function(rejection) {
                 if (rejection.config.url.indexOf('register') === -1) {
                     if (String(rejection.status).substr(0, 1) === '4') {
                         $location.path('/login');
                     }
+                }
+
+                if (!rejection.data) {
+                    rejection.data = {
+                        error: 'Unknown',
+                        error_description: 'Unknown error occurred'
+                    };
+                } else if (rejection.data.ModelState) {
+                    rejection.data = {
+                        error: 'Invalid Password',
+                        error_description: rejection.data.ModelState[''][0]
+                    };
                 }
 
                 let errorDetails = {

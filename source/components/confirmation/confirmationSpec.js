@@ -24,6 +24,13 @@ describe('Confirmation Directive', function() {
     }));
 
     describe('When the directive compiles', function() {
+        it('an error directive should be present', function() {
+            authSpy().confirmEmail();
+            directive = helper.compileDirective('cn-confirmation');
+            let errorDirective = directive.elm.find('cn-error')[ 0 ];
+            expect(errorDirective).toBeDefined();
+        });
+
         it('it should call a service with the correct confirmation details', function() {
             $location.url(confirmationParams);
             $httpBackend.expect('POST',
@@ -38,14 +45,6 @@ describe('Confirmation Directive', function() {
                 directive = helper.compileDirective('cn-confirmation');
                 expect($state.go).toHaveBeenCalled();
             }));
-        });
-
-        describe('When the details are not successfully confirmed', function() {
-            it('it should set an invalid state', function() {
-                authSpy(false).confirmEmail();
-                directive = helper.compileDirective('cn-confirmation');
-                expect(directive.ctrl.formInvalid).toEqual(true);
-            });
         });
     });
 

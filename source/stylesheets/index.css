@@ -217,6 +217,10 @@ md-toolbar {
     background-color: #0090bf !important;
 }
 
+md-dialog {
+    max-width: 100%;
+}
+
 .dialog {
     width: 800px;
 }

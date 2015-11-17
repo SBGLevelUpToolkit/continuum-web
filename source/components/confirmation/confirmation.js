@@ -14,15 +14,10 @@ var app = angular.module('cn.confirmation', [ 'cn.auth', 'ui.router' ])
                     userId = $location.search().userId;
                 this.loading = true;
 
-                authService.confirmEmail(userId, code).then((response) => {
-                        this.loading = false;
-                        $state.go('login', { confirmation: true });
-                    },
-                    (err) => {
-                        this.errorMessage = err.error_description ? err.error_description : 'Error while logging in';
-                        this.loading = false;
-                        this.formInvalid = true;
-                    });
+                authService.confirmEmail(userId, code).then(() => {
+                    this.loading = false;
+                    $state.go('login', { confirmation: true });
+                });
             }
         };
     });

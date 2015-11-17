@@ -1,5 +1,6 @@
 import moment from 'moment';
-import dialogController from './createGoalDialog';
+import './createGoalDialog';
+import dialogController from './createGoalDialogController';
 import template from './goals.html!text';
 import templateCreate from './createGoalDialog.html!text';
 
@@ -34,15 +35,8 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
 
                 this.updateGoalStatus = (goal) => {
                     goal.Completed = !goal.Completed;
-                    goalService.update(goal, (response) => {
-                            //let foo = this.goals.filter((item) => {
-                            //    return item.Id = goal.Id;
-                            //}).
-                            //foo.Completed = goal.Completed;
-                        },
-                        (response) => {
+                    goalService.update(goal, () => {
                             this.loading = false;
-                            this.formInvalid = true;
                         }
                     );
                 };
@@ -64,6 +58,7 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                             controllerAs: 'ctrlDialog',
                             bindToController: true,
                             template: templateCreate,
+                            //template: '<cn-create-goal-dialog></cn-create-goal-dialog>',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose: true,
@@ -81,7 +76,6 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
 
             }
         };
-    })
-    ;
+    });
 
 export default app;

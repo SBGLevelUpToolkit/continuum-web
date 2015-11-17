@@ -19,14 +19,9 @@ var app = angular.module('cn.forgotPassword', [ 'cn.auth', 'ui.router' ])
                 this.resetPassword = (data) => {
                     this.loading = true;
                     return authService.resetPassword(data.userName).then((response) => {
-                            this.loading = false;
-                            this.showConfirmationMessage = true;
-                        },
-                        (err) => {
-                            this.errorMessage = err.error_description ? err.error_description : 'An error occurred';
-                            this.loading = false;
-                            this.formInvalid = true;
-                        });
+                        this.loading = false;
+                        this.showConfirmationMessage = true;
+                    });
                 };
             }
         };

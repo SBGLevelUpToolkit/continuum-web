@@ -1,125 +1,87 @@
 import 'angular-mocks';
+import helper from '../../../test/unit/specHelper';
 import serviceSpy from '../../../test/unit/mocks/services';
 import './resetPassword';
 
 describe('ResetPassword Directive', function() {
 
-    var directive,
-        passPromise,
-        authService,
-        $httpBackend;
+    let directive,
+        authSpy,
+        $httpBackend,
+        user = {
+            password: 'kensentme!'
+        },
+        confirmationParams = '?email=foo@bar.co.za&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi';
 
     beforeEach(function() {
+        angular.mock.module('ngMaterial');
         angular.mock.module('cn.resetPassword');
     });
 
-    beforeEach(inject(function(_$compile_, _$rootScope_) {
-        directive = helper.compileDirective('cn-reset-password');
-        spyOn($state, 'go');
-        authService = _authService_;
-        spyOn(authService, 'login').and.callFake(function() {
-            return (passPromise) ? $q.when() : $q.reject();
-        });
+    beforeEach(inject(function(_$httpBackend_, _authService_, _$state_) {
+        $httpBackend = _$httpBackend_;
+
+        spyOn(_$state_, 'go');
+        authSpy = serviceSpy.auth.bind(this, _authService_);
     }));
 
     describe('When the directive compiles', function() {
 
-        beforeEach(inject(function(_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-        }));
+        it('should bind the content', function() {
+            directive = helper.compileDirective('cn-reset-password');
+            let password = directive.elm.find('#password');
+            expect(password.text()).toBe('');
 
-        it('should get all teams', inject(function() {
-            $httpBackend.expectGET('undefined/api/team').respond(200, teams);
-            expect(ctrl.teams.length).toEqual(4);
-        }));
+            directive.scope.$apply(function() {
+                directive.ctrl.user = user;
+            });
+            expect(password.val()).toBe('kensentme!');
+        });
+
+        describe('When an invalid password is entered', function() {
+            it('should not call resetPassword', inject(function() {
+                directive = helper.compileDirective('cn-reset-password');
+                directive.scope.$apply(function() {
+                    directive.ctrl.user = user;
+                });
+
+                var mySpy = spyOn(directive.ctrl, 'resetPassword');
+                var submitButton = directive.elm.find('.md-button')[ 0 ];
+                submitButton.click();
+                expect(mySpy).toHaveBeenCalled();
+            }));
+        });
+
+        describe('When an valid password is entered', function() {
+            it('should pass a valid object to the resetPassword service', inject(function($location) {
+                $location.url(confirmationParams);
+                $httpBackend.expect('POST',
+                    'undefined/api/account/ConfirmResetPassword?emailAddress=foo@bar.co.za&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi&password=kensentme!').respond(200);
+                directive = helper.compileDirective('cn-reset-password');
+                directive.ctrl.resetPassword(user);
+                $httpBackend.flush();
+            }));
+
+            it('should call login state when service is successful', inject(function($state) {
+                authSpy().confirmResetPassword();
+                directive = helper.compileDirective('cn-reset-password');
+                directive.ctrl.resetPassword(user);
+                directive.scope.$digest();
+                expect($state.go).toHaveBeenCalledWith('login');
+            }));
+        });
     });
 
-    it('should bind the content', function() {
-        var userName = elm.find('#userName'),
-            password = elm.find('#password');
+// TODO Implement the error directive
+//it('should set an invalid property when service is unsuccessful', inject(function($state) {
+//    directive.ctrl.resetPassword(user);
+//    directive.scope.$digest();
+//    expect($state.login).not.toHaveBeenCalled();
+//    expect(directive.ctrl.formInvalid).toBe(true);
+//}));
 
-        expect(userName.text()).toBe('');
-        expect(password.text()).toBe('');
-
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme'
-            };
-        });
-
-        expect(userName.val()).toBe('br@ders.co.za');
-        expect(password.val()).toBe('kensentme');
-    });
-
-    it('should not call login when userName is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                password: 'kensentme!'
-            };
-        });
-
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-
-        ctrl.user.userName = 'brders.co.za';
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
-
-    it('should not call login when password is invalid', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za'
-            };
-        });
-
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).not.toHaveBeenCalled();
-    }));
-
-    it('should pass a valid object to login', inject(function() {
-        scope.$apply(function() {
-            ctrl.user = {
-                userName: 'br@ders.co.za',
-                password: 'kensentme!'
-            };
-        });
-
-        var mySpy = spyOn(elm.isolateScope().ctrl, 'login');
-        var smallButton = elm.find('md-button')[ 0 ];
-        smallButton.click();
-        expect(mySpy).toHaveBeenCalled();
-    }));
-
-    it('should call home state when authorization is successful', inject(function($state) {
-        passPromise = true;
-
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
-
-        ctrl.login(user);
-        scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('home');
-    }));
-
-    it('should set an invalid property when authorization is unsuccessful', inject(function($state) {
-        passPromise = false;
-
-        var user = {
-            userName: 'br@ders.co.za',
-            password: 'kensentme!'
-        };
-
-        ctrl.login(user);
-        scope.$digest();
-        expect($state.go).not.toHaveBeenCalled();
-        expect(ctrl.formInvalid).toBe(true);
+    afterEach(inject(function($httpBackend) {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     }));
 });

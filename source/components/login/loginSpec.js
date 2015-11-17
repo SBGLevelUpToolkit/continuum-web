@@ -6,7 +6,7 @@ import '../../services/createFactories';
 
 describe('Login Directive', function() {
 
-    var directive,
+    let directive,
         authSpy,
         userSpy,
         localStorageService,
@@ -31,6 +31,11 @@ describe('Login Directive', function() {
     }));
 
     describe('When the directive compiles', function() {
+        it('an error directive should be present', function() {
+            let errorDirective = directive.elm.find('cn-error')[ 0 ];
+            expect(errorDirective).toBeDefined();
+        });
+
         it('it should bind the content', function() {
             var userName = directive.elm.find('#userName'),
                 password = directive.elm.find('#password');
@@ -51,6 +56,13 @@ describe('Login Directive', function() {
     });
 
     describe('When login details are submitted', function() {
+        it('it should start the loading state', function() {
+            authSpy().login();
+            userSpy().query();
+            directive.ctrl.login(validUser);
+            expect(directive.ctrl.loading).toEqual(true);
+        });
+
         it('it should call login when form data is valid', function() {
             directive.scope.$apply(function() {
                 directive.ctrl.user = validUser;
@@ -125,26 +137,6 @@ describe('Login Directive', function() {
                 expect($state.go).toHaveBeenCalledWith('teamSelection');
             }));
         });
-
-        describe('When retrieving user details fails', function() {
-
-            it('it should set an invalid state', function() {
-                userSpy(false).query();
-                directive.ctrl.login(validUser);
-                directive.scope.$digest();
-                expect(directive.ctrl.formInvalid).toEqual(true);
-            });
-        });
-    });
-
-    describe('When authorization is unsuccessful', function() {
-        it('it should set an invalid property', inject(function($state) {
-            authSpy(false).login();
-            directive.ctrl.login(validUser);
-            directive.scope.$digest();
-            expect($state.go).not.toHaveBeenCalled();
-            expect(directive.ctrl.formInvalid).toBe(true);
-        }));
     });
 
     afterEach(inject(function($httpBackend) {

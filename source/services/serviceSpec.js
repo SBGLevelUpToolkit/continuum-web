@@ -2,7 +2,7 @@ import 'angular-mocks';
 import './hostNameProvider';
 import createResourceFactory from './factoryUtil';
 
-describe('Factory', function() {
+describe('Factory Service', function() {
 
     describe('Hostname Provider', function() {
 
@@ -18,10 +18,10 @@ describe('Factory', function() {
         }));
     });
 
-    describe('CreateFactory', function() {
-        it('should create a factory', inject(function() {
-            //createResourceFactory('broders');
-
-        }));
-    });
+    //describe('CreateFactory', function() {
+    //    it('should create a factory', inject(function() {
+    //        //createResourceFactory('broders');
+    //
+    //    }));
+    //});
 });

@@ -92,7 +92,7 @@ var app = angular.module('cn.assessment', [ 'ngResource', 'ui.router', 'LocalSto
                             }
                         },
                         (response) => {
-                            this.loading = false;
+                            //this.loading = false;
                             this.assessmentAction = 'Create';
                             this.activeAssessment = false;
                             this.assessmentMessage = response.data;

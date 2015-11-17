@@ -1,11 +1,13 @@
-var app = angular.module('cn.matchPassword', [ ])
+var app = angular.module('cn.matchPassword', [])
     .directive('cnMatchPassword', function() {
         return {
             restrict: 'A',
             require: [ '^ngModel', '^form' ],
             link: function(scope, element, attrs, ctrls) {
+
                 var formController = ctrls[ 1 ];
                 var ngModel = ctrls[ 0 ];
+
                 var otherPasswordModel = formController[ attrs.cnMatchPassword ];
 
                 ngModel.$validators.passwordMatch = function(modelValue, viewValue) {

@@ -50,6 +50,14 @@ describe('Assessment Directive', function() {
             assessmentSpy().query(assessments);
         });
 
+        it('an error directive should be present', function() {
+            localStorageService.set('userDetails', adminUser);
+            directive = helper.compileDirective('cn-assessment');
+
+            let errorDirective = directive.elm.find('cn-error')[ 0 ];
+            expect(errorDirective).toBeDefined();
+        });
+
         describe('When there are no assessments in an open or moderated state ', function() {
 
             it('it should set the assessment action to create', function() {

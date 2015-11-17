@@ -2,8 +2,14 @@ import 'angular-mocks';
 import './authFactory';
 import './authInterceptorService';
 import '../../services/createFactories';
+import '../../services/mediator';
 
 describe('Security', function() {
+
+    let authService,
+        localStorageService,
+        httpProviderIt,
+        authInterceptorService;
 
     function setAuthData() {
         localStorageService.set('authorizationData', {
@@ -15,6 +21,7 @@ describe('Security', function() {
     }
 
     beforeEach(function() {
+        angular.mock.module('cn.mediatorFactory');
         angular.mock.module('cn.auth');
         angular.mock.module('cn.authInterceptor', function($httpProvider) {
             httpProviderIt = $httpProvider;
@@ -29,11 +36,9 @@ describe('Security', function() {
         localStorageService.remove('authorizationData');
     });
 
-    var authService, localStorageService, httpProviderIt, authInterceptorService;
-
     describe('AuthFactory', function() {
 
-        var user = {
+        let user = {
             userName: 'br@ders.co.za',
             password: 'kensentme'
         };
@@ -56,7 +61,7 @@ describe('Security', function() {
                 authService.login(user);
                 $httpBackend.flush();
 
-                var authData = localStorageService.get('authorizationData');
+                let authData = localStorageService.get('authorizationData');
                 expect(authData).toBeDefined();
                 expect(authData.userName).toEqual('br@ders.co.za');
             }));
@@ -69,7 +74,7 @@ describe('Security', function() {
 
                 $httpBackend.flush();
 
-                var authData = localStorageService.get('authorizationData');
+                let authData = localStorageService.get('authorizationData');
                 expect(authData).toBeNull();
                 expect(authService.authentication.isAuth).toEqual(false);
                 expect(authService.authentication.userName).toEqual('');
@@ -92,7 +97,7 @@ describe('Security', function() {
 
                 authService.logOut();
 
-                var authData = localStorageService.get('authorizationData');
+                let authData = localStorageService.get('authorizationData');
                 expect(authData).toBeNull();
                 expect(authService.authentication.isAuth).toEqual(false);
                 expect(authService.authentication.userName).toEqual('');
@@ -102,14 +107,14 @@ describe('Security', function() {
 
     describe('AuthInterceptorService', function() {
 
-        var token = 'Bearer some token';
+        let token = 'Bearer some token';
 
         it('should have authInterceptorService be defined', function() {
             expect(authInterceptorService).toBeDefined();
         });
 
         it('should have no api token upon start up', function() {
-            var authData = localStorageService.get('authorizationData');
+            let authData = localStorageService.get('authorizationData');
             expect(authData).toBeNull();
         });
 
@@ -124,22 +129,22 @@ describe('Security', function() {
                 $httpBackend.expect('GET', '/test', {}, function(headers) {
                     return headers[ 'Authorization' ] === token;
                 }).
-                    respond(function() {
-                        return '';
-                    });
+                respond(function() {
+                    return '';
+                });
 
                 $http({ method: 'GET', url: '/test', data: {}, headers: {} });
                 $httpBackend.flush();
             }));
 
             it('should not place a token in the http request headers if no token is set', function() {
-                var config = authInterceptorService.request({ url: 'fake', headers: {} });
+                let config = authInterceptorService.request({ url: 'fake', headers: {} });
                 expect(config.headers[ 'Authorization' ]).toBe(undefined);
             });
 
             it('should place a token in the http request headers after a token is set', function() {
                 setAuthData();
-                var config = authInterceptorService.request({ url: 'fake', headers: {} });
+                let config = authInterceptorService.request({ url: 'fake', headers: {} });
                 expect(config.headers[ 'Authorization' ]).toBe(token);
             });
         });

@@ -33,6 +33,11 @@ describe('Goals Directive', function() {
 
     describe('When the directive compiles', function() {
 
+        it('an error directive should be present', function() {
+            let errorDirective = directive.elm.find('cn-error')[ 0 ];
+            expect(errorDirective).toBeDefined();
+        });
+
         it('it should call a service to retrieve goals', function() {
             expect(goalQuerySpy).toHaveBeenCalled();
         });
@@ -88,17 +93,6 @@ describe('Goals Directive', function() {
             it('it should navigate to login', inject(function($state) {
                 // TODO Does it actually do anything?
             }));
-        });
-
-        describe('When the goal is not successfully updated', function() {
-            it('it should set an invalid state', function() {
-                goalSpy(false).update();
-                directive.ctrl.updateGoalStatus({});
-                // TODO Investigate why is a digest not required here but is required for auth services.
-                // Does the angular resource automatically do a digest?
-                //directive.scope.$digest();
-                expect(directive.ctrl.formInvalid).toEqual(true);
-            });
         });
 
         describe('When the create goal button is clicked', function() {

@@ -19,19 +19,26 @@ function load(url) {
 }
 
 export default {
-    compileDirective: function(directive, ctrlName = 'ctrl') {
+    compileDirective: function(directive, ctrlName = 'ctrl', isHtml =false) {
         let scope,
             elm,
             ctrl;
 
         inject(function($rootScope, $compile) {
             scope = $rootScope.$new();
-            elm = angular.element('<' + directive + '></' + directive + '>');
-            $compile(elm)(scope);
-            scope.$digest();
-            ctrl = elm.scope()[ctrlName];
-            if (!ctrl) {
-                ctrl = elm.isolateScope()[ctrlName];
+            if (!isHtml) {
+                elm = angular.element('<' + directive + '></' + directive + '>');
+                scope.foo = 'brett';
+                $compile(elm)(scope);
+                scope.$digest();
+                ctrl = elm.scope()[ ctrlName ];
+                if (!ctrl) {
+                    ctrl = elm.isolateScope()[ ctrlName ];
+                }
+            } else {
+                elm = angular.element(directive);
+                $compile(elm)(scope);
+                scope.$digest();
             }
         });
 

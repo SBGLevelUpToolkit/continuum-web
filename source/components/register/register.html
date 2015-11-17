@@ -50,7 +50,7 @@
                         </div>
                     </md-input-container>
 
-                    <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.message}}</div>
+                    <cn-error></cn-error>
 
                     <div layout="row" layout-align="center center">
                         <md-button class="md-raised" ng-click="(ctrl.form.$valid) ? ctrl.register(ctrl.user) : ctrl.setTouched()">REGISTER

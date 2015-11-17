@@ -8,6 +8,7 @@ import './login/login';
 import './register/register';
 import './confirmation/confirmation';
 import './goals/goals';
+import './goals/createGoalDialog';
 import './teamSelection/teamSelection';
 import './assessment/assessment';
 import './moderateAssessment/moderateAssessment';
@@ -26,6 +27,7 @@ var app = angular.module('cn.components', [
     'cn.register',
     'cn.confirmation',
     'cn.goals',
+    'cn.createGoalDialog',
     'cn.teamSelection',
     'cn.assessment',
     'cn.moderateAssessment',

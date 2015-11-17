@@ -43,11 +43,31 @@ export default {
             });
         }
 
+        function _confirmResetPassword() {
+            spyOn(authService, 'confirmResetPassword').and.callFake(function() {
+                return (passPromise) ? $q.when() : $q.reject({
+                    data: {
+                        Message: 'oh noze'
+                    }
+                });
+            });
+        }
+
+        function _logout() {
+            return spyOn(authService, 'logOut').and.callFake(function() {
+                return (passPromise) ? $q.when() : $q.reject({
+                    error_description: 'oh noze'
+                });
+            });
+        }
+
         return {
             login: _login,
             saveRegistration: _saveRegistration,
             confirmEmail: _confirmEmail,
-            resetPassword: _resetPassword
+            resetPassword: _resetPassword,
+            confirmResetPassword: _confirmResetPassword,
+            logout: _logout
         };
     },
 
@@ -122,15 +142,39 @@ export default {
             });
         }
 
+        function _score(score) {
+            return spyOn(assessmentService, 'score').and.callFake(function(successCb) {
+                successCb(score);
+            });
+        }
+
+        function _reopen() {
+            return spyOn(assessmentService, 'reopen').and.callFake(function(successCb) {
+                successCb();
+            });
+        }
+
         function _save() {
             return spyOn(assessmentService, 'save').and.stub();
+        }
+
+        function _close() {
+            return spyOn(assessmentService, 'close').and.stub();
+        }
+
+        function _update() {
+            return spyOn(assessmentService, 'update').and.stub();
         }
 
         return {
             query: _query,
             create: _create,
             moderate: _moderate,
-            save: _save
+            score: _score,
+            reopen: _reopen,
+            save: _save,
+            close: _close,
+            update: _update
         };
     },
 
@@ -177,9 +221,20 @@ export default {
             });
         }
 
+        function _save() {
+            return spyOn(goalService, 'save').and.callFake(function(x, successCb, failureCb) {
+                return (passPromise) ? successCb() : failureCb({
+                    data: {
+                        Message: 'oh noze'
+                    }
+                });
+            });
+        }
+
         return {
             query: _query,
-            update: _update
+            update: _update,
+            save: _save
         };
     }
 };
