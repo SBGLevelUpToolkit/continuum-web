@@ -49,6 +49,7 @@ describe('Confirmation Directive', function() {
     });
 
     afterEach(function() {
+
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
