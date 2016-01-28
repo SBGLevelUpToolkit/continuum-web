@@ -46,7 +46,7 @@ describe('Moderate Assessment Directive', function() {
 
         // Must be available when the directive compiles
         dimensionSpy().query(dimensions);
-        dimensionSpy().get(capabilities)
+        dimensionSpy().get(capabilities);
 
         assessmentSpy().query(assessments);
         assessmentSpy().score(score);

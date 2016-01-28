@@ -56,7 +56,8 @@ describe('ResetPassword Directive', function() {
             it('should pass a valid object to the resetPassword service', inject(function($location) {
                 $location.url(confirmationParams);
                 $httpBackend.expect('POST',
-                    'undefined/api/account/ConfirmResetPassword?emailAddress=foo@bar.co.za&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi&password=kensentme!').respond(200);
+                    'undefined/api/account/ConfirmResetPassword?emailAddress=foo@bar.co.za' +
+                    '&code=gerHp0%2FNHDx20LcgZOoZ%2BbBqroZ%2F93MYQi&password=kensentme!').respond(200);
                 directive = helper.compileDirective('cn-reset-password');
                 directive.ctrl.resetPassword(user);
                 $httpBackend.flush();

@@ -10,7 +10,7 @@
                 <div class="text">REGISTER</div>
                 <div class="line" flex></div>
             </div>
-            <div class="vertical-spacer" ng-show="ctrl.showConfirmationMessage">
+            <div class="vertical-spacer light-text" ng-show="ctrl.showConfirmationMessage">
                 <p>A confirmation link has been sent to your email address. Please check your email to continue.</p>
 
                 <p>You can close this page.</p>
@@ -40,16 +40,17 @@
 
                     <md-input-container class="light-text">
                         <label>Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" ng-model="ctrl.user.confirmPassword" required>
+                        <input type="password" id="confirmPassword" name="confirmPassword" cn-match-password="password" ng-model="ctrl.user.confirmPassword" required>
 
                         <div ng-messages="ctrl.form.confirmPassword.$error">
                             <div ng-show="ctrl.form.$submitted || ctrl.form.confirmPassword.$touched">
                                 <div ng-message="required">This is required.</div>
+                                <div ng-message="passwordMatch">Passwords do not match</div>
                             </div>
                         </div>
                     </md-input-container>
 
-                    <div class="errorMessage" ng-show="ctrl.formInvalid">{{ctrl.message}}</div>
+                    <cn-error></cn-error>
 
                     <div layout="row" layout-align="center center">
                         <md-button class="md-raised" ng-click="(ctrl.form.$valid) ? ctrl.register(ctrl.user) : ctrl.setTouched()">REGISTER

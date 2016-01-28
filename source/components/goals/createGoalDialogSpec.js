@@ -4,13 +4,14 @@ import 'angular-aria';
 import 'angular-material';
 import helper from '../../../test/unit/specHelper';
 import serviceSpy from '../../../test/unit/mocks/services';
-import './createGoalDialog';
+import dialogController from './createGoalDialogController';
 import '../../services/createFactories';
 import dialogTemplate from './createGoalDialog.html!text';
 
 fdescribe('Create Goals Dialog', function() {
 
     let directive,
+        foo,
         $filter,
         $mdDialog,
         $httpBackend,
@@ -41,11 +42,39 @@ fdescribe('Create Goals Dialog', function() {
 
         dimensionSpy().query(dimensions);
         dimensionSpy().get(capabilities);
+
+        directive = helper.compileDirective('<body></body>', null, true);
+
+        directive.ctrl =
+        {
+            showCreateGoalDialog: function(ev, goal) {
+                $mdDialog.show({
+                        controller: dialogController,
+                        controllerAs: 'ctrlDialog',
+                        bindToController: true,
+                    scope: directive.scope,
+                        template: dialogTemplate,
+                        parent: directive.elm,
+                        //targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: {
+                            selectedGoal: goal
+                        }
+                    })
+                    .then(() => {
+                        this.getGoals();
+
+                    }, () => {
+                        //this.status = 'You cancelled the dialog.';
+                    });
+            }
+        };
     }));
 
     describe('When the dialog opens', function() {
-        it('it should get all dimensions', function() {
-            directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
+        fit('it should get all dimensions', function() {
+            //directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
+            directive.ctrl.showCreateGoalDialog();
             expect(directive.ctrl.dimensions.length).toEqual(3);
         });
     });

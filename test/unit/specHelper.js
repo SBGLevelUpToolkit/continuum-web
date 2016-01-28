@@ -28,7 +28,6 @@ export default {
             scope = $rootScope.$new();
             if (!isHtml) {
                 elm = angular.element('<' + directive + '></' + directive + '>');
-                scope.foo = 'brett';
                 $compile(elm)(scope);
                 scope.$digest();
                 ctrl = elm.scope()[ ctrlName ];
