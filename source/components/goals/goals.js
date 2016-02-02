@@ -1,17 +1,18 @@
 import moment from 'moment';
-import './createGoalDialog';
+//import './createGoalDialog';
 import dialogController from './createGoalDialogController';
 import template from './goals.html!text';
 import templateCreate from './createGoalDialog.html!text';
 
 var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimensionFactory' ])
     .directive('cnGoals', function() {
+        let foo = 'bar';
         return {
-            scope: {},
+            boo: 'baz',
             restrict: 'E',
             template: template,
             controllerAs: 'ctrl',
-            bindToController: true,
+            bindToController: {},
             controller: /*@ngInject*/function controller($state, $filter, dimensionService, goalService, $mdDialog) {
                 this.loading = true;
                 this.showCompletedGoals = true;
@@ -57,8 +58,7 @@ var app = angular.module('cn.goals', [ 'ui.router', 'cn.goalFactory', 'cn.dimens
                             controller: dialogController,
                             controllerAs: 'ctrlDialog',
                             bindToController: true,
-                            //template: templateCreate,
-                            template: '<cn-create-goal-dialog></cn-create-goal-dialog>',
+                            template: templateCreate,
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose: true,

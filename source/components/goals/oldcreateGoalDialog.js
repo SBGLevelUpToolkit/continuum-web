@@ -1,5 +1,6 @@
 import template from './createGoalDialog.html!text';
 
+// This was an attempt to call a directive from goals.js
 var app = angular.module('cn.createGoalDialog', [ 'ui.router', 'cn.goalFactory', 'cn.dimensionFactory' ])
     .directive('cnCreateGoalDialog', function() {
         return {

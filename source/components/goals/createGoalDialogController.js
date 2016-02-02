@@ -1,4 +1,4 @@
-export default /*@ngInject*/function($filter, $mdDialog, goalService, dimensionService) {
+export default /*@ngInject*/function($scope, $filter, $mdDialog, goalService, dimensionService) {
     this.cancel = () => {
         $mdDialog.cancel();
     };

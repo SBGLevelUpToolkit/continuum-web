@@ -3,8 +3,10 @@
     "Dimension": "Strategy",
     "Capability": "Be the best I can be",
     "Notes": "Use fear and terror",
-    "DueDate": "10 Aug 2015",
-    "Completed": false
+    "DueDate": "Wed Nov 18 2015 00:00:00 GMT+0200 (SAST)",
+    "Completed": false,
+    "CapabilityId": 254,
+    "DimensionId": 25
   },
   {
     "Dimension": "Testing",

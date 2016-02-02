@@ -10,8 +10,9 @@ import dialogTemplate from './createGoalDialog.html!text';
 
 fdescribe('Create Goals Dialog', function() {
 
-    let directive,
-        foo,
+    let scope,
+        ctrl,
+        elm,
         $filter,
         $mdDialog,
         $httpBackend,
@@ -24,7 +25,7 @@ fdescribe('Create Goals Dialog', function() {
 
     beforeEach(function() {
         angular.mock.module('ngMaterial');
-        angular.mock.module('cn.createGoalDialog');
+        //angular.mock.module('cn.createGoalDialog');
         angular.mock.module('cn.goalFactory');
         angular.mock.module('cn.dimensionFactory');
         angular.mock.module(function($provide) {
@@ -32,10 +33,37 @@ fdescribe('Create Goals Dialog', function() {
         });
     });
 
-    beforeEach(inject(function(_goalService_, _dimensionService_, _$httpBackend_, _$filter_, _$mdDialog_) {
-        $httpBackend = _$httpBackend_;
-        $filter = _$filter_;
-        $mdDialog = _$mdDialog_;
+    var myApp = angular.module('myApp', []);
+
+    myApp.directive('myDirective', {
+        controller: 'MyDirectiveController',
+        bindToController: {
+            name: '@'
+        }
+    });
+
+    myApp.controller('dialogController', dialogController);
+    myApp.directive('goalDialog', function() {
+        return {
+            template: dialogTemplate
+            //controllerAs: 'ctrlDialog',
+            //bindToController: true,
+            //controller: dialogController,
+            //parent: angular.element(document.body),
+            //locals: {
+            //    selectedGoal: 'bar'
+            //}
+        };
+    });
+
+    beforeEach(function() {
+        angular.mock.module('myApp');
+    });
+
+    beforeEach(inject(function(_$controller_, _$rootScope_, _$compile_, _goalService_, _dimensionService_) {
+        //$httpBackend = _$httpBackend_;
+        //$filter = _$filter_;
+        //$mdDialog = _$mdDialog_;
 
         dimensionSpy = serviceSpy.dimension.bind(null, _dimensionService_);
         goalSpy = serviceSpy.goal.bind(null, _goalService_);
@@ -43,56 +71,72 @@ fdescribe('Create Goals Dialog', function() {
         dimensionSpy().query(dimensions);
         dimensionSpy().get(capabilities);
 
-        directive = helper.compileDirective('<body></body>', null, true);
+        //angular.mock.module('myApp');
+        elm = angular.element('<div goal-dialog/>');
+        scope = _$rootScope_;
+        scope.ctrlDialog = _$controller_('dialogController', { foo: 'bar' });
+        //scope.selectedGoal = goals[ 0 ];
+        _$compile_(elm)(scope);
+        scope.$digest();
+        ctrl = elm.scope()[ 'ctrlDialog' ];
 
-        directive.ctrl =
-        {
-            showCreateGoalDialog: function(ev, goal) {
-                $mdDialog.show({
-                        controller: dialogController,
-                        controllerAs: 'ctrlDialog',
-                        bindToController: true,
-                    scope: directive.scope,
-                        template: dialogTemplate,
-                        parent: directive.elm,
-                        //targetEvent: ev,
-                        clickOutsideToClose: true,
-                        locals: {
-                            selectedGoal: goal
-                        }
-                    })
-                    .then(() => {
-                        this.getGoals();
+        //directive.scope = _$rootScope_.$new();
+        //directive.scope.selectedGoal = 'foo';
+        //
+        ////directive.controller = dialogController;
+        //directive.elm = angular.element('<body></body>');
+        //_$compile_(directive.elm)(directive.scope);
+        //directive.scope.$digest();
+        //directive.ctrl = directive.elm.scope()[ 'ctrl' ];
 
-                    }, () => {
-                        //this.status = 'You cancelled the dialog.';
-                    });
-            }
-        };
+        //ctrl = elm.isolateScope()[ ctrlName ];
+
+        // TODO Create a mock directive using createGoalDialogController as the controller
+        // Then figure out how to pass selectedGoal to the directive before the directive compiles
+
+        // 2 reasons not to use the $mdDialog below:
+        // 1. Seems to be async and only compiles after the assertion has run
+        // 2. The call to show the dialog should probably be in the goal directive tests.
+
+        //directive = helper.compileDirective('<body></body>', null, true);
+        //
+        //directive.ctrl =
+        //{
+        //    showCreateGoalDialog: function(ev, goal) {
+        //        $mdDialog.show({
+        //                controller: dialogController,
+        //                controllerAs: 'ctrlDialog',
+        //                bindToController: true,
+        //                scope: directive.scope,
+        //                template: dialogTemplate,
+        //                parent: directive.elm,
+        //                //targetEvent: ev,
+        //                clickOutsideToClose: true,
+        //                locals: {
+        //                    selectedGoal: goal
+        //                }
+        //            })
+        //            .then(() => {
+        //                this.getGoals();
+        //
+        //            }, () => {
+        //                //this.status = 'You cancelled the dialog.';
+        //            });
+        //    }
+        //};
     }));
 
     describe('When the dialog opens', function() {
-        fit('it should get all dimensions', function() {
+        it('it should get all dimensions', function() {
             //directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
-            directive.ctrl.showCreateGoalDialog();
-            expect(directive.ctrl.dimensions.length).toEqual(3);
+            //directive.ctrl.showCreateGoalDialog();
+            expect(ctrl.dimensions.length).toEqual(3);
         });
     });
 
-    // Going to leave this out. It will be a functional test
-    // Should it be a unit test?
-    //describe('When selecting a dimension', function() {
-    //    it('it should return all capabilities for that dimension', function() {
-    //        $httpBackend.expectGET('undefined/api/dimension/1').respond(200, capabilities);
-    //        ctrl.getCapabilitiesForSelectedDimension(dimensions[ 0 ].Id);
-    //        $httpBackend.flush();
-    //        expect(ctrl.capabilities.length).toEqual(4);
-    //    });
-    //});
-
     describe('When clearing a dimension', function() {
         it('should clear the capabilities array', function() {
-            directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
+            //directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
             directive.ctrl.capabilities = capabilities.Capabilities;
             expect(directive.ctrl.capabilities.length).toEqual(13);
             directive.ctrl.getCapabilitiesForSelectedDimension();
@@ -101,9 +145,9 @@ fdescribe('Create Goals Dialog', function() {
     });
 
     describe('When submitting a new goal', function() {
-        beforeEach(function() {
-            directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
-        });
+        //beforeEach(function() {
+        //    directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
+        //});
 
         it('it should call save if the form is valid', function() {
             let mySpy = spyOn(directive.ctrl, 'saveGoal');
@@ -181,12 +225,12 @@ fdescribe('Create Goals Dialog', function() {
         //});
     });
 
-    fdescribe('When submitting an existing goal', function() {
+    describe('When submitting an existing goal', function() {
 
-        beforeEach(function() {
-            directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
-            directive.ctrl.selectedGoal = goals[ 0 ];
-        });
+        //beforeEach(function() {
+        //    directive = helper.compileDirective('cn-create-goal-dialog', 'ctrlDialog');
+        //    directive.ctrl.selectedGoal = goals[ 0 ];
+        //});
 
         fit('it should call save if the form is valid', function() {
             let mySpy = spyOn(directive.ctrl, 'saveGoal');
